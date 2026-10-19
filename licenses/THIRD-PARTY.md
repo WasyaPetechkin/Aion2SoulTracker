@@ -18,6 +18,8 @@ The matching complete project source and build scripts are included in source.zi
   https://github.com/xCROv/aion2-nyerk/tree/43935db7dc24c6b7a58a0fd9cabb003aa46ae50c (GPL-3.0).
   Dataset credits Questlog's Aion 2 map (https://questlog.gg/aion-2/en/map).
   Full attribution is in maps/SOURCES.md (assets/maps/SOURCES.md in the source).
+* Pet portraits: xCROv/aion2-nyerk, same GPL-3.0 revision above; see pets/SOURCES.md.
+* Kibelisk coordinates: Questlog public map marker dataset, retrieved 2026-10-19; see maps/SOURCES.md.
 * Game lookup tables: see data/NOTICE.md (assets/data/NOTICE.md in the source).
 * Npcap is a separate prerequisite and is not included. Its installer and terms are at https://npcap.com/.
 

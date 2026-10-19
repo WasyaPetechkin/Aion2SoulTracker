@@ -26,6 +26,7 @@ public sealed class LiveCapture : IEventSource
     private readonly LiveCaptureOptions _options;
     private readonly PacketPipeline _pipeline;
     private readonly object _gate = new();
+    private readonly object _pipelineGate = new();
     private CancellationTokenSource? _cts;
     private Task? _monitor;
     private LibPcapLiveDevice? _device;
@@ -162,7 +163,7 @@ public sealed class LiveCapture : IEventSource
         var connections = GameProcessLocator.FindConnections(pids);
         if (connections.Count == 0)
         {
-            SetStatus(CaptureState.WaitingForGame, "Waiting for the game to connect…");
+            SetStatus(_device is null ? CaptureState.WaitingForGame : CaptureState.Idle, "Waiting for the game to connect…");
             return;
         }
 
@@ -188,20 +189,23 @@ public sealed class LiveCapture : IEventSource
 
     private void ReportFlowStatus(LibPcapLiveDevice device)
     {
+        // Capture mutates the flow dictionary on another thread. Take a consistent
+        // snapshot; enumerating it concurrently can terminate the monitor loop.
+        int flows;long lastData;string? server;
+        lock(_pipelineGate)
+        {flows=_pipeline.GameFlows;lastData=_pipeline.LastGameDataMs;server=_pipeline.LockedFlows.Select(f=>f.Src.ToString()).FirstOrDefault();}
         var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        var flows = _pipeline.GameFlows;
-        if (flows > 0 && now - _pipeline.LastGameDataMs < 10_000)
+        if (flows > 0 && now - lastData < 10_000)
         {
-            var server = _pipeline.LockedFlows.Select(f => f.Src.ToString()).FirstOrDefault();
             SetStatus(CaptureState.Capturing, $"Capturing · {server}" + (RecordingPath is null ? "" : " · REC"));
         }
         else if (flows > 0)
         {
-            SetStatus(CaptureState.WaitingForGame, "Connected · no game traffic for a while");
+            SetStatus(CaptureState.Idle, "Connected · no game traffic for a while");
         }
         else
         {
-            SetStatus(CaptureState.WaitingForGame, $"Listening on {Describe(device)}…");
+            SetStatus(CaptureState.Idle, $"Listening on {Describe(device)}…");
         }
     }
 
@@ -271,7 +275,7 @@ public sealed class LiveCapture : IEventSource
         {
             _writer?.Write(raw);
             if (SegmentReader.TryRead(raw, out var seg))
-                _pipeline.OnSegment(seg.TimeMs, seg.Key, seg.Seq, seg.Syn, seg.FinOrRst, seg.Payload);
+                lock(_pipelineGate)_pipeline.OnSegment(seg.TimeMs, seg.Key, seg.Seq, seg.Syn, seg.FinOrRst, seg.Payload);
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {

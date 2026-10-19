@@ -1,3 +1,9 @@
+# 0.3.0 — 2026-10-20
+
+Quiet connections preserve synchronization; late TCP retransmissions wait up to five seconds before a confirmed gap. Capture status reads use a consistent flow snapshot. Actual data loss still requires synchronization.
+
+Automatic category fallback, local focus, pinned-first catalogue, numeric sorting, per-row HUD removal, optional open-world soul auto-pinning, pet portraits, spawn tooltips and 162 faction-zone kibelisks.
+
 # Изменения
 
 ## 0.2.0

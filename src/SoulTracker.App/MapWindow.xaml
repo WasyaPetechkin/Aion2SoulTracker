@@ -54,7 +54,7 @@
     <StackPanel Grid.Row="4" Margin="0,5,0,0">
      <TextBlock x:Name="MapScope" Foreground="#A6C1D2" FontSize="10" Margin="0,0,18,2" TextTrimming="CharacterEllipsis"/>
      <StackPanel x:Name="MapDetails" Visibility="Collapsed">
-     <DockPanel Margin="0,0,0,5"><local:HelpBadge Topic="all" DockPanel.Dock="Right"/><CheckBox x:Name="AllIncomplete" Content="Все незавершённые вместо выбранных" Margin="0" Checked="ModeChanged" Unchecked="ModeChanged"/></DockPanel>
+     <DockPanel Margin="0,0,0,5"><local:HelpBadge Topic="all" DockPanel.Dock="Right"/><CheckBox x:Name="AllIncomplete" Content="Все незавершённые · автоматически" Margin="0" IsEnabled="False"/></DockPanel>
      <TextBlock x:Name="SpawnSummary" Foreground="#A6C1D2" FontSize="11" TextWrapping="Wrap"/>
      <WrapPanel x:Name="Legend" Margin="0,4,0,0"/>
      </StackPanel>

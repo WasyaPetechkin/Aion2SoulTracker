@@ -49,7 +49,9 @@
     <TextBlock x:Name="HudOpacityLabel" Text="Плотность фона" VerticalAlignment="Center" Margin="0,0,8,0"/>
     <StackPanel Orientation="Horizontal"><Slider x:Name="HudOpacity" Minimum="0.25" Maximum="1" Width="90" VerticalAlignment="Center" ValueChanged="HudAppearanceChanged"/><local:HelpBadge Topic="opacity"/></StackPanel>
    </WrapPanel>
-   <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><CheckBox x:Name="FocusMode" Content="Режим фокуса" Margin="0" Checked="FocusChanged" Unchecked="FocusChanged"/><local:HelpBadge Topic="focus"/></StackPanel>
+   <WrapPanel Margin="0,0,0,10"><CheckBox x:Name="FocusMode" Content="Режим фокуса" Margin="0" Checked="FocusChanged" Unchecked="FocusChanged"/><local:HelpBadge Topic="focus"/>
+    <CheckBox x:Name="AutoTrackSouls" Content="Добавлять в HUD при получении души" Margin="8,0,0,0" Checked="AutoTrackChanged" Unchecked="AutoTrackChanged"/><local:HelpBadge Topic="autoTrack"/>
+   </WrapPanel>
    <TextBlock x:Name="HudHint" Text="Отметь цели в колонке HUD · Ctrl+Alt+H показать · Ctrl+Alt+L клики в игру" Foreground="#8BA5BE" FontSize="12" Margin="0,0,0,13" TextWrapping="Wrap"/>
    <WrapPanel>
    <StackPanel Orientation="Horizontal"><CheckBox x:Name="Cogni" Content="Cogni" IsChecked="True" Checked="FilterChanged" Unchecked="FilterChanged" Margin="0"/><local:HelpBadge Topic="category"/></StackPanel>
@@ -67,7 +69,7 @@
    <StackPanel Orientation="Horizontal" Grid.Column="1"><CheckBox x:Name="HideCompleted" Content="Скрыть MAX" IsChecked="True" Checked="FilterChanged" Unchecked="FilterChanged" Margin="0"/><local:HelpBadge Topic="max"/></StackPanel>
    <StackPanel Orientation="Horizontal" Grid.Column="2"><CheckBox x:Name="OwnedOnly" Content="Только полученные" Checked="FilterChanged" Unchecked="FilterChanged" Margin="0"/><local:HelpBadge Topic="owned"/></StackPanel>
   </Grid>
-  <DataGrid Grid.Row="4" x:Name="Pets" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+  <DataGrid Grid.Row="4" x:Name="Pets" Sorting="SortCatalog" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
    EnableRowVirtualization="True" HeadersVisibility="Column" RowHeight="37" Background="#142031" Foreground="#E9EEF5"
    RowBackground="#142031" AlternatingRowBackground="#19273A" BorderThickness="0" GridLinesVisibility="None" SelectionMode="Single">
    <DataGrid.Resources>
@@ -75,7 +77,7 @@
     <Style TargetType="DataGridCell"><Setter Property="BorderThickness" Value="0"/><Setter Property="Padding" Value="10,5"/></Style>
    </DataGrid.Resources>
    <DataGrid.Columns>
-    <DataGridTemplateColumn Header="HUD" Width="75">
+    <DataGridTemplateColumn Header="HUD" Width="75" CanUserSort="False">
      <DataGridTemplateColumn.CellTemplate>
       <DataTemplate>
        <CheckBox IsChecked="{Binding IsTracked, Mode=OneWay}" IsEnabled="{Binding CanTrack}" Click="PinClicked"
@@ -85,9 +87,9 @@
     </DataGridTemplateColumn>
     <DataGridTextColumn Header="Монстр / питомец" Binding="{Binding Name}" Width="*" MinWidth="180"/>
     <DataGridTextColumn Header="Категория" Binding="{Binding Genus}" Width="105"/>
-    <DataGridTextColumn Header="Уровень" Binding="{Binding LevelText}" Width="100"/>
-    <DataGridTextColumn Header="Души на ступени" Binding="{Binding Stage}" Width="140"/>
-    <DataGridTextColumn Header="До максимума" Binding="{Binding RemainingText}" Width="130"/>
+    <DataGridTextColumn Header="Уровень" Binding="{Binding LevelText}" SortMemberPath="LevelSort" Width="100"/>
+    <DataGridTextColumn Header="Души на ступени" Binding="{Binding Stage}" SortMemberPath="SoulsSort" Width="140"/>
+    <DataGridTextColumn Header="До максимума" Binding="{Binding RemainingText}" SortMemberPath="RemainingSort" Width="130"/>
     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
    </DataGrid.Columns>
   </DataGrid>

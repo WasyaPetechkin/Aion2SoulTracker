@@ -34,7 +34,7 @@ public partial class MainWindow : Window
     private string _language="ru";
     private int _ticks;
     private UiText Text=>new(_language);
-    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack);
+    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack,int LevelSort,int SoulsSort,int RemainingSort);
 
     public MainWindow(string[] args)
     {
@@ -48,6 +48,7 @@ public partial class MainWindow : Window
         HudVisible.IsChecked=_preferences.HudVisible;MapVisible.IsChecked=_preferences.MapVisible;
         HudLocked.IsChecked=_preferences.HudLocked;HudOpacity.Value=_preferences.HudOpacity;
         FocusMode.IsChecked=_preferences.FocusMode;HudRowScale.Value=_preferences.HudRowScale;LoadHotkeyInputs();
+        AutoTrackSouls.IsChecked=_preferences.AutoTrackSouls;
         Cogni.IsChecked=_preferences.Categories.Contains("Cogni");Fera.IsChecked=_preferences.Categories.Contains("Fera");
         Natura.IsChecked=_preferences.Categories.Contains("Natura");Varian.IsChecked=_preferences.Categories.Contains("Varian");
         Width=Math.Max(MinWidth,Math.Min(Width,SystemParameters.WorkArea.Width-24));
@@ -61,6 +62,7 @@ public partial class MainWindow : Window
         _hud.CatalogRequested+=()=>StartupWindow.ShowVisible(this);
         _hud.HideRequested+=()=>SetHudVisibility(false);
         _hud.LockRequested+=()=>SetHudLock(!_preferences.HudLocked);
+        _hud.UntrackRequested+=id=>{_preferences.HudTargets=_preferences.HudTargets.Where(x=>x!=id).ToArray();QueueSettingsSave();Refresh(true);};
         _hud.GeometryChanged+=()=>
         {
             _preferences.HudLeft=_hud.Left;_preferences.HudTop=_hud.Top;

@@ -8,7 +8,7 @@ namespace AionMeter.Core.Capture;
 public sealed class TcpReassembler
 {
     public const int MaxPendingBytes = 2 * 1024 * 1024;
-    public const int GapTimeoutMs = 1_500;
+    public const int GapTimeoutMs = 5_000;
 
     private readonly Action<ReadOnlyMemory<byte>> _onData;
     private readonly Action _onGap;

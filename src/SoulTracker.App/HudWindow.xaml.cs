@@ -17,8 +17,9 @@ public partial class HudWindow : Window
     internal event Action? CatalogRequested;
     internal event Action? HideRequested;
     internal event Action? LockRequested;
+    internal event Action<int>? UntrackRequested;
     internal event Action? GeometryChanged;
-    internal sealed record TargetRow(string Name,string Detail,int Souls,int Target,string Remaining,string RemainingCaption);
+    internal sealed record TargetRow(string Name,string Detail,int Souls,int Target,string Remaining,string RemainingCaption,int Id=0,string Territory="",bool CanRemove=true,ImageSource? Icon=null);
 
     internal HudWindow(AppPreferences preferences,bool preview=false)
     {
@@ -62,7 +63,7 @@ public partial class HudWindow : Window
         DragSurface.Cursor=_locked ? Cursors.Arrow : Cursors.SizeAll;
         KeepOnScreen();
     }
-    internal void Refresh(CollectionView view,AppPreferences preferences,IEnumerable<string>? categories=null)
+    internal void Refresh(CollectionView view,AppPreferences preferences,IEnumerable<string>? categories=null,SpawnDatabase? database=null,int? world=null)
     {
         var t=new UiText(_language);
         var regular=view.Pets.Where(x=>x.IsRegular).ToArray();
@@ -70,13 +71,13 @@ public partial class HudWindow : Window
         SyncState.Text=!view.HasSnapshot ? t.Choose("Ожидание","Waiting") : view.NeedsResync ? t.Choose("Нужен вход","Login required") :
             view.Source=="Живые данные игры" ? t.Choose("Онлайн","Live") : t.Choose("Запись","Recording");
         SyncState.Foreground=new SolidColorBrush(view.HasSnapshot && !view.NeedsResync ? Color.FromRgb(121,215,195) : Color.FromRgb(216,181,115));
-        var projected=preferences.FocusMode ? HudProjection.Focus(view,categories ?? new[]{"Cogni","Fera","Natura","Varian"}) : HudProjection.Select(view,preferences.HudTargets,preferences.HudRows);
+        var projected=preferences.FocusMode ? database?.Focus(view,categories ?? preferences.Categories,world) ?? new HudTargets([],0,0,0) : HudProjection.Select(view,preferences.HudTargets,preferences.HudRows);
         var sig=$"{view.LastTimeMs}:{view.HasSnapshot}:{view.NeedsResync}:{_language}:{string.Join(',',preferences.HudTargets)}:{preferences.HudRows}:{preferences.FocusMode}:{string.Join(',',projected.Visible.Select(x=>x.Id))}";
         if(_signature==sig) return;
         _signature=sig;
         Targets.ItemsSource=projected.Visible.Select(x=>new TargetRow(PetText.Name(x,_language),
             $"{PetText.Level(x,_language)}  ·  {x.Stage}",Math.Min(x.Souls,x.Target),Math.Max(1,x.Target),
-            PetText.Remaining(x,_language),t.Choose("до MAX","to MAX"))).ToArray();
+            PetText.Remaining(x,_language),t.Choose("до MAX","to MAX"),x.Id,database?.Territories(x.Id,_language) ?? "",!preferences.FocusMode,PetImages.Get(x.Id))).ToArray();
         EmptyPanel.Visibility=projected.Visible.Count==0 ? Visibility.Visible : Visibility.Collapsed;
         EmptyTitle.Text=!view.HasSnapshot ? t.Choose("Ожидаем коллекцию","Waiting for collection") : projected.CompletedCount>0 ?
             t.Choose("Все выбранные цели — MAX","All selected targets are MAX") : t.Choose("Выбери цели для фарма","Choose farming targets");
@@ -85,7 +86,7 @@ public partial class HudWindow : Window
         if(preferences.FocusMode && view.HasSnapshot)
         {
             EmptyTitle.Text=t.Choose("Нет целей для фокуса","No focus targets");
-            EmptyHint.Text=t.Choose("Проверь категории: все подходящие цели завершены или ожидают синхронизации.","Check categories: eligible targets are complete or waiting for synchronization.");
+            EmptyHint.Text=t.Choose("В текущей локации игрока нет подходящих целей. Проверь категории и определение локации.","No eligible targets in the player’s current location. Check categories and location detection.");
         }
         MoreTargets.Text=projected.ExtraCount>0 ? t.Choose($"Ещё целей: {projected.ExtraCount} · ближние к MAX показаны первыми",$"{projected.ExtraCount} more targets · closest to MAX shown first") : "";
         MoreTargets.Visibility=projected.ExtraCount>0 ? Visibility.Visible : Visibility.Collapsed;
@@ -114,6 +115,8 @@ public partial class HudWindow : Window
         GeometryChanged?.Invoke();
     }
     private void OpenCatalog(object sender,RoutedEventArgs e)=>CatalogRequested?.Invoke();
+    private void Untrack(object sender,RoutedEventArgs e)
+    {if(sender is System.Windows.Controls.Button {DataContext:TargetRow row} && row.CanRemove)UntrackRequested?.Invoke(row.Id);}
     private void HideHud(object sender,RoutedEventArgs e)=>HideRequested?.Invoke();
     private void ToggleLock(object sender,RoutedEventArgs e)=>LockRequested?.Invoke();
 }

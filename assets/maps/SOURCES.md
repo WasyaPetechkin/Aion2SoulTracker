@@ -1,5 +1,11 @@
 # Map data attribution
 
+Kibelisk coordinates: Questlog `map.getMarkers` public dataset, fetched 2026-10-19,
+category `location / teleport-artifact`. Included 162 points on the four supported
+Elyos/Asmodian maps (61 Verteron, 61 Altgard, 20 Eltnen, 20 Morheim); Abyss points
+are excluded. Coordinates use the same convention as the spawn dataset below.
+Location names are retained in the source language (English).
+
 The six map textures and `spawns.json` were imported from [xCROv/aion2-nyerk](https://github.com/xCROv/aion2-nyerk), commit `43935db7dc24c6b7a58a0fd9cabb003aa46ae50c` (GPL-3.0; accompanying license: `LICENSE-reference.txt`). Its map dataset records [Questlog's Aion 2 map](https://questlog.gg/aion-2/en/map) as the source and 2026-10-10 as the fetch date. The import converts bundled WebP textures to PNG without changing their pixels. The converted textures and dataset are supplied in the source archive.
 
 The dataset has 14,634 coordinate entries across six maps, with known locations for 160 of the 200 regular pets. Entries are possible spawn locations, not observations of currently living monsters. Some species have multiple NPC variants and locations on both factions' territories. No coordinates are invented for entries without known locations.

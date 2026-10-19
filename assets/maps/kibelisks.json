@@ -1,0 +1,1136 @@
+[
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Marsh Outpost",
+    "X": -22694.09375,
+    "Y": 69567.5
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Collapsed Verteron Barrier Tower",
+    "X": -4621.18115234375,
+    "Y": 106488.0703125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Hideout in Front of the Ruins",
+    "X": -41959.01953125,
+    "Y": 15774.5869140625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Hill of Purification",
+    "X": 162356.421875,
+    "Y": -42206.62890625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Illusion Cavaliers' Campsite",
+    "X": -18744.8359375,
+    "Y": 43626.6640625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Collapsed Pillar",
+    "X": -9166.17578125,
+    "Y": 672.127685546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Western Cantas Valley Camp",
+    "X": -110641.15625,
+    "Y": 50755.9375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Eastern Cantas Valley Campsite",
+    "X": -71372.3046875,
+    "Y": 71987.4453125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Spirit's Rest",
+    "X": 32450.755859375,
+    "Y": 104104.921875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Valley Outpost",
+    "X": -93145.6015625,
+    "Y": 75487.953125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Coastal Camp",
+    "X": -94646.9375,
+    "Y": 33156.703125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Dawn Legion Temporary Outpost",
+    "X": -24106.21484375,
+    "Y": -45001.2578125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Wind Breeze Merchants HQ",
+    "X": -85708.7265625,
+    "Y": -40779.92578125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Astin Mercenaries Base",
+    "X": -64489.1171875,
+    "Y": -86320.53125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Aullaeu Village Border",
+    "X": -23687.333984375,
+    "Y": -73650.6953125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Abandoned Wind Breeze Office",
+    "X": -42373.54296875,
+    "Y": -116860.9140625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Ruin Exploration Campsite",
+    "X": -65435.08203125,
+    "Y": 1934.3909912109375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Southern Shugo Station",
+    "X": -70520.0859375,
+    "Y": -58713.96484375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Eastern Shugo Station",
+    "X": -34703.28125,
+    "Y": -56996.4921875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Tolbas Forest Outskirts",
+    "X": -102319.2578125,
+    "Y": -64298.91015625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Dawn Legion Base",
+    "X": -110869.2578125,
+    "Y": 107123.84375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Zumion Village",
+    "X": 61551.73828125,
+    "Y": -17249.498046875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Rock Hill Outpost",
+    "X": 36133.98046875,
+    "Y": -59734.5078125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Alert Observation Post",
+    "X": 121807.46875,
+    "Y": -34524.76171875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Canyon Campsite",
+    "X": 78802.3046875,
+    "Y": -64403.13671875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Beast Hunter Campsite",
+    "X": 46963.87109375,
+    "Y": -117878.96875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Pilgrim's Rest",
+    "X": 79219.984375,
+    "Y": -147736.84375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Notos Legion Outpost",
+    "X": 113348.359375,
+    "Y": 45013.5078125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Laborer's Rest Stop",
+    "X": 84174.5234375,
+    "Y": 53966.50390625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Drana Transport Hub",
+    "X": 123452.484375,
+    "Y": 62386.546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Scarlet Forest Observation Site",
+    "X": 77480.3984375,
+    "Y": 106248.2578125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Crimson Isle Outpost",
+    "X": 91401.0625,
+    "Y": 189646.546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Kraka Footpath Wastewater Downstream",
+    "X": 18023.361328125,
+    "Y": 70679.078125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Pamos Farm",
+    "X": -65098.4140625,
+    "Y": 22722.578125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Cantas Valley Mushroom Tree Peak",
+    "X": -54958.99609375,
+    "Y": 93288.0234375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Illusion Oratory Entrance",
+    "X": -22942.537109375,
+    "Y": -9582.46484375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Ellun River Midstream Pond",
+    "X": -97492.5,
+    "Y": -8923.4609375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Forest of Exiles",
+    "X": -63096.484375,
+    "Y": -140693.34375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Aullaeu Funeral Island",
+    "X": -126985.3359375,
+    "Y": -67099.0546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Highland's End Campsite",
+    "X": 59940.4140625,
+    "Y": -162474.265625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Cantas Valley Sky Island",
+    "X": -155330.921875,
+    "Y": 57711.078125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Cantas Valley Mushroom Tree Peak",
+    "X": -49671.51953125,
+    "Y": 59696.6640625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Ellun River Marsh Cliff",
+    "X": -35567.5,
+    "Y": 92262.6484375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Ellun River Midstream Highland",
+    "X": -109174.296875,
+    "Y": -33045.69140625
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Verteron Fortress Valley",
+    "X": 14107.4287109375,
+    "Y": 7894.53125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Aullaeu Village Sky Island",
+    "X": -64997.19921875,
+    "Y": -159811.453125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Aullaeu Village Valley",
+    "X": -18907.072265625,
+    "Y": -144548.453125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Zumion Statue",
+    "X": 37565.93359375,
+    "Y": -19980.60546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Zumion Temple Pilgrimage Path",
+    "X": 2863.929931640625,
+    "Y": -88303.8828125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Altamia Highland Ruins",
+    "X": 141438.640625,
+    "Y": -20931.55078125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Ancient Zumion Temple Site",
+    "X": 108988.15625,
+    "Y": -63243.3203125
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Canyon Sky Island",
+    "X": 105099.75,
+    "Y": -102947.546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Scar of the Wind",
+    "X": 71790.578125,
+    "Y": -113956.046875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Southern Altamia Coastal Cliffs",
+    "X": 44157.4453125,
+    "Y": -172358.109375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Kraka Footpath Campsite",
+    "X": 99890,
+    "Y": 1760
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Kraka Uphill Path",
+    "X": 35148.49609375,
+    "Y": 34781.88671875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Nahid Brigade Fortress Hill",
+    "X": 178104.390625,
+    "Y": 32230.583984375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Red Maple Forest",
+    "X": 53406.48046875,
+    "Y": 76493.546875
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Garden of the Illusion God West Observatory",
+    "X": 92631,
+    "Y": -183848
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Garden of the Illusion God East Observatory",
+    "X": 126301.4140625,
+    "Y": -142938.609375
+  },
+  {
+    "World": 1010,
+    "Key": "World_L_A",
+    "Name": "Nahid Disposal Plant",
+    "X": 137580,
+    "Y": 132080
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Contaminated Spring",
+    "X": -101358.25,
+    "Y": 155777.828125
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Kuriullu Peak",
+    "X": 42565.11328125,
+    "Y": 8920.212890625
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Remote Cliff",
+    "X": -28751.1640625,
+    "Y": 133129.6875
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Skyroof",
+    "X": -99630.375,
+    "Y": 72382.0234375
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Western Ruins Rock",
+    "X": -26758.51171875,
+    "Y": 87920.9921875
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Eastern Ruins Rock",
+    "X": 26077.33984375,
+    "Y": 102311.578125
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Mystic Spring Canyon",
+    "X": -97655.390625,
+    "Y": 16223.8740234375
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Forked Cliff",
+    "X": 15645.1357421875,
+    "Y": 37392.984375
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Rocky Knoll",
+    "X": 26582.1171875,
+    "Y": 152479.1875
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Thorn Sky Island",
+    "X": 73295.640625,
+    "Y": 88636.5078125
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Tsenka Merchants Office",
+    "X": -113191.328125,
+    "Y": 125340.5
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Ruined Laboratory",
+    "X": 66797,
+    "Y": 53403.40234375
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Withered Trace Site",
+    "X": -117005.0703125,
+    "Y": 105907.0625
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Tsenka Merchants' Village",
+    "X": -72448.359375,
+    "Y": 107703.015625
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Eiron Refugee Camp",
+    "X": -68770.6796875,
+    "Y": 69433.875
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Silent Remnants",
+    "X": -92742.546875,
+    "Y": 50469.203125
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Lacephin Village",
+    "X": -40045.8046875,
+    "Y": 33871.7265625
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Ruins Survey Campsite",
+    "X": 4126.666015625,
+    "Y": 65606.8203125
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Mystic Spring Observatory",
+    "X": -71391.4140625,
+    "Y": 26435.921875
+  },
+  {
+    "World": 1011,
+    "Key": "World_L_B",
+    "Name": "Chloris's Secret Base",
+    "X": 50274.203125,
+    "Y": 52325.3828125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Abandoned Campsite",
+    "X": 105761.265625,
+    "Y": -76629.234375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Abandoned Site",
+    "X": -1062.258544921875,
+    "Y": 4888.35302734375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Silent Hill Mushroom Rock",
+    "X": -188741.515625,
+    "Y": 57563.703125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Moslan Forest Cliff",
+    "X": -92067.421875,
+    "Y": -10700.43359375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Purifying Forest Sunny Hill",
+    "X": 108433.234375,
+    "Y": 82420.171875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Gribade Highland Crossroad",
+    "X": 136255.109375,
+    "Y": -13712.189453125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Battlescar Mound Clifftop",
+    "X": 97459.7109375,
+    "Y": 149042.1875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Purifying Forest Coastal Cliff",
+    "X": 96153.4921875,
+    "Y": 59287.73046875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Dranactus Shore",
+    "X": 96793.9921875,
+    "Y": 182068.921875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Eastern Gribade Highland Cliff",
+    "X": 171523.71875,
+    "Y": -89545.421875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Beneath the Tranein Highland Bridge",
+    "X": -82672.1328125,
+    "Y": 34845.96484375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Eastern Gribade Highland Tail Island",
+    "X": 216685.234375,
+    "Y": -26300.81640625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Impetusium Lower Path",
+    "X": 109438.578125,
+    "Y": -191752.9375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Sanctum Outpost Sky Island",
+    "X": -138591.703125,
+    "Y": -34043.11328125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Uruthumheim Cliff",
+    "X": 48913.11328125,
+    "Y": 2637.764404296875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Silent Hill Coastal Cliff",
+    "X": -202878.03125,
+    "Y": 46903.0078125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Moslan Forest Dry Shade",
+    "X": -40944.82421875,
+    "Y": -28835.177734375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Safe Haven Cliff",
+    "X": -42283.21875,
+    "Y": 150654.421875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Remote Island",
+    "X": -211694.28125,
+    "Y": -77639.9140625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Wave-Swept Cliff",
+    "X": -119346.6015625,
+    "Y": -62509.61328125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Basfelt Waterfall Arch Zone",
+    "X": 163268.609375,
+    "Y": 157845.203125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Basfelt Ruins Cliff",
+    "X": 157687.28125,
+    "Y": 43706.765625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Amunta's Hideout",
+    "X": 173701.421875,
+    "Y": -62577.44140625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Basfelt Waterfall",
+    "X": 136770.328125,
+    "Y": 132425.5
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Shulak Street Stall",
+    "X": 130632.4609375,
+    "Y": 62682.78515625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Galorik's Inspection Area",
+    "X": -95886,
+    "Y": 100576
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Briskwind Shelter",
+    "X": 45697.20703125,
+    "Y": 117801.8203125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Collapsed Chasm",
+    "X": -55995,
+    "Y": -24270
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Collapsed Hall of Fame",
+    "X": 134793.796875,
+    "Y": -162296.84375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Creion Campsite",
+    "X": -97963.0234375,
+    "Y": 71538.4296875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Fissure Cave",
+    "X": 189738.671875,
+    "Y": 92128.96875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Temporary Retreat",
+    "X": -152064.359375,
+    "Y": 13202.4111328125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Elim's Rest",
+    "X": -44877.88671875,
+    "Y": -51452.94921875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Outskirts Stall",
+    "X": 125123.796875,
+    "Y": -176421.765625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Faded Stump",
+    "X": 61684.88671875,
+    "Y": 88863.140625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Fang Hideout",
+    "X": -140256.5625,
+    "Y": 52356.62109375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Forest Hideout",
+    "X": -11660,
+    "Y": -15210
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Neglected Crematorium",
+    "X": -170779,
+    "Y": 95756.6640625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Safe Haven",
+    "X": -89595.9296875,
+    "Y": 123913.0078125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Gravekeeper Camp",
+    "X": -151858.15625,
+    "Y": 77321.9296875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Zemurru's Tomb",
+    "X": 129428.2890625,
+    "Y": -119392.1875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Hidden Cave",
+    "X": 61407.49609375,
+    "Y": 198187.453125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Idun's Lake",
+    "X": 140353.859375,
+    "Y": -97696
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Guide's Dwelling",
+    "X": 232197.03125,
+    "Y": 215116.71875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Kumrica's Cellar",
+    "X": 82530.03125,
+    "Y": -152561.5
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Mahindel Cliff",
+    "X": 140040.96875,
+    "Y": 17100.96484375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Minushan Site",
+    "X": 28779.5234375,
+    "Y": 1694.2576904296875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Mire Campsite",
+    "X": -76891.1796875,
+    "Y": 41361.07421875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Nornir Assembly",
+    "X": 75467.15625,
+    "Y": 24628.92578125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Quai Campsite",
+    "X": -111334.4921875,
+    "Y": 66011.8828125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Healing Spring",
+    "X": 18270.576171875,
+    "Y": 57877.7578125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Secret Rendezvous Point",
+    "X": 87560.03125,
+    "Y": -145661.5
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Odar's Shade",
+    "X": -49641.22265625,
+    "Y": -621.9222412109375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Steel Hammer Temporary Trading Post",
+    "X": 161895.078125,
+    "Y": -110460.3828125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Guide Rest Stop",
+    "X": 67659.4453125,
+    "Y": 64238.85546875
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Graverobber Campsite",
+    "X": 140765.9375,
+    "Y": 94613.9609375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Steel Hammer Workcamp",
+    "X": 124591.796875,
+    "Y": -47766.5234375
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Steel Hammer Merchants HQ",
+    "X": 164976.71875,
+    "Y": -5718.56640625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Temporary Investigation Base",
+    "X": -60968.703125,
+    "Y": 82396.40625
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Victorious Daeva's Statue",
+    "X": 11881.794921875,
+    "Y": 44465.453125
+  },
+  {
+    "World": 1110,
+    "Key": "World_D_A",
+    "Name": "Watcher's Tent",
+    "X": -104602.6171875,
+    "Y": 36713.44140625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Iralcig Outpost",
+    "X": -19630.0625,
+    "Y": 76772.6875
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Ashen Outpost",
+    "X": -45030.0390625,
+    "Y": 30421.224609375
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Destroyed Fafnium Site",
+    "X": -156982.015625,
+    "Y": 80725.1484375
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Hunter's Hideout",
+    "X": -92523.9921875,
+    "Y": 182033.765625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Kromede's Island",
+    "X": -88043.3671875,
+    "Y": 107997.0625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Snowfield Outpost",
+    "X": -113955.9921875,
+    "Y": 109618.6796875
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Patamor Plains Outpost",
+    "X": -73736.5390625,
+    "Y": 171107.15625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Patamor Village",
+    "X": -67064.9296875,
+    "Y": 163600.265625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Sleet Outpost",
+    "X": -66427.1875,
+    "Y": 201586.40625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Frostwind Forward Base",
+    "X": -135890.015625,
+    "Y": 121356.8125
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Floating Temple Entrance",
+    "X": 71431.65625,
+    "Y": 157863.078125
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Blizzard Valley",
+    "X": -124460.1015625,
+    "Y": 178580.765625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Frozen Valley",
+    "X": -172050.1875,
+    "Y": 46657.4140625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Snowfield Cliff",
+    "X": -209238.171875,
+    "Y": 16833.814453125
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Eye of Muspel",
+    "X": -43026.91015625,
+    "Y": 104988.5625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Volcanic Foothill",
+    "X": -95292.9140625,
+    "Y": 51732.54296875
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Heat's Edge",
+    "X": -60942.48828125,
+    "Y": -21114.63671875
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Lava Stream Cliff",
+    "X": 29067.056640625,
+    "Y": 19305.818359375
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Chilly Hill",
+    "X": -88124.34375,
+    "Y": 153787.625
+  },
+  {
+    "World": 1111,
+    "Key": "World_D_B",
+    "Name": "Searcher Campsite",
+    "X": 40248.80859375,
+    "Y": 99573.5078125
+  }
+]

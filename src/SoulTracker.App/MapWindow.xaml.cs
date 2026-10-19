@@ -54,11 +54,11 @@ public partial class MapWindow : Window
         MapTitle.Text=t.Choose("МЕСТА СПАВНА","SPAWN LOCATIONS");
         SettingsButton.ToolTip=t.Choose("Настройки карты: территория и цели","Map settings: territory and targets");
         ApplySettingsVisibility();
-        AllIncomplete.Content=t.Choose("Все незавершённые вместо выбранных","All incomplete instead of selected");
+        AllIncomplete.Content=t.Choose("Все незавершённые · автоматически","All incomplete · automatic");
         AllIncomplete.ToolTip=t.Choose("Показывать все незавершённые цели отмеченных категорий, даже если выбраны отдельные мобы. Без выбранных мобов это происходит автоматически.",
             "Show all incomplete targets in enabled categories even when individual targets are pinned. With no pinned targets this happens automatically.");
         AllIncomplete.IsChecked=_preferences.MapAllIncomplete;
-        AllIncomplete.IsEnabled=!_preferences.FocusMode;
+        AllIncomplete.IsEnabled=false;
         LockButton.Content=_preferences.HudLocked ? "◆" : "◇";
         LockButton.ToolTip=t.Choose("Клики в игру · ","Click through · ")+_preferences.LockHotkey;
         HideButton.ToolTip=t.Choose("Скрыть карту · ","Hide map · ")+_preferences.MapHotkey;
@@ -75,9 +75,9 @@ public partial class MapWindow : Window
         _changing=false;HelpBadge.TranslateTree(this,_language);UpdateFollowButton();KeepOnScreen();RenderData();
     }
     private IEnumerable<int> ChosenTargets()=>_preferences.FocusMode ?
-        (_collection is null ? [] : HudProjection.Focus(_collection,_categories).Visible.Select(x=>x.Id)) :
+        (_collection is null ? [] : _database.Focus(_collection,_categories,_navigation.WorldId).Visible.Select(x=>x.Id)) :
         _preferences.MapPetId>0 ? new[]{_preferences.MapPetId} : _preferences.HudTargets;
-    private bool ShowAll=>!_preferences.FocusMode && _preferences.MapAllIncomplete;
+    private bool ShowAll=>!_preferences.FocusMode && (_collection is null || !_collection.Pets.Any(p=>p.IsRegular && !p.Completed && _preferences.HudTargets.Contains(p.Id)));
     private void ToggleSettings(object sender,RoutedEventArgs e)
     {
         _preferences.MapSettingsExpanded=!_preferences.MapSettingsExpanded;
@@ -98,17 +98,18 @@ public partial class MapWindow : Window
     }
     private void UpdateOptions()
     {
-        var signature=$"{_collection!.LastTimeMs}:{_collection.HasSnapshot}:{_language}:{_preferences.FocusMode}:{_preferences.MapAllIncomplete}:{_preferences.MapPetId}:{string.Join(',',_preferences.HudTargets)}:{string.Join(',',_categories)}";
+        var signature=$"{_navigation.WorldId}:{_collection!.LastTimeMs}:{_collection.HasSnapshot}:{_language}:{_preferences.FocusMode}:{_preferences.MapAllIncomplete}:{_preferences.MapPetId}:{string.Join(',',_preferences.HudTargets)}:{string.Join(',',_categories)}";
         if(signature==_optionsSignature)return;
         _changing=true;
         var eligible=_collection.Pets.Where(x=>x.IsRegular && !x.Completed && _preferences.HudTargets.Contains(x.Id)).ToArray();
         if(!_preferences.FocusMode && !eligible.Any(x=>x.Id==_preferences.MapPetId))_preferences.MapPetId=0;
+        AllIncomplete.IsChecked=ShowAll;
         var t=new UiText(_language);
         TargetPicker.ItemsSource=new[]{new WorldOption(0,_preferences.FocusMode ? t.Choose("Фокус: ближайшие к MAX","Focus: closest to MAX") : _preferences.HudTargets.Length==0 ?
             t.Choose("Все незавершённые по категориям","All incomplete by category") : t.Choose("Отмеченные цели HUD","Pinned HUD targets"))}
             .Concat(eligible.OrderBy(x=>PetText.Name(x,_language)).Select(x=>new WorldOption(x.Id,PetText.Name(x,_language)))).ToArray();
         TargetPicker.SelectedValue=_preferences.FocusMode ? 0 : _preferences.MapPetId;
-        TargetPicker.IsEnabled=!_preferences.FocusMode && !_preferences.MapAllIncomplete && eligible.Length>0;
+        TargetPicker.IsEnabled=!_preferences.FocusMode && !ShowAll && eligible.Length>0;
         WorldPicker.ItemsSource=WorldOptions();WorldPicker.SelectedValue=_preferences.MapWorld;
         Legend.Children.Clear();
         foreach(var category in _categories)
@@ -124,8 +125,8 @@ public partial class MapWindow : Window
     internal void RefreshNavigation(NavigationView navigation)
     {
         if(_navigation==navigation)return;
-        _navigation=navigation;
-        if(FollowWorld())RenderData();else RenderPosition();
+        var worldChanged=_navigation.WorldId!=navigation.WorldId;_navigation=navigation;
+        if(FollowWorld() || (_preferences.FocusMode && worldChanged))RenderData();else RenderPosition();
     }
     private bool FollowWorld()
     {
@@ -161,7 +162,7 @@ public partial class MapWindow : Window
         EmptyPanel.Visibility=points.Count==0 ? Visibility.Visible : Visibility.Collapsed;
         EmptyText.Text=!_collection.HasSnapshot ? t.Choose("Войди в персонажа, чтобы загрузить коллекцию.","Log in to load the collection.") : _categories.Length==0 ?
             t.Choose("Выбери категории в каталоге.","Enable categories in the collection.") : eligible.Count==0 ?
-            _preferences.FocusMode ? t.Choose("Нет незавершённых целей с известным прогрессом в выбранных категориях.","No incomplete targets with known progress in enabled categories.") : byCategory ? t.Choose("В этих категориях все цели уже MAX.","All targets in these categories are already MAX.") :
+            _preferences.FocusMode ? t.Choose("В текущей локации игрока нет подходящих целей. Проверь категории и определение локации.","No eligible targets in the player’s current location. Check categories and location detection.") : byCategory ? t.Choose("В этих категориях все цели уже MAX.","All targets in these categories are already MAX.") :
                 t.Choose("Среди выбранных целей нет незавершённых в этих категориях.","No selected targets are incomplete in these categories.") :
             t.Choose("Здесь нет известных точек этих целей. Проверь другие территории в списке.","No known locations for these targets here. Check other territories above.");
         RenderPosition();UpdateFollowButton();
@@ -195,11 +196,6 @@ public partial class MapWindow : Window
         if(_changing || WorldPicker.SelectedValue is not int id)return;
         _preferences.MapWorld=id;_preferences.MapFollowPlayer=false;
         Map.SetWorld(_database.Worlds[id]);RenderData();PreferencesChanged?.Invoke();
-    }
-    private void ModeChanged(object sender,RoutedEventArgs e)
-    {
-        if(_changing)return;
-        _preferences.MapAllIncomplete=AllIncomplete.IsChecked==true;RenderData();PreferencesChanged?.Invoke();
     }
     private void TargetChanged(object sender,SelectionChangedEventArgs e)
     {

@@ -1,13 +1,24 @@
 <p align="center"><img src="assets/app.png" width="96" alt="Aion 2 Soul Tracker"></p>
 <h1 align="center">Aion 2 Soul Tracker</h1>
 <p align="center">Коллекция душ · Компактный HUD · Интерактивная карта</p>
-<p align="center"><strong>Windows 10/11 x64 · Русский / English · 0.2.0 — тестовая версия</strong></p>
+<p align="center"><strong>Windows 10/11 x64 · Русский / English · 0.3.0 — тестовая версия</strong></p>
 
 Отслеживайте прогресс питомцев и выбирайте следующую цель для фарма.
 Счётчик показывает оставшиеся души до MAX, а карта помогает найти места появления.
 
 ![Каталог коллекции](docs/images/collection.png)
 *Скриншоты используют демонстрационные данные.*
+
+## Новое в 0.3.0
+
+- Исправлено ложное требование входа при временном затишье сети; увеличено окно ожидания повторных TCP-пакетов.
+- Выбор карты автоматический: без ручных целей и фокуса — все незавершённые по категориям.
+- Крестик в строке HUD снимает цель; отмеченные цели всегда наверху каталога, даже вне фильтров.
+- Числовая сортировка душ и остатка, сохраняющая направление при обновлении.
+- Фокус учитывает текущую локацию. Неизвестная локация не подменяется выбранной вручную картой.
+- Портреты и территории в HUD, имена и портреты в подсказках точек карты.
+- 162 кибелиска: Альтгард, Морхейм, Вертерон, Элтнен; без Бездны.
+- Опция автодобавления в HUD при новом получении души в известной открытой локации. Вход, сохранения и данжи цели не добавляют.
 
 ## Что умеет
 
@@ -26,10 +37,8 @@
 
 ## Установка и первый запуск
 
-**[Скачать установщик 0.2.0](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.2.0/Aion2SoulTracker-Setup-v0.2.0.exe)**
-
-[Все файлы тестового релиза](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.2.0):
-установщик, portable-архив, исходники и SHA256. Для обычной установки выбирайте файл **Setup.exe**, а не Source code.
+Эта ветка содержит исходный код версии 0.3.0. Установщик для тестирования
+`Aion2SoulTracker-Setup-v0.3.0.exe` передаёт владелец проекта; публичный релиз ещё не объявлен.
 
 1. Запустите установщик и затем приложение с ярлыка.
 2. Если появится просьба установить **Npcap**, откройте [официальный сайт](https://npcap.com/#download),
@@ -63,7 +72,7 @@ Npcap устанавливается отдельно по условиям ег
 ## Как работает фокус
 
 Фокус сравнивает **оставшиеся души до MAX** у незавершённых обычных питомцев
-в отмеченных категориях. Например, если двоим осталось по 5 душ, видны оба.
+в отмеченных категориях **и в текущей локации игрока**. Например, если двоим осталось по 5 душ, видны оба.
 Когда одному останется 4 — только он. После достижения MAX появится следующий.
 Ручные отметки сохраняются и снова действуют после отключения фокуса.
 Поиск, «Скрыть MAX» и «Только полученные» меняют каталог, не выбор фокуса.
@@ -115,6 +124,18 @@ dotnet build src/SoulTracker.App -c Release
 `--offline --data-dir <папка>` запускает приложение без захвата с отдельными сохранениями.
 
 ## English
+
+### New in 0.3.0
+
+- Quiet connections no longer falsely require another login; delayed TCP retransmissions have more time to recover.
+- The map automatically shows all incomplete targets by category when neither manual pins nor focus are active.
+- Remove a target with its HUD row’s cross. Pinned targets remain at the top of the catalogue, even outside filters.
+- Soul counts and remaining souls sort numerically and retain the direction on refresh.
+- Focus uses the player’s current location. Unknown locations are not replaced with the manually selected map.
+- HUD portraits and territory labels; spawn tooltips with names and portraits.
+- 162 kibelisks across Altgard, Morheim, Verteron and Eltnen, excluding the Abyss.
+- Optional auto-pinning on new soul gains in known open-world locations. Login snapshots, saved progress and dungeons do not add targets.
+
 
 A Windows soul collection tracker with a compact progress HUD and an interactive spawn map.
 Install the supplied test setup, install Npcap if prompted, and log in to your character after starting the tracker.

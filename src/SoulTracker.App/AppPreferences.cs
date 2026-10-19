@@ -15,6 +15,7 @@ internal sealed class AppPreferences
     public int HudRows {get;set;}=6;
     public double HudRowScale {get;set;}=1;
     public bool FocusMode {get;set;}
+    public bool AutoTrackSouls {get;set;}
     public string[] Categories {get;set;}=["Cogni","Fera","Natura","Varian"];
     public string HudHotkey {get;set;}="Ctrl+Alt+H";
     public string MapHotkey {get;set;}="Ctrl+Alt+M";

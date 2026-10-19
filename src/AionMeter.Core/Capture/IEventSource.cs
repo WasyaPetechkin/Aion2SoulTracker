@@ -8,6 +8,7 @@ public enum CaptureState
     Starting,
     WaitingForGame,
     Capturing,
+    Idle,
     Error,
 }
 

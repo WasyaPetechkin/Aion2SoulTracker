@@ -2,7 +2,7 @@
  <PropertyGroup>
   <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms>
   <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>Aion2SoulTracker</AssemblyName>
-  <Product>Aion 2 Soul Tracker</Product><Description>Aion 2 Soul Tracker</Description><Version>0.2.0</Version>
+  <Product>Aion 2 Soul Tracker</Product><Description>Aion 2 Soul Tracker</Description><Version>0.3.0</Version>
   <ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>../../assets/app.ico</ApplicationIcon>
   <DebugType>none</DebugType><DebugSymbols>false</DebugSymbols>
   <!-- WPF owns DPI through the manifest; WinForms is used only for the tray icon. -->
@@ -14,6 +14,7 @@
   <Resource Include="../../assets/app.ico" Link="app.ico"/>
   <Content Include="../../assets/pet-catalog.json" Link="pet-catalog.json" CopyToOutputDirectory="PreserveNewest"/>
   <Content Include="../../assets/maps/**" Link="maps/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
+  <Content Include="../../assets/pets/**" Link="pets/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
   <Content Include="../../assets/data/**" Link="data/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
   <Content Include="../../licenses/**" Link="licenses/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
   <Content Include="../../LICENSE" Link="LICENSE.txt" CopyToOutputDirectory="PreserveNewest"/>

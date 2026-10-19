@@ -3,10 +3,28 @@ using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
 using SoulTracker.Core;
 namespace SoulTracker.App;
 public partial class MainWindow
 {
+    private void AutoTrackChanged(object sender,RoutedEventArgs e)
+    {
+        if(_session is null)return;
+        _session.DrainReceivedSouls();_preferences.AutoTrackSouls=AutoTrackSouls.IsChecked==true;QueueSettingsSave();
+    }
+    private string _catalogSort="RemainingSort";
+    private ListSortDirection _catalogDirection=ListSortDirection.Ascending;
+    private void SortCatalog(object sender,DataGridSortingEventArgs e)
+    {
+        e.Handled=true;
+        _catalogDirection=_catalogSort==e.Column.SortMemberPath && _catalogDirection==ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+        _catalogSort=e.Column.SortMemberPath;
+        foreach(var column in Pets.Columns)column.SortDirection=null;
+        e.Column.SortDirection=_catalogDirection;Refresh(true);
+    }
+    private object SortValue(PetRow row)=>_catalogSort switch
+    {"Name"=>row.Name,"Genus"=>row.Genus,"Id"=>row.Id,"LevelSort"=>row.LevelSort,"SoulsSort"=>row.SoulsSort,_=>row.RemainingSort};
     private void FilterChanged(object sender, RoutedEventArgs e)
     {
         if(_session is null)return;
@@ -40,6 +58,7 @@ public partial class MainWindow
         HideCompleted.Content=t.Choose("Скрыть MAX","Hide MAX");
         OwnedOnly.Content=t.Choose("Только полученные","Owned only");
         HudVisible.Content=t.Choose("Прогресс целей","Target progress");
+        AutoTrackSouls.Content=t.Choose("Добавлять в HUD при получении души","Add to HUD when a soul is received");
         MapVisible.Content=t.Choose("Отдельная карта спавнов","Separate spawn map");
         MapVisible.ToolTip=t.Choose("Компактная карта. Территория и фильтры — под кнопкой ⋯ в её заголовке.","Compact map. Territory and filters are under ⋯ in its header.");
         HudLocked.Content=t.Choose("Клики в игру","Click through");
@@ -65,7 +84,15 @@ public partial class MainWindow
     {
         if (_session is null) return;
         var v = _session.State.View();
-        _hud.Refresh(v,_preferences,EnabledCategories());
+        var gains=_session.DrainReceivedSouls();
+        if(_preferences.AutoTrackSouls && gains.Count>0)
+        {
+            var pins=_preferences.HudTargets.ToHashSet();
+            foreach(var gain in gains)
+                if(gain.WorldId is int world && _spawns.Worlds.ContainsKey(world) && v.Pets.Any(p=>p.Id==gain.PetId && p.IsRegular && !p.Completed))pins.Add(gain.PetId);
+            if(pins.Count!=_preferences.HudTargets.Length){_preferences.HudTargets=pins.Order().ToArray();QueueSettingsSave();force=true;}
+        }
+        _hud.Refresh(v,_preferences,EnabledCategories(),_spawns,_session.Navigation.View().WorldId);
         _map.Refresh(v,_session.Navigation.View(),EnabledCategories());
         var t=Text;
         Summary.Text = t.Summary(v);
@@ -83,14 +110,14 @@ public partial class MainWindow
             if (Special.IsChecked==true) { enabled.Add("Special"); enabled.Add("Unknown"); }
             var text = Search.Text.Trim();
             var selectedId=(Pets.SelectedItem as PetRow)?.Id;
-            var rows = v.HasSnapshot ? v.Pets.Where(x => enabled.Contains(x.Genus))
-                .Where(x => HideCompleted.IsChecked!=true || !x.Completed)
-                .Where(x => OwnedOnly.IsChecked!=true || x.Level>0)
-                .Where(x => PetText.Matches(x,text))
-                .OrderBy(x => x.Remaining ?? int.MaxValue).ThenBy(x=>PetText.Name(x,_language))
+            var rows = v.HasSnapshot ? v.Pets.Where(x => _preferences.HudTargets.Contains(x.Id) ||
+                    (enabled.Contains(x.Genus) && (HideCompleted.IsChecked!=true || !x.Completed) &&
+                    (OwnedOnly.IsChecked!=true || x.Level>0) && PetText.Matches(x,text)))
                 .Select(x=>new PetRow(x.Id,PetText.Name(x,_language),PetText.Category(x.Genus,_language),
-                    PetText.Level(x,_language),x.Stage,PetText.Remaining(x,_language),_preferences.HudTargets.Contains(x.Id),x.IsRegular)).ToArray() : Array.Empty<PetRow>();
-            Pets.ItemsSource=rows;
+                    PetText.Level(x,_language),x.Stage,PetText.Remaining(x,_language),_preferences.HudTargets.Contains(x.Id),x.IsRegular,x.Level,x.Souls,x.Remaining ?? int.MaxValue)).ToArray() : Array.Empty<PetRow>();
+            var pinnedFirst=rows.OrderByDescending(x=>x.IsTracked);
+            Pets.ItemsSource=(_catalogDirection==ListSortDirection.Ascending ? pinnedFirst.ThenBy(SortValue) : pinnedFirst.ThenByDescending(SortValue)).ThenBy(x=>x.Name).ToArray();
+            foreach(var column in Pets.Columns)column.SortDirection=column.SortMemberPath==_catalogSort ? _catalogDirection : null;
             if(selectedId.HasValue) Pets.SelectedItem=rows.FirstOrDefault(x=>x.Id==selectedId);
         }
         if (++_ticks % 5 == 0)

@@ -75,8 +75,9 @@ public partial class MainWindow
         _map.AllIncomplete.IsChecked=false;var pins=_map.SpawnCount;
         _map.TargetPicker.SelectedValue=1120;
         Check("single_target_filter",_map.SpawnCount>0 && _map.SpawnCount<pins);
-        _map.AllIncomplete.IsChecked=true;
-        Check("all_incomplete_filter",_map.SpawnCount>pins);
+        _preferences.MapAllIncomplete=true;Refresh(true);
+        Check("legacy_all_setting_does_not_override_pins",_map.SpawnCount<pins && !_map.AllIncomplete.IsEnabled);
+        _map.TargetPicker.SelectedValue=0;
         _map.WorldPicker.SelectedValue=1010;
         Check("territory_switch",_preferences.MapWorld==1010 && _map.SpawnCount>0 && !_preferences.MapFollowPlayer);
         var nav=new NavigationView(1010,42,-90000,40000,stamp,"attack",false);
@@ -90,6 +91,7 @@ public partial class MainWindow
         Render(_hud,Path.Combine(directory,"hud-ru.png"));
         Render(_map,Path.Combine(directory,"map-ru.png"));
         VerifyDesktopControls(directory,checks,sample);
+        VerifyFarmingControls(directory,checks,sample);
         LanguagePicker.SelectedIndex=1;
         Check("language_preserves_targets",_preferences.HudTargets.SequenceEqual(new[]{1120,1106,1066,1126}));
         Render(this,Path.Combine(directory,"collection-en.png"));

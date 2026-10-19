@@ -40,6 +40,17 @@ public sealed class SpawnDatabase
             (byCategory || pins.Contains(x.Id))).ToArray();
     }
     public int PetCoverage=>Pets.Count(x=>x.Value.Any(d=>d.Worlds.Any(w=>w.Points.Length>0)));
+    public HudTargets Focus(CollectionView collection,IEnumerable<string> categories,int? world)
+    {
+        var ids=world.HasValue && _byWorld.TryGetValue(world.Value,out var points) ? points.Select(x=>x.PetId).ToHashSet() : [];
+        return HudProjection.Focus(collection with {Pets=collection.Pets.Where(x=>ids.Contains(x.Id)).ToArray()},categories);
+    }
+    public string Territories(int petId,string language)
+    {
+        if(!Pets.TryGetValue(petId,out var drops))return language=="ru" ? "Территория неизвестна" : "Territory unknown";
+        var groups=drops.SelectMany(x=>x.Worlds).Where(x=>x.Points.Length>0 && Worlds.ContainsKey(x.World)).Select(x=>Worlds[x.World].Group).Distinct();
+        return string.Join(" · ",groups.Select(x=>x switch {"asmodians"=>language=="ru" ? "◆ Асмо" : "◆ Asmo","elyos"=>language=="ru" ? "◇ Элийцы" : "◇ Elyos",_=>language=="ru" ? "◈ Бездна" : "◈ Abyss"}));
+    }
     public int PointCount=>_byWorld.Values.Sum(x=>x.Length);
     public static (double X,double Y) Project(MapWorld world,double x,double y)
     {

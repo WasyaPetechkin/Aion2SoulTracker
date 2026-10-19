@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Collections.Concurrent;
 using AionMeter.Core.Capture;
 using AionMeter.Core.Events;
 using AionMeter.Core.Game;
@@ -7,6 +8,10 @@ namespace SoulTracker.Core;
 
 public sealed class TrackerSession : IDisposable
 {
+    public sealed record ReceivedSoul(int PetId,int? WorldId);
+    private readonly ConcurrentQueue<ReceivedSoul> _receivedSouls=new();
+    public IReadOnlyList<ReceivedSoul> DrainReceivedSouls()
+    {var result=new List<ReceivedSoul>();while(_receivedSouls.TryDequeue(out var gain))result.Add(gain);return result;}
     public CollectionState State { get; }
     public NavigationState Navigation {get;}=new();
     public string Status { get; private set; } = "Capture stopped";
@@ -73,7 +78,7 @@ public sealed class TrackerSession : IDisposable
             }
             Navigation.Process(time,op,body);
             if (op is not (PetProtocol.SnapshotOpcode or PetProtocol.GainOpcode)) return;
-            if (!State.Process(time,op,body)) { RejectedPetMessages++; return; }
+            if (!ProcessLivePetMessage(time,op,body)) { RejectedPetMessages++; return; }
             if (op == PetProtocol.SnapshotOpcode)
             {
                 LiveSnapshotReceived = true;
@@ -81,18 +86,7 @@ public sealed class TrackerSession : IDisposable
             }
         };
         _live.EventDecoded += HandleEvent;
-        _live.StatusChanged += s =>
-        {
-            Status = s.Message;
-            if (s.State == CaptureState.Capturing) _hasConnected = true;
-            if (_hasConnected && s.State is CaptureState.Error or CaptureState.WaitingForGame)
-            {
-                Navigation.Reset();
-                State.MarkUncertain("Соединение прервано; после входа ожидается новая коллекция");
-                LiveSnapshotReceived = false;
-                _hasConnected = false;
-            }
-        };
+        _live.StatusChanged += ObserveCaptureStatus;
         _live.Start();
     }
     public void Save(string path)
@@ -102,6 +96,28 @@ public sealed class TrackerSession : IDisposable
         var temp = path + ".tmp";
         File.WriteAllText(temp, JsonSerializer.Serialize(view, new JsonSerializerOptions { WriteIndented = true }));
         File.Move(temp, path, true);
+    }
+    public void ObserveCaptureStatus(CaptureStatus status)
+    {
+        Status=status.Message;
+        if(status.State==CaptureState.Capturing)_hasConnected=true;
+        // A quiet connection or a temporary absence from the TCP table is not lost data.
+        if(_hasConnected && status.State is CaptureState.Error or CaptureState.WaitingForGame)
+        {
+            Navigation.Reset();
+            State.MarkUncertain("Соединение прервано; после входа ожидается новая коллекция");
+            LiveSnapshotReceived=false;_hasConnected=false;
+        }
+    }
+    public bool ProcessLivePetMessage(long time,ushort op,ReadOnlySpan<byte> body)
+    {
+        if(!State.Process(time,op,body))return false;
+        if(op==PetProtocol.GainOpcode && PetProtocol.TryGains(body,out var gains))
+        {
+            foreach(var gain in gains)_receivedSouls.Enqueue(new(gain.PetId,Navigation.View().WorldId));
+            while(_receivedSouls.Count>4096)_receivedSouls.TryDequeue(out _);
+        }
+        return true;
     }
     private void HandleEvent(GameEvent ev)
     {

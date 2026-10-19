@@ -37,8 +37,9 @@ public partial class MainWindow
         // Known mapped pets; all others complete so leadership and map counts are deterministic.
         var tied=sample with {LastTimeMs=sample.LastTimeMs+10, Pets=sample.Pets.Select(p=>p with {Level=3, Souls=0})
             .Select(p=>p.Id is 1120 or 1106 ? p with {Level=2, Souls=70} : p).ToArray()};
+        SetVerificationWorld(1110);
         _session!.State.Restore(tied);FocusMode.IsChecked=true;Refresh(true);
-        int Expected(CollectionView v)=>_spawns.Select(_preferences.MapWorld,v,HudProjection.Focus(v,EnabledCategories()).Visible.Select(p=>p.Id),false,EnabledCategories(),false).Count;
+        int Expected(CollectionView v)=>_spawns.Select(_preferences.MapWorld,v,_spawns.Focus(v,EnabledCategories(),1110).Visible.Select(p=>p.Id),false,EnabledCategories(),false).Count;
         Check("focus_ties_in_counter_and_map",_hud.Targets.Items.Count==2 && _map.SpawnCount==Expected(_session.State.View()) && _map.SpawnCount>0 && !_map.AllIncomplete.IsEnabled && !_map.TargetPicker.IsEnabled);
         Render(_hud,Path.Combine(directory,"focus-tie.png"));
         var leader=tied with {LastTimeMs=tied.LastTimeMs+1,Pets=tied.Pets.Select(p=>p.Id==1120 ? p with {Souls=71} : p).ToArray()};

@@ -9,7 +9,7 @@ using SoulTracker.Core;
 namespace SoulTracker.App;
 
 /// <summary>Static spawn locations and the last confirmed player position, in one coordinate system.</summary>
-public sealed class MapCanvas : FrameworkElement
+public sealed partial class MapCanvas : FrameworkElement
 {
     private readonly Dictionary<string,BitmapImage> _images=[];
     private readonly List<(Point Screen,SpawnPoint[] Spawns)> _hits=[];
@@ -21,7 +21,8 @@ public sealed class MapCanvas : FrameworkElement
     private double _centerX=.5,_centerY=.5;
     private Point? _drag;
     private bool _fresh;
-    internal bool Locked {get;set;}
+    private bool _locked;
+    internal bool Locked {get=>_locked;set {_locked=value;if(value)CloseTip();}}
     internal double Zoom {get;private set;}=2;
     internal event Action? ViewChanged;
     internal event Action? Panned;
@@ -39,7 +40,8 @@ public sealed class MapCanvas : FrameworkElement
         MouseLeftButtonUp+=(_,e)=>{_drag=null;ReleaseMouseCapture();Cursor=Cursors.Arrow;};
         LostMouseCapture+=(_,_)=>_drag=null;
         MouseMove+=Move;
-        MouseLeave+=(_,_)=>ToolTip=null;
+        MouseLeave+=(_,_)=>CloseTip();
+        IsVisibleChanged+=(_,_)=>{if(!IsVisible)CloseTip();};
     }
     internal void SetWorld(MapWorld world)
     {
@@ -81,18 +83,9 @@ public sealed class MapCanvas : FrameworkElement
         {
             _centerX=Math.Clamp(_centerX-(p.X-previous.X)/Scale,-.3,1.3);
             _centerY=Math.Clamp(_centerY-(p.Y-previous.Y)/Scale,-.3,1.3);
-            _drag=p;ToolTip=null;InvalidateVisual();Panned?.Invoke();return;
+            _drag=p;CloseTip();InvalidateVisual();Panned?.Invoke();return;
         }
-        var hit=_hits.Where(h=>(h.Screen-p).Length<13).OrderBy(h=>(h.Screen-p).Length).FirstOrDefault();
-        if(hit.Spawns is null) {ToolTip=null;return;}
-        var lines=hit.Spawns.DistinctBy(s=>(s.PetId,s.NpcId)).Take(6).Select(s=>
-        {
-            var pet=_pets[s.PetId];
-            return $"{PetText.Name(pet,_language)} · {PetText.Remaining(pet,_language)} "+(_language=="ru" ? "до MAX" : "to MAX")+
-                $"\n{s.NpcName} · Lv. {s.Level}"+(s.Area is null ? "" : $"\n{s.Area}");
-        });
-        var tip=string.Join("\n\n",lines);
-        if(!Equals(ToolTip,tip)) ToolTip=tip;
+        HoverAt(p);
     }
     protected override void OnRender(DrawingContext dc)
     {
@@ -133,6 +126,7 @@ public sealed class MapCanvas : FrameworkElement
             if(entries.Length>1) DrawText(dc,entries.Length>99 ? "+" : entries.Length.ToString(),center,9,Brush("#0B1622"),true);
             _hits.Add((center,spawns));
         }
+        RenderKibelisks(dc);
         if(_position.HasPosition)
         {
             var (u,v)=SpawnDatabase.Project(_world,_position.X!.Value,_position.Y!.Value);
