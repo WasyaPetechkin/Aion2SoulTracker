@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+dist/
+.vs/
+.idea/
+*.user
+*.suo
+*.pfx
+*.p12
+*.key
+.env*
+state/
+qa-output/
+*.pcap
+*.pcapng
+*.log

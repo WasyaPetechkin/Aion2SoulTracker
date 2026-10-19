@@ -1,0 +1,62 @@
+Aion 2 Soul Tracker · 0.2.0
+Windows 10 / 11, 64-bit
+
+БЫСТРЫЙ СТАРТ
+1. Установите программу и запустите её с ярлыка Aion 2 Soul Tracker.
+2. Если программа просит Npcap, откройте https://npcap.com/#download,
+   скачайте и установите Npcap с настройками по умолчанию.
+   Установщик драйвера может запросить права администратора.
+   Если DPS-метр уже работает на этом компьютере, Npcap обычно уже есть.
+3. После запуска трекера войдите в персонажа Aion 2.
+   Если уже в игре, вернитесь к выбору персонажа и войдите снова.
+4. Отметьте нужных питомцев в колонке HUD. Счётчик покажет прогресс до MAX.
+   Если цели HUD не выбраны, карта автоматически показывает всех незавершённых
+   из отмеченных категорий: разумные, дикие, природные, мутанты.
+   При выборе целей карта сужается до них. Категории продолжают действовать.
+5. На интерактивной карте кнопка «⋯» открывает выбор территории и целей.
+   Колесо мыши — масштаб, перетаскивание — перемещение карты.
+   Кнопка «Я» возвращает к последней подтверждённой позиции персонажа.
+
+ПОЛЕЗНО ЗНАТЬ
+• Ctrl+Alt+H — показать/скрыть счётчик.
+• Ctrl+Alt+M — показать/скрыть интерактивную карту.
+• Ctrl+Alt+L — закрепить окна, чтобы клики проходили в игру; ещё раз — настройка.
+• Размер окон меняется перетаскиванием нижнего правого угла.
+• Для HUD используйте оконный режим игры или окно без рамки.
+• Нажатие X в главном окне сворачивает его в трей. Выход — через кнопку слева или меню трея.
+• Точки на карте — возможные места появления монстров. Не для всех видов
+  известны координаты. Положение игрока обновляется при получении координат
+  из игры; во время бега может отставать. Возраст позиции подписан на карте.
+• После потери данных или смены персонажа может потребоваться новый вход.
+• Сохранённые данные: %LOCALAPPDATA%\Aion2SoulTracker
+  Обновление и удаление программы не удаляют ваш прогресс и настройки.
+• .NET включён в комплект. Python, SDK и инструменты разработчика не нужны.
+• Npcap распространяется отдельно по условиям его лицензии.
+
+Обратная связь: что ожидали, что произошло, скриншот и версия 0.2.0.
+При проблеме запуска журнал startup-error.txt находится в папке данных.
+
+QUICK START (ENGLISH)
+Install and open Aion 2 Soul Tracker. Install Npcap from its official site
+if prompted, then log in to your character AFTER starting the tracker.
+With no HUD targets pinned, the map shows all incomplete targets in enabled
+categories. Pin targets to narrow the map to them. Category filters still apply.
+The map's … button opens territory
+and target filters. Scroll to zoom, drag to pan, Me to follow the last known
+player position. Coordinates can lag while moving; their age is shown.
+Ctrl+Alt+H: counter. Ctrl+Alt+M: map. Ctrl+Alt+L: click through / edit.
+Use borderless or windowed game mode. The main window X hides it to the tray;
+choose Exit in the sidebar or tray menu to quit. User data stays in %LOCALAPPDATA%\Aion2SoulTracker.
+.NET is included. Npcap is a separate dependency. No development tools needed.
+
+LICENSES AND SOURCE
+GPL-3.0. License texts and third-party attribution are in licenses/.
+The matching complete project source is included in source.zip.
+This is an independent fan project, not an official NCSOFT product.
+
+НОВОЕ В 0.2.0
+• Режим фокуса: ближайшие к MAX в счётчике и на карте, все лидеры при равенстве.
+• Раздел «Настройки»: язык, свои горячие клавиши и размер строк HUD 65–150%.
+• Наведите на «?» рядом с настройкой, чтобы прочесть краткое пояснение.
+• Перед обновлением полностью закройте приложение через «Выход».
+• Тестовая сборка пока не подписана доверенным сертификатом издателя.

@@ -1,0 +1,1465 @@
+[
+  {
+    "Id": 1001,
+    "Name": "Black Dragon",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1001",
+    "NameRu": "Черный дракон"
+  },
+  {
+    "Id": 1111,
+    "Name": "Swift Lugi",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1111",
+    "NameRu": "Проворный руги"
+  },
+  {
+    "Id": 1112,
+    "Name": "Wandering Merchant Lugi",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1112",
+    "NameRu": "Бродячий торговец руги"
+  },
+  {
+    "Id": 1204,
+    "Name": "Pagati",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1204",
+    "NameRu": "Пагатти"
+  },
+  {
+    "Id": 1240,
+    "Name": "White Bunny",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1240",
+    "NameRu": "Белый кролик"
+  },
+  {
+    "Id": 1278,
+    "Name": "Chonky Hamster",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1278",
+    "NameRu": "Хомячок"
+  },
+  {
+    "Id": 1299,
+    "Name": "Two",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1299",
+    "NameRu": "Ту"
+  },
+  {
+    "Id": 1343,
+    "Name": "Little Ghost",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1343",
+    "NameRu": "Малыш-призрак"
+  },
+  {
+    "Id": 1363,
+    "Name": "Pumpkin Carriage",
+    "Genus": "Special",
+    "Source": "https://aion2.th.gl/db/pets/pet_1363",
+    "NameRu": "Тыквенная карета"
+  },
+  {
+    "Id": 1002,
+    "Name": "Krall Laborer",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1002",
+    "NameRu": "Каторжник краллов"
+  },
+  {
+    "Id": 1005,
+    "Name": "Klaw",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1005",
+    "NameRu": "Ньют"
+  },
+  {
+    "Id": 1010,
+    "Name": "Manduri Fighter",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1010",
+    "NameRu": "Задира мандури"
+  },
+  {
+    "Id": 1017,
+    "Name": "Krall Warshaman",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1017",
+    "NameRu": "Боевой шаман краллов"
+  },
+  {
+    "Id": 1018,
+    "Name": "Varg Berserker",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1018",
+    "NameRu": "Берсерк варгов"
+  },
+  {
+    "Id": 1026,
+    "Name": "Krall Warrior",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1026",
+    "NameRu": "Воин краллов"
+  },
+  {
+    "Id": 1029,
+    "Name": "Klaw Scout",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1029",
+    "NameRu": "Солдат-разведчик ньютов"
+  },
+  {
+    "Id": 1030,
+    "Name": "Nagarant Guardian Warrior",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1030",
+    "NameRu": "Охраняющий воин нагарратов"
+  },
+  {
+    "Id": 1033,
+    "Name": "Elite Manduri Fighter",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1033",
+    "NameRu": "Элитный задира мандури"
+  },
+  {
+    "Id": 1040,
+    "Name": "Aullaeu Shaman",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1040",
+    "NameRu": "Колдун ауллау"
+  },
+  {
+    "Id": 1044,
+    "Name": "Aultross's Doppelganger",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1044",
+    "NameRu": "Двойник Аултроса"
+  },
+  {
+    "Id": 1054,
+    "Name": "Mumu Warrior",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1054",
+    "NameRu": "Воин му-му"
+  },
+  {
+    "Id": 1065,
+    "Name": "Biruta",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1065",
+    "NameRu": "Бирут"
+  },
+  {
+    "Id": 1074,
+    "Name": "Kuru Worker",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1074",
+    "NameRu": "Рабочий куру"
+  },
+  {
+    "Id": 1075,
+    "Name": "Kuru Tinkerer",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1075",
+    "NameRu": "Подсобный рабочий куру"
+  },
+  {
+    "Id": 1078,
+    "Name": "Urugugu Brawler",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1078",
+    "NameRu": "Храбрец ауругу"
+  },
+  {
+    "Id": 1080,
+    "Name": "Sentinel K'nash",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1080",
+    "NameRu": "Страж Кнаш"
+  },
+  {
+    "Id": 1093,
+    "Name": "Phantasmal Lakshmi",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1093",
+    "NameRu": "Лакшми видения"
+  },
+  {
+    "Id": 1103,
+    "Name": "Pretor Veil Administrator",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1103",
+    "NameRu": "Управляющий покрова фрэлов"
+  },
+  {
+    "Id": 1104,
+    "Name": "Manduri Trebuchet Worker",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1104",
+    "NameRu": "Метатель мандури"
+  },
+  {
+    "Id": 1105,
+    "Name": "Biruta Herbalist",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1105",
+    "NameRu": "Травник бирутов"
+  },
+  {
+    "Id": 1108,
+    "Name": "Enhanced Krall Combatant",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1108",
+    "NameRu": "Усиленный борец краллов"
+  },
+  {
+    "Id": 1109,
+    "Name": "Enhanced Krall Sentry",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1109",
+    "NameRu": "Усиленный пограничник краллов"
+  },
+  {
+    "Id": 1115,
+    "Name": "Kuru Overseer",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1115",
+    "NameRu": "Надзиратель куру"
+  },
+  {
+    "Id": 1137,
+    "Name": "Mumu Worker",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1137",
+    "NameRu": "Рабочий му-му"
+  },
+  {
+    "Id": 1138,
+    "Name": "Mumu Overseer",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1138",
+    "NameRu": "Надзиратель му-му"
+  },
+  {
+    "Id": 1147,
+    "Name": "Dratona",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1147",
+    "NameRu": "Дратон"
+  },
+  {
+    "Id": 1156,
+    "Name": "Elite Klaw",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1156",
+    "NameRu": "Элитный ньют"
+  },
+  {
+    "Id": 1162,
+    "Name": "Kerubar",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1162",
+    "NameRu": "Керубим"
+  },
+  {
+    "Id": 1170,
+    "Name": "Kerubian",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1170",
+    "NameRu": "Керуб"
+  },
+  {
+    "Id": 1171,
+    "Name": "Kerubiel",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1171",
+    "NameRu": "Керубиэль"
+  },
+  {
+    "Id": 1184,
+    "Name": "Drakan Watcher",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1184",
+    "NameRu": "Дозорщик драканов"
+  },
+  {
+    "Id": 1185,
+    "Name": "Dratona Tinkerer",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1185",
+    "NameRu": "Подсобный рабочий дратонов"
+  },
+  {
+    "Id": 1191,
+    "Name": "Furious Feruk",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1191",
+    "NameRu": "Бешеный Ферк"
+  },
+  {
+    "Id": 1193,
+    "Name": "Addicted Shulak Cart Worker",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1193",
+    "NameRu": "Одурманенный возчик шураков"
+  },
+  {
+    "Id": 1195,
+    "Name": "Dracuni Herbalist",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1195",
+    "NameRu": "Травник дракуни"
+  },
+  {
+    "Id": 1196,
+    "Name": "Elite Dratona",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1196",
+    "NameRu": "Элитный дратон"
+  },
+  {
+    "Id": 1200,
+    "Name": "Naga Elite Priest",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1200",
+    "NameRu": "Элитный жрец нагов"
+  },
+  {
+    "Id": 1201,
+    "Name": "Modified Lupyllini",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1201",
+    "NameRu": "Модифицированный руфиллин"
+  },
+  {
+    "Id": 1202,
+    "Name": "Decomposed Lupyllini",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1202",
+    "NameRu": "Гнилостный руфиллин"
+  },
+  {
+    "Id": 1215,
+    "Name": "Predator Saraswati",
+    "Genus": "Cogni",
+    "Source": "https://aion2.th.gl/db/pets/pet_1215",
+    "NameRu": "Хищница Сарасвати"
+  },
+  {
+    "Id": 1003,
+    "Name": "Forest Specter",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1003",
+    "NameRu": "Спектр леса"
+  },
+  {
+    "Id": 1012,
+    "Name": "Fungie",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1012",
+    "NameRu": "Фунги"
+  },
+  {
+    "Id": 1027,
+    "Name": "Withered Agrint",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1027",
+    "NameRu": "Иссохший агринт"
+  },
+  {
+    "Id": 1031,
+    "Name": "Konutin Worker",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1031",
+    "NameRu": "Рабочий конути"
+  },
+  {
+    "Id": 1048,
+    "Name": "Forest Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1048",
+    "NameRu": "Дух леса"
+  },
+  {
+    "Id": 1049,
+    "Name": "Mutated Forest Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1049",
+    "NameRu": "Мутировавший дух леса"
+  },
+  {
+    "Id": 1050,
+    "Name": "Gravi",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1050",
+    "NameRu": "Грави"
+  },
+  {
+    "Id": 1051,
+    "Name": "Magic Gravi",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1051",
+    "NameRu": "Магический грави"
+  },
+  {
+    "Id": 1052,
+    "Name": "Large Leaf Gravi",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1052",
+    "NameRu": "Крупнолистный грави"
+  },
+  {
+    "Id": 1058,
+    "Name": "Black Smoke Murute",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1058",
+    "NameRu": "Мурт черного дыма"
+  },
+  {
+    "Id": 1069,
+    "Name": "Stone Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1069",
+    "NameRu": "Дух камня"
+  },
+  {
+    "Id": 1073,
+    "Name": "Nepenthes",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1073",
+    "NameRu": "Нефендес"
+  },
+  {
+    "Id": 1079,
+    "Name": "Ultimate Wind Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1079",
+    "NameRu": "Превосходный дух воздуха"
+  },
+  {
+    "Id": 1081,
+    "Name": "Dionae",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1081",
+    "NameRu": "Дионея"
+  },
+  {
+    "Id": 1082,
+    "Name": "Ultimate Fire Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1082",
+    "NameRu": "Превосходный дух огня"
+  },
+  {
+    "Id": 1086,
+    "Name": "Fungen",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1086",
+    "NameRu": "Фунгус"
+  },
+  {
+    "Id": 1090,
+    "Name": "Ultimate Water Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1090",
+    "NameRu": "Превосходный дух воды"
+  },
+  {
+    "Id": 1091,
+    "Name": "Red Spark Ignus",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1091",
+    "NameRu": "Игнус красного языка пламени"
+  },
+  {
+    "Id": 1092,
+    "Name": "Lesser Wind Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1092",
+    "NameRu": "Младший дух воздуха"
+  },
+  {
+    "Id": 1094,
+    "Name": "Intermediate Wind Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1094",
+    "NameRu": "Опытный дух воздуха"
+  },
+  {
+    "Id": 1095,
+    "Name": "Superior Wind Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1095",
+    "NameRu": "Старший дух воздуха"
+  },
+  {
+    "Id": 1096,
+    "Name": "Superior Fire Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1096",
+    "NameRu": "Старший дух огня"
+  },
+  {
+    "Id": 1100,
+    "Name": "Ultimate Earth Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1100",
+    "NameRu": "Превосходный дух земли"
+  },
+  {
+    "Id": 1101,
+    "Name": "Forest Guardian",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1101",
+    "NameRu": "Хранитель леса"
+  },
+  {
+    "Id": 1102,
+    "Name": "Dried Up Forest Guardian",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1102",
+    "NameRu": "Иссушенный хранитель леса"
+  },
+  {
+    "Id": 1127,
+    "Name": "Odyle Stone Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1127",
+    "NameRu": "Дух эфирного камня"
+  },
+  {
+    "Id": 1131,
+    "Name": "Drana Spore",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1131",
+    "NameRu": "Спора драны"
+  },
+  {
+    "Id": 1133,
+    "Name": "Forest Dionae",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1133",
+    "NameRu": "Дионея леса"
+  },
+  {
+    "Id": 1135,
+    "Name": "Ashen Dionae",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1135",
+    "NameRu": "Пепельная дионея"
+  },
+  {
+    "Id": 1136,
+    "Name": "Rafflesia",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1136",
+    "NameRu": "Рафлессия"
+  },
+  {
+    "Id": 1144,
+    "Name": "Mutated Forest Guardian",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1144",
+    "NameRu": "Мутировавший хранитель леса"
+  },
+  {
+    "Id": 1155,
+    "Name": "Superior Water Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1155",
+    "NameRu": "Старший дух воды"
+  },
+  {
+    "Id": 1164,
+    "Name": "Lesser Earth Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1164",
+    "NameRu": "Младший дух земли"
+  },
+  {
+    "Id": 1165,
+    "Name": "Intermediate Earth Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1165",
+    "NameRu": "Опытный дух земли"
+  },
+  {
+    "Id": 1166,
+    "Name": "Superior Earth Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1166",
+    "NameRu": "Старший дух земли"
+  },
+  {
+    "Id": 1168,
+    "Name": "Lesser Water Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1168",
+    "NameRu": "Младший дух воды"
+  },
+  {
+    "Id": 1169,
+    "Name": "Intermediate Water Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1169",
+    "NameRu": "Опытный дух воды"
+  },
+  {
+    "Id": 1177,
+    "Name": "Ancient Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1177",
+    "NameRu": "Древний дух"
+  },
+  {
+    "Id": 1178,
+    "Name": "Spirit King's Bodyguard Warrior",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1178",
+    "NameRu": "Воин стражников короля духов"
+  },
+  {
+    "Id": 1187,
+    "Name": "Intermediate Fire Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1187",
+    "NameRu": "Опытный дух огня"
+  },
+  {
+    "Id": 1190,
+    "Name": "Elite Poisonous Spore Fungen",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1190",
+    "NameRu": "Элитный ядовитый споровый фунгус"
+  },
+  {
+    "Id": 1207,
+    "Name": "Agrint",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1207",
+    "NameRu": "Агринт"
+  },
+  {
+    "Id": 1208,
+    "Name": "Ashen Agrint",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1208",
+    "NameRu": "Пепельный агринт"
+  },
+  {
+    "Id": 1209,
+    "Name": "Thin Agrint",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1209",
+    "NameRu": "Истощенный агринт"
+  },
+  {
+    "Id": 1210,
+    "Name": "Dry Leaf Agrint",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1210",
+    "NameRu": "Сухолистный агринт"
+  },
+  {
+    "Id": 1213,
+    "Name": "Lesser Fire Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1213",
+    "NameRu": "Младший дух огня"
+  },
+  {
+    "Id": 1214,
+    "Name": "Black Spirit",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1214",
+    "NameRu": "Темный дух"
+  },
+  {
+    "Id": 1219,
+    "Name": "Zelophi",
+    "Genus": "Natura",
+    "Source": "https://aion2.th.gl/db/pets/pet_1219",
+    "NameRu": "Зелофи"
+  },
+  {
+    "Id": 1004,
+    "Name": "Fossa",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1004",
+    "NameRu": "Фосса"
+  },
+  {
+    "Id": 1006,
+    "Name": "Sparkie",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1006",
+    "NameRu": "Спарки"
+  },
+  {
+    "Id": 1007,
+    "Name": "Potcrab",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1007",
+    "NameRu": "Крабрид"
+  },
+  {
+    "Id": 1008,
+    "Name": "Baby Odyle Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1008",
+    "NameRu": "Детеныш эфирного паука"
+  },
+  {
+    "Id": 1009,
+    "Name": "Kernon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1009",
+    "NameRu": "Кернон"
+  },
+  {
+    "Id": 1011,
+    "Name": "Skyray",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1011",
+    "NameRu": "Тритон"
+  },
+  {
+    "Id": 1014,
+    "Name": "Drakan Guard Dog",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1014",
+    "NameRu": "Сторожевой пес драканов"
+  },
+  {
+    "Id": 1015,
+    "Name": "Kailin",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1015",
+    "NameRu": "Каилин"
+  },
+  {
+    "Id": 1016,
+    "Name": "Slink",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1016",
+    "NameRu": "Чешуйница"
+  },
+  {
+    "Id": 1021,
+    "Name": "Aberrant Odyle Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1021",
+    "NameRu": "Подвид эфирного паука"
+  },
+  {
+    "Id": 1022,
+    "Name": "Crasaur",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1022",
+    "NameRu": "Файни"
+  },
+  {
+    "Id": 1025,
+    "Name": "Mutated Aberrant Odyle Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1025",
+    "NameRu": "Мутировавший подвид эфирного паука"
+  },
+  {
+    "Id": 1032,
+    "Name": "Elite Keneire",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1032",
+    "NameRu": "Элитный кенейр"
+  },
+  {
+    "Id": 1034,
+    "Name": "Giant Sparkie",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1034",
+    "NameRu": "Гигантский спарки"
+  },
+  {
+    "Id": 1035,
+    "Name": "Skama",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1035",
+    "NameRu": "Скама"
+  },
+  {
+    "Id": 1036,
+    "Name": "Lupyllini",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1036",
+    "NameRu": "Руфиллин"
+  },
+  {
+    "Id": 1037,
+    "Name": "Male Crestlich",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1037",
+    "NameRu": "Крестлич (самец)"
+  },
+  {
+    "Id": 1038,
+    "Name": "Airon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1038",
+    "NameRu": "Хайк"
+  },
+  {
+    "Id": 1039,
+    "Name": "Crestlich",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1039",
+    "NameRu": "Крестлич"
+  },
+  {
+    "Id": 1041,
+    "Name": "Cave Bat",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1041",
+    "NameRu": "Пещерная летучая мышь"
+  },
+  {
+    "Id": 1042,
+    "Name": "Ursus",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1042",
+    "NameRu": "Урсус"
+  },
+  {
+    "Id": 1043,
+    "Name": "Elite Ursus",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1043",
+    "NameRu": "Элитный урсус"
+  },
+  {
+    "Id": 1045,
+    "Name": "Sylphen",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1045",
+    "NameRu": "Мюта"
+  },
+  {
+    "Id": 1046,
+    "Name": "Armadon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1046",
+    "NameRu": "Армадон"
+  },
+  {
+    "Id": 1047,
+    "Name": "Aberrant Armadon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1047",
+    "NameRu": "Подвид армадона"
+  },
+  {
+    "Id": 1053,
+    "Name": "Aberrant Potcrab",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1053",
+    "NameRu": "Подвид крабрида"
+  },
+  {
+    "Id": 1055,
+    "Name": "Grave Rat",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1055",
+    "NameRu": "Крыса гробницы"
+  },
+  {
+    "Id": 1057,
+    "Name": "Coradon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1057",
+    "NameRu": "Корадон"
+  },
+  {
+    "Id": 1059,
+    "Name": "Giant Bee",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1059",
+    "NameRu": "Шершень"
+  },
+  {
+    "Id": 1060,
+    "Name": "Starturtle",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1060",
+    "NameRu": "Панцирник"
+  },
+  {
+    "Id": 1066,
+    "Name": "Papis",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1066",
+    "NameRu": "Папис"
+  },
+  {
+    "Id": 1067,
+    "Name": "Scorpion",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1067",
+    "NameRu": "Скорпион"
+  },
+  {
+    "Id": 1071,
+    "Name": "Cadaver Insectoid",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1071",
+    "NameRu": "Трупный инсектоид"
+  },
+  {
+    "Id": 1072,
+    "Name": "Tog",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1072",
+    "NameRu": "Тог"
+  },
+  {
+    "Id": 1083,
+    "Name": "Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1083",
+    "NameRu": "Паук"
+  },
+  {
+    "Id": 1089,
+    "Name": "Aberrant Skama",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1089",
+    "NameRu": "Подвид скамы"
+  },
+  {
+    "Id": 1097,
+    "Name": "Karnif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1097",
+    "NameRu": "Каллиф"
+  },
+  {
+    "Id": 1098,
+    "Name": "Modified Karnif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1098",
+    "NameRu": "Модифицированный каллиф"
+  },
+  {
+    "Id": 1099,
+    "Name": "Elite Karnif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1099",
+    "NameRu": "Элитный каллиф"
+  },
+  {
+    "Id": 1106,
+    "Name": "Tayga",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1106",
+    "NameRu": "Рюкрог"
+  },
+  {
+    "Id": 1114,
+    "Name": "Ashen Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1114",
+    "NameRu": "Пепельный паук"
+  },
+  {
+    "Id": 1116,
+    "Name": "Withered Branch Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1116",
+    "NameRu": "Паук сухой ветви"
+  },
+  {
+    "Id": 1117,
+    "Name": "Unstable Spider",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1117",
+    "NameRu": "Взбалмошный паук"
+  },
+  {
+    "Id": 1118,
+    "Name": "Aberrant Bee",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1118",
+    "NameRu": "Подвид осы"
+  },
+  {
+    "Id": 1119,
+    "Name": "Aberrant Coradon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1119",
+    "NameRu": "Подвид корадона"
+  },
+  {
+    "Id": 1120,
+    "Name": "Young Kailin",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1120",
+    "NameRu": "Малый каилин"
+  },
+  {
+    "Id": 1121,
+    "Name": "Young Slink",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1121",
+    "NameRu": "Малая чешуйница"
+  },
+  {
+    "Id": 1122,
+    "Name": "Young Tog",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1122",
+    "NameRu": "Малый тог"
+  },
+  {
+    "Id": 1123,
+    "Name": "Young Ursus",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1123",
+    "NameRu": "Малый урсус"
+  },
+  {
+    "Id": 1124,
+    "Name": "Zaif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1124",
+    "NameRu": "Волк"
+  },
+  {
+    "Id": 1125,
+    "Name": "Aberrant Zaif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1125",
+    "NameRu": "Подвид волка"
+  },
+  {
+    "Id": 1126,
+    "Name": "Aberrant Tog",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1126",
+    "NameRu": "Подвид тога"
+  },
+  {
+    "Id": 1130,
+    "Name": "Mutated Cadaver Insectoid",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1130",
+    "NameRu": "Мутировавший трупный инсектоид"
+  },
+  {
+    "Id": 1132,
+    "Name": "Ashen Lupyllini",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1132",
+    "NameRu": "Пепельный руфиллин"
+  },
+  {
+    "Id": 1134,
+    "Name": "Eternal Coradon",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1134",
+    "NameRu": "Корадон вечности"
+  },
+  {
+    "Id": 1143,
+    "Name": "Mutated Ursus",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1143",
+    "NameRu": "Мутировавший урсус"
+  },
+  {
+    "Id": 1145,
+    "Name": "Mutated Insectoid Valka",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1145",
+    "NameRu": "Мутировавший жук Валка"
+  },
+  {
+    "Id": 1158,
+    "Name": "Venomous Insect Sram",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1158",
+    "NameRu": "Смертельно ядовитый жук Трам"
+  },
+  {
+    "Id": 1163,
+    "Name": "Basilisk",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1163",
+    "NameRu": "Василиск"
+  },
+  {
+    "Id": 1181,
+    "Name": "Brax",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1181",
+    "NameRu": "Бракс"
+  },
+  {
+    "Id": 1188,
+    "Name": "Vivel",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1188",
+    "NameRu": "Вивэль"
+  },
+  {
+    "Id": 1189,
+    "Name": "Tamed Zaif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1189",
+    "NameRu": "Прирученный волк"
+  },
+  {
+    "Id": 1198,
+    "Name": "Ashen Basilisk",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1198",
+    "NameRu": "Пепельный василиск"
+  },
+  {
+    "Id": 1199,
+    "Name": "Flame Barghest",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1199",
+    "NameRu": "Пламенный балгест"
+  },
+  {
+    "Id": 1203,
+    "Name": "Tamed Karnif",
+    "Genus": "Fera",
+    "Source": "https://aion2.th.gl/db/pets/pet_1203",
+    "NameRu": "Прирученный каллиф"
+  },
+  {
+    "Id": 1013,
+    "Name": "Swarm",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1013",
+    "NameRu": "Сворм"
+  },
+  {
+    "Id": 1028,
+    "Name": "Krao Mutant",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1028",
+    "NameRu": "Мутант крао"
+  },
+  {
+    "Id": 1056,
+    "Name": "Drakan Probe",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1056",
+    "NameRu": "Детектор драканов"
+  },
+  {
+    "Id": 1061,
+    "Name": "Slime",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1061",
+    "NameRu": "Слизень"
+  },
+  {
+    "Id": 1062,
+    "Name": "Contaminated Slime",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1062",
+    "NameRu": "Зараженный слизень"
+  },
+  {
+    "Id": 1063,
+    "Name": "Vigilant Oculazen",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1063",
+    "NameRu": "Наблюдающий окулюс"
+  },
+  {
+    "Id": 1064,
+    "Name": "Oculazen",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1064",
+    "NameRu": "Окулюс"
+  },
+  {
+    "Id": 1068,
+    "Name": "Krao Test Subject",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1068",
+    "NameRu": "Подопытный крао"
+  },
+  {
+    "Id": 1077,
+    "Name": "Harcon",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1077",
+    "NameRu": "Харкон"
+  },
+  {
+    "Id": 1084,
+    "Name": "Kalgolem",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1084",
+    "NameRu": "Калькельм"
+  },
+  {
+    "Id": 1087,
+    "Name": "Pino",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1087",
+    "NameRu": "Пино"
+  },
+  {
+    "Id": 1088,
+    "Name": "Pino Worker",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1088",
+    "NameRu": "Рабочий пино"
+  },
+  {
+    "Id": 1107,
+    "Name": "Krao Seal Guardian",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1107",
+    "NameRu": "Хранитель печати крао"
+  },
+  {
+    "Id": 1110,
+    "Name": "Blue Kalgolem",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1110",
+    "NameRu": "Лазурный калькельм"
+  },
+  {
+    "Id": 1128,
+    "Name": "Drana Slime",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1128",
+    "NameRu": "Слизень драны"
+  },
+  {
+    "Id": 1129,
+    "Name": "Drana Swarm",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1129",
+    "NameRu": "Сворм драны"
+  },
+  {
+    "Id": 1139,
+    "Name": "Swamp Monster",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1139",
+    "NameRu": "Болотное чудовище"
+  },
+  {
+    "Id": 1140,
+    "Name": "Forest Monster",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1140",
+    "NameRu": "Чудовище леса"
+  },
+  {
+    "Id": 1141,
+    "Name": "Marsh Targon",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1141",
+    "NameRu": "Болотный таргон"
+  },
+  {
+    "Id": 1142,
+    "Name": "Distorted Mutant",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1142",
+    "NameRu": "Искаженный мутант"
+  },
+  {
+    "Id": 1146,
+    "Name": "Gatekeeper Pinopi",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1146",
+    "NameRu": "Привратник пинопи"
+  },
+  {
+    "Id": 1148,
+    "Name": "Drakana Kalgolem",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1148",
+    "NameRu": "Калькельм драканы"
+  },
+  {
+    "Id": 1153,
+    "Name": "Drana Mutant Brute",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1153",
+    "NameRu": "Мутировавший громила драны"
+  },
+  {
+    "Id": 1154,
+    "Name": "Faded Mutant Brute",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1154",
+    "NameRu": "Поблекший мутировавший громила"
+  },
+  {
+    "Id": 1157,
+    "Name": "Cadaver Cleaner",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1157",
+    "NameRu": "Падальщик"
+  },
+  {
+    "Id": 1159,
+    "Name": "Parasite Swarm",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1159",
+    "NameRu": "Паразитический сворм"
+  },
+  {
+    "Id": 1160,
+    "Name": "Drana Contaminant",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1160",
+    "NameRu": "Зараженная сущность драны"
+  },
+  {
+    "Id": 1161,
+    "Name": "Faded Floater",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1161",
+    "NameRu": "Поблекшая парящая сущность"
+  },
+  {
+    "Id": 1167,
+    "Name": "Flame Stone Guardian Statue",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1167",
+    "NameRu": "Охранная статуя пламенного камня"
+  },
+  {
+    "Id": 1172,
+    "Name": "Duduka Worker",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1172",
+    "NameRu": "Рабочий дудуков"
+  },
+  {
+    "Id": 1173,
+    "Name": "Duduka Trebuchet Worker",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1173",
+    "NameRu": "Пращник дудуков"
+  },
+  {
+    "Id": 1174,
+    "Name": "Drana Predator",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1174",
+    "NameRu": "Хищник драны"
+  },
+  {
+    "Id": 1175,
+    "Name": "Faded Predator",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1175",
+    "NameRu": "Поблекший хищник"
+  },
+  {
+    "Id": 1176,
+    "Name": "Mudthorn",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1176",
+    "NameRu": "Вайолант"
+  },
+  {
+    "Id": 1179,
+    "Name": "Drana Mutant",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1179",
+    "NameRu": "Мутант драны"
+  },
+  {
+    "Id": 1180,
+    "Name": "Faded Mutant",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1180",
+    "NameRu": "Поблекший мутант"
+  },
+  {
+    "Id": 1182,
+    "Name": "Elite Soulless Corpse Gnat",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1182",
+    "NameRu": "Элитный бездушный трупный кровосос"
+  },
+  {
+    "Id": 1183,
+    "Name": "Soulless Corpse Gnat",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1183",
+    "NameRu": "Бездушный трупный кровосос"
+  },
+  {
+    "Id": 1186,
+    "Name": "Poison Blood",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1186",
+    "NameRu": "Ядокров"
+  },
+  {
+    "Id": 1192,
+    "Name": "Silver Blade Rotan",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1192",
+    "NameRu": "Серебряный рокан"
+  },
+  {
+    "Id": 1194,
+    "Name": "Guardite",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1194",
+    "NameRu": "Гардит"
+  },
+  {
+    "Id": 1197,
+    "Name": "Watcher Guardite",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1197",
+    "NameRu": "Наблюдающий гардит"
+  },
+  {
+    "Id": 1206,
+    "Name": "Elite Guardite",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1206",
+    "NameRu": "Элитный гардит"
+  },
+  {
+    "Id": 1216,
+    "Name": "Dark Spirit",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1216",
+    "NameRu": "Дух мрака"
+  },
+  {
+    "Id": 1217,
+    "Name": "Congealed Drana",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1217",
+    "NameRu": "Свернувшаяся драна"
+  },
+  {
+    "Id": 1218,
+    "Name": "Faded Drana",
+    "Genus": "Varian",
+    "Source": "https://aion2.th.gl/db/pets/pet_1218",
+    "NameRu": "Поблекший драна"
+  }
+]
