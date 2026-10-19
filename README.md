@@ -26,8 +26,10 @@
 
 ## Установка и первый запуск
 
-Эта ветка содержит исходный код версии 0.2.0. Установщик для тестирования
-`Aion2SoulTracker-Setup-v0.2.0.exe` передаёт владелец проекта; публичный релиз ещё не объявлен.
+**[Скачать установщик 0.2.0](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.2.0/Aion2SoulTracker-Setup-v0.2.0.exe)**
+
+[Все файлы тестового релиза](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.2.0):
+установщик, portable-архив, исходники и SHA256. Для обычной установки выбирайте файл **Setup.exe**, а не Source code.
 
 1. Запустите установщик и затем приложение с ярлыка.
 2. Если появится просьба установить **Npcap**, откройте [официальный сайт](https://npcap.com/#download),
