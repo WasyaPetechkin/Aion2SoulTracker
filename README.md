@@ -2,7 +2,7 @@
 <h1 align="center">Aion 2 Soul Tracker</h1>
 <p align="center">Коллекция душ · Компактный HUD · Интерактивная карта<br>Soul collection · Compact HUD · Interactive map</p>
 <p align="center"><strong>Windows 10 / 11 x64 · Aion 2 Global EU · Русский / English</strong></p>
-<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.0">Скачать / Download 0.3.0</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
+<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.3">Скачать / Download 0.3.3</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
 
 ## Русский
 
@@ -10,9 +10,9 @@
 
 ### Скачать и установить
 
-**[Скачать установщик 0.3.0 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.0/Aion2SoulTracker-Setup-v0.3.0.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Скачать установщик 0.3.3 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.3/Aion2SoulTracker-Setup-v0.3.3.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Запустите `Aion2SoulTracker-Setup-v0.3.0.exe`, установите программу и откройте её с ярлыка.
+1. Запустите `Aion2SoulTracker-Setup-v0.3.3.exe`, установите программу и откройте её с ярлыка.
 2. Если приложение попросит **Npcap**, установите его с [официального сайта](https://npcap.com/#download) с настройками по умолчанию, затем нажмите «Проверить снова». Если Npcap уже установлен, повторная установка обычно не нужна.
 3. Войдите в персонажа **после запуска трекера**. Если уже играете, вернитесь к выбору персонажа и войдите снова: так приложение получает начальную коллекцию.
 4. Включите нужные категории и отметьте цели в колонке **HUD**. Для отображения HUD используйте оконный режим игры или окно без рамки.
@@ -21,10 +21,10 @@
 
 | Файл в Releases → Assets | Для чего |
 | --- | --- |
-| `Aion2SoulTracker-Setup-v0.3.0.exe` | Обычная установка — рекомендуемый вариант |
-| `Aion2SoulTracker-v0.3.0-portable-win-x64.zip` | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
-| `Aion2SoulTracker-v0.3.0-source.zip` | Исходный код для разработчиков |
-| `SHA256SUMS-v0.3.0.txt` | Контрольные суммы файлов |
+| `Aion2SoulTracker-Setup-v0.3.3.exe` | Обычная установка — рекомендуемый вариант |
+| `Aion2SoulTracker-v0.3.3-portable-win-x64.zip` | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
+| `Aion2SoulTracker-v0.3.3-source.zip` | Исходный код для разработчиков |
+| `SHA256SUMS-v0.3.3.txt` | Контрольные суммы файлов |
 
 ### Возможности
 
@@ -32,7 +32,7 @@
 | --- | --- |
 | Каталог | Русские и английские имена, поиск по имени/ID, категории, фильтры полученных и MAX |
 | Отмеченные цели | Всегда сверху каталога, даже если не соответствуют текущему поиску или фильтрам |
-| HUD | Портрет, название, территория, прогресс и остаток душ; крестик в строке снимает отслеживание |
+| HUD | Портрет, название, территория, прогресс и остаток душ; крестик в строке снимает ручное отслеживание; в фокусе он скрыт |
 | Карта | Шесть территорий, масштабирование, перемещение, точки спавна и последняя подтверждённая позиция игрока |
 | Подсказки карты | Наведение на точку показывает имя и портрет; при плотном расположении точки объединяются |
 | Кибелиски | 162 точки на картах Альтгарда, Морхейма, Вертерона и Элтнена; в Бездне не отображаются |
@@ -49,6 +49,12 @@
 - Ручные отметки сохраняются на время фокуса. При неизвестной локации фокус ждёт её определения, а не выбирает цели другой территории.
 - **«Добавлять в HUD при получении души» нужно включить отдельно.** Функция реагирует на новые души в известных открытых локациях. Вход в персонажа, загрузка сохранений и получение душ в данжах цели не добавляют.
 - Поиск, «Скрыть MAX» и «Только полученные» фильтруют каталог; отмеченные цели остаются видимыми. Категории также влияют на карту и фокус.
+
+### Настройки прямо в HUD
+
+Внизу счётчика нажмите **«Настройки HUD ▾»**. Здесь доступны режим фокуса, автодобавление при получении души, категории, показ карты и «Клики в игру». В подменю «Фильтры каталога» — диковинные, «Скрыть MAX» и «Только полученные». Изменения сразу синхронизируются с главным окном. Категории влияют на карту и фокус; фильтры каталога — только на список в основном окне.
+
+Если меню не нажимается, отключите «Клики в игру» сочетанием `Ctrl+Alt+L` (или своим назначенным сочетанием). В режиме фокуса крестики строк скрыты: цели выбираются автоматически. Выключите фокус, чтобы вернуться к ручным целям.
 
 ### Управление
 
@@ -74,13 +80,15 @@
 
 ### Частые вопросы
 
-**Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. В 0.3.0 исправлен ложный сброс синхронизации при затишье сети; временная пауза сама по себе больше не должна его вызывать.
+**Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. Временная пауза сама по себе не должна сбрасывать синхронизацию. В 0.3.1–0.3.3 улучшены переключение сетевых адаптеров, обработка смены сервера и восстановление захвата. Это не гарантирует восстановление счётчика после настоящей потери данных.
 
 **Души считаются, но цели не добавляются автоматически?** Проверьте галочку «Добавлять в HUD при получении души». Автодобавление выключено по умолчанию, не работает в данжах и не добавляет уже завершённые цели. В режиме фокуса видимый список определяется фокусом.
 
 **Почему нет точек или отстаёт игрок?** Координаты известны не для всех монстров: сейчас есть места появления для 160 из 200 обычных питомцев. Позиция игрока обновляется по подтверждённым игровым сообщениям и может отставать; её возраст указан на карте. Точки показывают возможные места появления, а не наличие живого монстра.
 
 **Почему после крестика приложение осталось запущено?** Главное окно сворачивается в трей. Для полного закрытия используйте «Выход» слева или в меню значка трея.
+
+**При сбоях с VPN:** запишите время и версию программы. Если недоступны игра и роутер, полностью закройте трекер через «Выход», оставив VPN включённым, и проверьте связь ещё раз. Укажите результат в обращении; связь сбоя с трекером пока не подтверждена.
 
 ### Обратная связь
 
@@ -94,9 +102,9 @@
 
 ### Download and install
 
-**[Download the Windows installer 0.3.0](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.0/Aion2SoulTracker-Setup-v0.3.0.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Download the Windows installer 0.3.3](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.3/Aion2SoulTracker-Setup-v0.3.3.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Run `Aion2SoulTracker-Setup-v0.3.0.exe`, install the application and open its shortcut.
+1. Run `Aion2SoulTracker-Setup-v0.3.3.exe`, install the application and open its shortcut.
 2. If prompted for **Npcap**, install it from the [official website](https://npcap.com/#download) with the default options, then click “Check again”. An existing Npcap installation usually does not need reinstalling.
 3. Log in to your character **after starting the tracker**. If already playing, return to character selection and log in again so the tracker receives your initial collection.
 4. Enable your categories and pin targets in the **HUD** column. Use windowed or borderless game mode for the HUD.
@@ -105,10 +113,10 @@
 
 | File under Releases → Assets | Purpose |
 | --- | --- |
-| `Aion2SoulTracker-Setup-v0.3.0.exe` | Standard installation — recommended |
-| `Aion2SoulTracker-v0.3.0-portable-win-x64.zip` | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
-| `Aion2SoulTracker-v0.3.0-source.zip` | Source code for developers |
-| `SHA256SUMS-v0.3.0.txt` | File checksums |
+| `Aion2SoulTracker-Setup-v0.3.3.exe` | Standard installation — recommended |
+| `Aion2SoulTracker-v0.3.3-portable-win-x64.zip` | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
+| `Aion2SoulTracker-v0.3.3-source.zip` | Source code for developers |
+| `SHA256SUMS-v0.3.3.txt` | File checksums |
 
 ### Features
 
@@ -116,7 +124,7 @@
 | --- | --- |
 | Catalogue | Russian and English names, name/ID search, categories, owned and MAX filters |
 | Pinned targets | Always at the top, even outside the current search or filters |
-| HUD | Portrait, name, territory, progress and souls remaining; each row’s cross removes its target |
+| HUD | Portrait, name, territory, progress and souls remaining; each row’s cross removes a manual target; it is hidden in focus mode |
 | Map | Six territories, zooming, panning, spawn points and the last confirmed player position |
 | Map tooltips | Hover a point for its name and portrait; nearby points are grouped |
 | Kibelisks | 162 locations across Altgard, Morheim, Verteron and Eltnen; excluded from the Abyss |
@@ -133,6 +141,12 @@
 - Manual pins are preserved while focus is active. If the player location is unknown, focus waits for it rather than selecting targets from another territory.
 - **Enable “Add to HUD when a soul is received” separately.** It reacts to new gains in known open-world locations. Character login, loading saved progress and dungeon gains do not add targets.
 - Search, “Hide MAX” and “Owned only” filter the catalogue; pinned targets remain visible. Categories also affect the map and focus.
+
+### Settings directly in the HUD
+
+Click **“HUD settings ▾”** at the bottom of the counter. It provides focus, automatic soul tracking, categories, map visibility and click through. The “Collection filters” submenu contains special pets, “Hide MAX” and “Owned only”. Changes immediately synchronize with the main window. Categories affect the map and focus; collection filters affect only the main catalogue.
+
+If the menu does not respond, disable click through with `Ctrl+Alt+L` (or your custom shortcut). Row crosses are hidden in focus mode because targets are selected automatically. Turn focus off to return to manual targets.
 
 ### Controls
 
@@ -158,13 +172,15 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ### Frequently asked questions
 
-**Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. Version 0.3.0 fixes false synchronization resets during quiet network periods; a temporary pause alone should no longer trigger one.
+**Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. A temporary pause alone should not reset synchronization. Versions 0.3.1–0.3.3 improve network adapter transitions, server transfers and capture recovery. This does not guarantee counter recovery after actual data loss.
 
 **Souls are counted, but targets are not added automatically?** Check “Add to HUD when a soul is received”. It is off by default, excludes dungeons and does not add completed targets. While focus is active, focus determines which targets are visible.
 
 **Why are points missing or the player marker delayed?** Some monsters have no known coordinates: the dataset currently covers 160 of 200 regular pets. The player marker uses confirmed game messages and can lag; its age is shown on the map. Spawn points indicate possible locations, not currently living monsters.
 
 **Why is the app still running after clicking X?** The main window hides to the tray. Use Exit in the sidebar or tray menu to quit completely.
+
+**For VPN issues:** note the time and app version. If both the game and router become unreachable, fully exit the tracker while leaving VPN enabled and check connectivity again. Include the result in your report; a connection between this outage and the tracker has not been established.
 
 ### Feedback
 
@@ -174,21 +190,25 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Скриншоты / Screenshots
 
+Меню HUD 0.3.3 / HUD menu in 0.3.3:
+
+![HUD settings](https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/fix/hud-controls-v0.3.2/docs/images/hud-menu.png)
+
 Демонстрационные данные / Demonstration data.
 
 ![Collection / Коллекция](https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/collection.png)
 <p><img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/hud.png" width="310" alt="HUD"> <img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/map.png" width="310" alt="Map"></p>
 
-Скриншоты предыдущего оформления; портреты и новые элементы 0.3.0 описаны выше. / Screenshots show the earlier layout; portraits and new 0.3.0 controls are described above.
+Скриншоты предыдущего оформления; портреты и новые элементы 0.3.3 описаны выше. / Screenshots show the earlier layout; portraits and new 0.3.3 controls are described above.
 
 ## Исходный код и сборка / Source and build
 
-Код 0.3.0: [ветка разработки / development branch](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/fix/tracking-and-map-v0.3.0). Главная страница содержит описание проекта; для сборки выберите эту ветку или исходный архив релиза. / The main page contains project information; to build, use this branch or the release source archive.
+Код 0.3.3: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/v0.3.3). Главная страница содержит описание проекта; для сборки выберите этот тег или исходный архив релиза. / The main page contains project information; to build, use this tag or the release source archive.
 
 Для сборки нужны .NET 10 SDK и Inno Setup 7. / Building requires .NET 10 SDK and Inno Setup 7.
 
 ```powershell
-git clone --branch fix/tracking-and-map-v0.3.0 https://github.com/WasyaPetechkin/Aion2SoulTracker.git
+git clone --branch v0.3.3 https://github.com/WasyaPetechkin/Aion2SoulTracker.git
 cd Aion2SoulTracker
 dotnet test tests/SoulTracker.Tests -c Release
 dotnet build src/SoulTracker.App -c Release
@@ -204,6 +224,6 @@ dotnet build src/SoulTracker.App -c Release
 - Захват и разбор пакетов / Capture and parsing: [aion2-dps-meter](https://github.com/cyberbadger6969/aion2-dps-meter).
 - Карты, данные и портреты / Maps, data and portraits: [aion2-nyerk](https://github.com/xCROv/aion2-nyerk), [Questlog](https://questlog.gg/aion-2/en/map).
 - Игровые изображения, названия и данные принадлежат соответствующим правообладателям. / Game artwork, names and data belong to their respective owners.
-- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/fix/tracking-and-map-v0.3.0/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/fix/tracking-and-map-v0.3.0/licenses/THIRD-PARTY.md).
+- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.3/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.3/licenses/THIRD-PARTY.md).
 
 Тестовая версия для Global EU; обновления игры могут потребовать обновления трекера. / A test version for Global EU; game updates may require tracker updates.
