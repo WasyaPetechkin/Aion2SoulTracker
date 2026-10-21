@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.NetworkInformation;
 using AionMeter.Core.Events;
 using AionMeter.Core.Game;
 using PacketDotNet;
@@ -25,13 +26,21 @@ public sealed class LiveCapture : IEventSource
 {
     private readonly LiveCaptureOptions _options;
     private readonly PacketPipeline _pipeline;
+    private readonly GameConnectionGate _connections;
     private readonly object _gate = new();
     private readonly object _pipelineGate = new();
     private CancellationTokenSource? _cts;
     private Task? _monitor;
-    private LibPcapLiveDevice? _device;
-    private string? _filter;
-    private CaptureFileWriterDevice? _writer;
+    private readonly SemaphoreSlim _refreshRequested=new(0,1);
+    private void NetworkChanged(object? sender,EventArgs e) {try{_refreshRequested.Release();}catch(SemaphoreFullException){}}
+    private sealed class Binding(LibPcapLiveDevice device,string filter,long needed)
+    {public LibPcapLiveDevice Device=device;public string Filter=filter;public long Needed=needed;public CaptureFileWriterDevice? Writer;public PacketArrivalEventHandler? Handler;}
+    private readonly Dictionary<string,Binding> _devices=[];
+    private long _closedReceived,_closedDropped;
+    private long _captureErrors;
+    public long CaptureErrors=>Interlocked.Read(ref _captureErrors);
+    public string[] ActiveAdapters {get {lock(_gate)return _devices.Values.Select(x=>Describe(x.Device)).ToArray();}}
+
     private long _packets;
     private long _events;
     private CaptureStatus _status = new(CaptureState.Stopped, "Capture stopped");
@@ -40,6 +49,7 @@ public sealed class LiveCapture : IEventSource
     {
         _options = options;
         _pipeline = new PacketPipeline(data, OnEvent) { LockThreshold = 3 };
+        _connections=new(s=>_pipeline.OnSegment(s.TimeMs,s.Key,s.Seq,s.Syn,s.FinOrRst,s.Payload));
     }
 
     public event Action<GameEvent>? EventDecoded;
@@ -60,18 +70,13 @@ public sealed class LiveCapture : IEventSource
     /// adapter is open. The adapter's counters restart when it is reopened.</summary>
     public CaptureHealth? Health()
     {
-        lock (_gate)
+        lock(_gate)
         {
-            if (_device is null) return null;
-            try
-            {
-                var s = _device.Statistics;
-                return new CaptureHealth(s.ReceivedPackets, s.DroppedPackets + s.InterfaceDroppedPackets, _pipeline.Gaps);
-            }
-            catch (PcapException)
-            {
-                return null;
-            }
+            if(_devices.Count==0)return null;
+            long received=_closedReceived,dropped=_closedDropped;
+            foreach(var binding in _devices.Values)
+                try {var stats=binding.Device.Statistics;received+=stats.ReceivedPackets;dropped+=stats.DroppedPackets+stats.InterfaceDroppedPackets;}catch(PcapException){}
+            lock(_pipelineGate)return new(received,dropped,_pipeline.Gaps);
         }
     }
 
@@ -86,16 +91,18 @@ public sealed class LiveCapture : IEventSource
     {
         if (_monitor is not null) return;
         _cts = new CancellationTokenSource();
+        NetworkChange.NetworkAddressChanged+=NetworkChanged;
         SetStatus(CaptureState.Starting, "Starting capture…");
         _monitor = Task.Run(() => MonitorLoop(_cts.Token));
     }
 
     public void Stop()
     {
+        NetworkChange.NetworkAddressChanged-=NetworkChanged;
         _cts?.Cancel();
         try { _monitor?.Wait(2_000); } catch (AggregateException) { }
         _monitor = null;
-        CloseDevice();
+        CloseDevices();
         SetStatus(CaptureState.Stopped, "Capture stopped");
     }
 
@@ -121,14 +128,15 @@ public sealed class LiveCapture : IEventSource
             {
                 SetStatus(CaptureState.Error, "Npcap is not installed — get it from npcap.com");
             }
-            catch (PcapException ex)
+            catch (Exception ex) when(ex is not OutOfMemoryException)
             {
-                SetStatus(CaptureState.Error, "Capture error: " + ex.Message);
-                CloseDevice();
+                Interlocked.Increment(ref _captureErrors);
+                SetStatus(CaptureState.Error,"Capture error: "+ex.GetType().Name+": "+ex.Message);
+                CloseDevices();
             }
             try
             {
-                await Task.Delay(2_000, ct).ConfigureAwait(false);
+                await _refreshRequested.WaitAsync(2_000, ct).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
@@ -139,149 +147,92 @@ public sealed class LiveCapture : IEventSource
 
     private void Refresh()
     {
-        if (_options.DeviceName is { Length: > 0 } forced)
+        var pids=GameProcessLocator.FindGameProcessIds();
+        if(pids.Length==0 && _options.DeviceName is null)
+        {CloseDevices();lock(_pipelineGate)_connections.Clear();SetStatus(CaptureState.WaitingForGame,"AION 2 is not running");return;}
+        var connections=GameProcessLocator.FindConnections(pids);
+        lock(_pipelineGate)_connections.Update(connections,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+        var list=CaptureDeviceList.Instance;list.Refresh();
+        var available=list.OfType<LibPcapLiveDevice>().ToArray();
+        var plan=CapturePlan.Create(connections,available.Select(d=>new CaptureAdapter(d.Name,IsLoopback(d),d.Addresses.Select(a=>a.Addr?.ipAddress).OfType<IPAddress>().ToArray())),_options.DeviceName);
+        var now=Environment.TickCount64;
+        var failures=new List<string>();
+        lock(_gate)
         {
-            var dev = CaptureDeviceList.Instance.OfType<LibPcapLiveDevice>().FirstOrDefault(d => d.Name == forced);
-            if (dev is null)
+            // Open new routes before retiring old ones. Overlap is safe: TCP sequence
+            // reassembly delivers bytes once even if both capture points see them.
+            foreach(var entry in plan)
             {
-                SetStatus(CaptureState.Error, "Selected network adapter not found");
-                return;
+                if(_devices.TryGetValue(entry.Key,out var stopped) && !stopped.Device.Started)
+                {CloseBinding(entry.Key);Interlocked.Increment(ref _captureErrors);SetStatus(CaptureState.Error,"Capture error: adapter capture stopped; reopening");}
+                if(_devices.TryGetValue(entry.Key,out var existing))
+                {existing.Needed=now;if(existing.Filter!=entry.Value){existing.Device.Filter=entry.Value;existing.Filter=entry.Value;}continue;}
+                var device=available.Single(d=>d.Name==entry.Key);
+                var binding=new Binding(device,entry.Value,now);
+                binding.Handler=(_,e)=>OnPacketArrival(binding,e);
+                try
+                {
+                    device.Open(new DeviceConfiguration{Mode=DeviceModes.None,ReadTimeout=100,BufferSize=KernelBufferBytes});
+                    device.Filter=binding.Filter;device.OnPacketArrival+=binding.Handler;
+                    if(_options.RecordDirectory is {Length:>0} dir)
+                    {
+                        Directory.CreateDirectory(dir);
+                        var path=Path.Combine(dir,$"aion2_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid():N}.pcap");
+                        binding.Writer=new CaptureFileWriterDevice(path);binding.Writer.Open(new DeviceConfiguration{LinkLayerType=device.LinkType});RecordingPath=path;
+                    }
+                    device.StartCapture();_devices.Add(entry.Key,binding);
+                }
+                catch(Exception ex) when(ex is not OutOfMemoryException)
+                {Interlocked.Increment(ref _captureErrors);failures.Add(ex.Message);device.OnPacketArrival-=binding.Handler;try{device.Close();binding.Writer?.Close();}catch(PcapException){}}
             }
-            EnsureDevice(dev, "tcp");
-            ReportFlowStatus(dev);
-            return;
+            // A transient empty TCP table must not drop an established capture.
+            if(plan.Count>0 && failures.Count==0)
+                foreach(var old in _devices.Where(x=>!plan.ContainsKey(x.Key) && now-x.Value.Needed>30_000).Select(x=>x.Key).ToArray())CloseBinding(old);
         }
-
-        var pids = GameProcessLocator.FindGameProcessIds();
-        if (pids.Length == 0)
-        {
-            CloseDevice();
-            SetStatus(CaptureState.WaitingForGame, "AION 2 is not running");
-            return;
-        }
-
-        var connections = GameProcessLocator.FindConnections(pids);
-        if (connections.Count == 0)
-        {
-            SetStatus(_device is null ? CaptureState.WaitingForGame : CaptureState.Idle, "Waiting for the game to connect…");
-            return;
-        }
-
-        var devices = CaptureDeviceList.Instance.OfType<LibPcapLiveDevice>().ToList();
-        LibPcapLiveDevice? device = null;
-        foreach (var c in connections.OrderByDescending(c => c.RemotePort == PacketPipeline.GamePort))
-        {
-            device = IPAddress.IsLoopback(c.RemoteIp) || IPAddress.IsLoopback(c.LocalIp)
-                ? devices.FirstOrDefault(IsLoopback)
-                : devices.FirstOrDefault(d => d.Addresses.Any(a => c.LocalIp.Equals(a.Addr?.ipAddress)));
-            if (device is not null) break;
-        }
-        if (device is null)
-        {
-            SetStatus(CaptureState.Error, "No Npcap adapter carries the game connection (VPN? pick one in Settings)");
-            return;
-        }
-
-        var hosts = connections.Select(c => $"(host {c.RemoteIp} and port {c.RemotePort})").Distinct().OrderBy(s => s);
-        EnsureDevice(device, "tcp and (" + string.Join(" or ", hosts) + ")");
-        ReportFlowStatus(device);
+        if(failures.Count>0){SetStatus(CaptureState.Error,"Capture error: "+string.Join("; ",failures));return;}
+        if(_options.DeviceName is not null && plan.Count==0){SetStatus(CaptureState.Error,"Selected network adapter not found");return;}
+        if(plan.Count==0 && connections.Any(c=>c.RemotePort==PacketPipeline.GamePort))
+        {SetStatus(CaptureState.Error,"No Npcap adapter carries the game connection (VPN? pick one in Settings)");return;}
+        ReportFlowStatus();
     }
 
-    private void ReportFlowStatus(LibPcapLiveDevice device)
+    private void ReportFlowStatus()
     {
-        // Capture mutates the flow dictionary on another thread. Take a consistent
-        // snapshot; enumerating it concurrently can terminate the monitor loop.
         int flows;long lastData;string? server;
         lock(_pipelineGate)
         {flows=_pipeline.GameFlows;lastData=_pipeline.LastGameDataMs;server=_pipeline.LockedFlows.Select(f=>f.Src.ToString()).FirstOrDefault();}
-        var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        if (flows > 0 && now - lastData < 10_000)
-        {
-            SetStatus(CaptureState.Capturing, $"Capturing · {server}" + (RecordingPath is null ? "" : " · REC"));
-        }
-        else if (flows > 0)
-        {
-            SetStatus(CaptureState.Idle, "Connected · no game traffic for a while");
-        }
-        else
-        {
-            SetStatus(CaptureState.Idle, $"Listening on {Describe(device)}…");
-        }
+        var now=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if(flows>0 && now-lastData<10_000)SetStatus(CaptureState.Capturing,$"Capturing · {server}"+(RecordingPath is null ? "" : " · REC"));
+        else SetStatus(CaptureState.Idle,"Connected · no game traffic for a while");
     }
 
-    private void EnsureDevice(LibPcapLiveDevice device, string filter)
+    private void CloseBinding(string name)
     {
-        lock (_gate)
-        {
-            if (_device is not null && _device.Name != device.Name) CloseDeviceLocked();
-            if (_device is null)
-            {
-                device.OnPacketArrival += OnPacketArrival;
-                // A world boss with a crowd floods the game connection: Npcap's default 1 MB kernel buffer overflows
-                // in the bursts, and every packet it drops is a hole in the stream.
-                device.Open(new DeviceConfiguration { Mode = DeviceModes.None, ReadTimeout = 100, BufferSize = KernelBufferBytes });
-                device.Filter = filter;
-                _filter = filter;
-                _device = device;
-                OpenRecorder(device);
-                device.StartCapture();
-            }
-            else if (_filter != filter)
-            {
-                _device.Filter = filter;
-                _filter = filter;
-            }
-        }
+        if(!_devices.Remove(name,out var binding))return;
+        var device=binding.Device;
+        try{device.StopCapture();}catch(PcapException){}
+        device.OnPacketArrival-=binding.Handler;
+        try{var stats=device.Statistics;_closedReceived+=stats.ReceivedPackets;_closedDropped+=stats.DroppedPackets+stats.InterfaceDroppedPackets;}catch(PcapException){}
+        try{device.Close();}finally{binding.Writer?.Close();}
+    }
+    private void CloseDevices()
+    {
+        lock(_gate){foreach(var name in _devices.Keys.ToArray())CloseBinding(name);RecordingPath=null;}
     }
 
-    private void OpenRecorder(LibPcapLiveDevice device)
+    private void OnPacketArrival(Binding binding,PacketCapture e)
     {
-        if (_options.RecordDirectory is not { Length: > 0 } dir) return;
-        Directory.CreateDirectory(dir);
-        RecordingPath = Path.Combine(dir, $"aion2_{DateTime.Now:yyyyMMdd_HHmmss}.pcap");
-        _writer = new CaptureFileWriterDevice(RecordingPath);
-        _writer.Open(new DeviceConfiguration { LinkLayerType = device.LinkType });
-    }
-
-    private void CloseDevice()
-    {
-        lock (_gate) CloseDeviceLocked();
-    }
-
-    private void CloseDeviceLocked()
-    {
-        if (_device is null) return;
+        var raw=e.GetPacket();Interlocked.Increment(ref _packets);
         try
         {
-            _device.StopCapture();
+            lock(_pipelineGate)
+            {
+                binding.Writer?.Write(raw);
+                if(SegmentReader.TryRead(raw,out var seg))_connections.Push(seg);
+            }
         }
-        catch (PcapException)
-        {
-        }
-        _device.OnPacketArrival -= OnPacketArrival;
-        _device.Close();
-        _device = null;
-        _filter = null;
-        _writer?.Close();
-        _writer = null;
-        RecordingPath = null;
-    }
-
-    private void OnPacketArrival(object sender, PacketCapture e)
-    {
-        var raw = e.GetPacket();
-        Interlocked.Increment(ref _packets);
-        try
-        {
-            _writer?.Write(raw);
-            if (SegmentReader.TryRead(raw, out var seg))
-                lock(_pipelineGate)_pipeline.OnSegment(seg.TimeMs, seg.Key, seg.Seq, seg.Syn, seg.FinOrRst, seg.Payload);
-        }
-        catch (Exception ex) when (ex is not OutOfMemoryException)
-        {
-            // A malformed packet must never take the capture thread down.
-            System.Diagnostics.Debug.WriteLine(ex);
-        }
+        catch(Exception ex) when(ex is not OutOfMemoryException)
+        {Interlocked.Increment(ref _captureErrors);System.Diagnostics.Debug.WriteLine(ex);}
     }
 
     private void OnEvent(GameEvent e)

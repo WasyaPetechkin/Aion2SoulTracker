@@ -47,6 +47,8 @@ public sealed class PacketPipeline
     public long LastGameDataMs { get; private set; }
 
     public event Action<FlowKey>? FlowLocked;
+    public event Action<FlowKey,string>? StreamDiscontinuity;
+    public FlowKey? CurrentFlow {get;private set;}
 
     public void OnSegment(long timeMs, FlowKey key, uint seq, bool syn, bool finOrRst, ReadOnlySpan<byte> payload)
     {
@@ -63,12 +65,18 @@ public sealed class PacketPipeline
 
         if (syn)
         {
-            flow.SynNext = seq + 1;
+            if(flow.SynNext!=seq+1)
+            {
+                if(flow.IsGame)StreamDiscontinuity?.Invoke(key,"TCP connection restarted");
+                flow=new Flow(key){LastSeenMs=timeMs,SynNext=seq+1};_flows[key]=flow;
+            }
             return;
         }
         if (finOrRst && payload.IsEmpty)
         {
-            if (!flow.IsGame) _flows.Remove(key);
+            // A FIN can arrive before retransmitted data. Keep established stream
+            // state so late bytes are not interpreted as a new connection.
+            if(!flow.IsGame)_flows.Remove(key);
             return;
         }
         if (payload.IsEmpty || flow.IsTls) return;
@@ -80,7 +88,18 @@ public sealed class PacketPipeline
                 flow.IsTls = true;
                 return;
             }
-            flow.Heartbeats += CountHeartbeats(payload);
+            if(flow.Probe is null)
+            {
+                flow.Probe=new TcpReassembler(data=>
+                {
+                    var previous=flow.ProbeTail.Length;
+                    var joined=new byte[previous+data.Length];flow.ProbeTail.CopyTo(joined,0);data.Span.CopyTo(joined.AsSpan(previous));
+                    flow.Heartbeats+=CountHeartbeats(joined,previous);
+                    flow.ProbeTail=joined.AsSpan(Math.Max(0,joined.Length-10)).ToArray();
+                },()=>{flow.ProbeTail=[];flow.Heartbeats=0;});
+                flow.Probe.Start(flow.SynNext ?? seq);
+            }
+            flow.Probe.Push(seq,payload,timeMs);
             flow.PreLock.Add((seq, payload.ToArray(), timeMs));
             flow.PreLockBytes += payload.Length;
             while (flow.PreLockBytes > PreLockBufferBytes && flow.PreLock.Count > 1)
@@ -103,15 +122,18 @@ public sealed class PacketPipeline
     {
         flow.IsGame = true;
         var first = flow.PreLock[0];
-        var aligned = flow.SynNext is { } isn && isn == first.Seq;
+        var aligned = flow.SynNext.HasValue;
         flow.Decoder = new FrameDecoder(Handle, aligned);
         var decoder = flow.Decoder;
+        decoder.DataLost+=reason=>StreamDiscontinuity?.Invoke(flow.Key,reason);
         flow.Reassembler = new TcpReassembler(d => decoder.Feed(d.Span), () =>
         {
             Gaps++;
+            StreamDiscontinuity?.Invoke(flow.Key,"TCP sequence gap: "+flow.Reassembler!.LastGapReason+$"; missing={flow.Reassembler.LastGapMissingBytes}");
             decoder.Reset();
         });
-        flow.Reassembler.Start(first.Seq);
+        flow.Reassembler.Start(flow.SynNext ?? first.Seq);
+        flow.Probe=null;flow.ProbeTail=[];
 
         var buffered = flow.PreLock;
         flow.PreLock = new();
@@ -122,6 +144,7 @@ public sealed class PacketPipeline
 
     private void Feed(Flow flow, uint seq, ReadOnlySpan<byte> payload, long timeMs)
     {
+        CurrentFlow=flow.Key;
         _parser.TimeMs = timeMs;
         GameBytes += payload.Length;
         LastGameDataMs = timeMs;
@@ -130,19 +153,19 @@ public sealed class PacketPipeline
 
     private void Handle(ushort opcode, ReadOnlySpan<byte> body) => _parser.Handle(opcode, body);
 
-    private static int CountHeartbeats(ReadOnlySpan<byte> payload)
+    private static int CountHeartbeats(ReadOnlySpan<byte> payload,int previous=0)
     {
         var count = 0;
         foreach (var sig in HeartbeatSignatures)
         {
-            var span = payload;
+            var span = payload;var offset=0;
             int i;
             while ((i = span.IndexOf(sig)) >= 0)
             {
-                // A heartbeat frame is exactly 11 bytes; the next byte must start another frame (or end the segment).
-                var end = i + 11;
-                if (end == span.Length || (end < span.Length && span[end] != 0xFF)) count++;
-                span = span[(i + 3)..];
+                // Known heartbeat frames are 3 or 11 bytes; the next byte must start another frame (or end the segment).
+                var end = i + (sig[0]==0x06 ? 3 : 11);
+                if (offset+end>previous && (end == span.Length || (end < span.Length && span[end] != 0xFF))) count++;
+                offset+=i+3;span = span[(i + 3)..];
             }
         }
         return count;
@@ -156,9 +179,10 @@ public sealed class PacketPipeline
         _lastPruneMs = nowMs;
         List<FlowKey>? dead = null;
         foreach (var (k, f) in _flows)
-            if (nowMs - f.LastSeenMs > FlowIdleMs) (dead ??= new()).Add(k);
+            if (nowMs-f.LastSeenMs>(f.IsGame ? 30*60_000 : FlowIdleMs)) (dead ??= new()).Add(k);
         if (dead is not null)
-            foreach (var k in dead) _flows.Remove(k);
+            foreach (var k in dead)
+            {if(_flows[k].IsGame)StreamDiscontinuity?.Invoke(k,"Inactive TCP stream retired");_flows.Remove(k);}
     }
 
     private sealed class Flow(FlowKey key)
@@ -173,5 +197,7 @@ public sealed class PacketPipeline
         public int PreLockBytes;
         public FrameDecoder? Decoder;
         public TcpReassembler? Reassembler;
+        public TcpReassembler? Probe;
+        public byte[] ProbeTail=[];
     }
 }

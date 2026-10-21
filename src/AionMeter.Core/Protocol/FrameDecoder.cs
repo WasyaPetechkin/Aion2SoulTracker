@@ -37,6 +37,7 @@ public sealed class FrameDecoder
         _hunting = !startsAligned;
     }
 
+    public event Action<string>? DataLost;
     public long Frames { get; private set; }
     public long Bundles { get; private set; }
     public long BadBundles { get; private set; }
@@ -136,6 +137,7 @@ public sealed class FrameDecoder
     private int Resync()
     {
         Resyncs++;
+        DataLost?.Invoke("Frame alignment lost");
         DroppedBytes++;
         if (_huntedBytes <= MaxHuntBytes)
         {
@@ -177,6 +179,7 @@ public sealed class FrameDecoder
             if (!Wire.TryU32(frame, ref o, out var rawSize) || rawSize == 0 || rawSize > MaxBundle || depth > 4)
             {
                 BadBundles++;
+                DataLost?.Invoke("Invalid compressed bundle");
                 return;
             }
             var target = ArrayPool<byte>.Shared.Rent((int)rawSize);
@@ -186,6 +189,7 @@ public sealed class FrameDecoder
                 if (n <= 0)
                 {
                     BadBundles++;
+                DataLost?.Invoke("Invalid compressed bundle");
                     return;
                 }
                 WalkInner(target.AsSpan(0, n), depth + 1);
@@ -213,9 +217,9 @@ public sealed class FrameDecoder
                 continue;
             }
             var span = data[pos..];
-            if (!Wire.TryVarint(span, 0, out var len, out var vlen)) return;
+            if (!Wire.TryVarint(span, 0, out var len, out var vlen)) {BadBundles++;DataLost?.Invoke("Invalid inner frame length");return;}
             var size = (long)len + vlen - 4;
-            if (len < 6 || size > span.Length) return;
+            if (len < 6 || size > span.Length) {BadBundles++;DataLost?.Invoke("Truncated inner frame");return;}
             HandleFrame(span[..(int)size], vlen, depth);
             pos += (int)size;
         }

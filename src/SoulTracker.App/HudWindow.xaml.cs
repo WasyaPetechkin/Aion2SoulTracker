@@ -63,13 +63,13 @@ public partial class HudWindow : Window
         DragSurface.Cursor=_locked ? Cursors.Arrow : Cursors.SizeAll;
         KeepOnScreen();
     }
-    internal void Refresh(CollectionView view,AppPreferences preferences,IEnumerable<string>? categories=null,SpawnDatabase? database=null,int? world=null)
+    internal void Refresh(CollectionView view,AppPreferences preferences,IEnumerable<string>? categories=null,SpawnDatabase? database=null,int? world=null,bool receiving=true)
     {
         var t=new UiText(_language);
         var regular=view.Pets.Where(x=>x.IsRegular).ToArray();
         CollectionSummary.Text=view.HasSnapshot ? $"{regular.Count(x=>x.Level>0)} / {regular.Length}  ·  MAX {regular.Count(x=>x.Completed)}" : "— / 200";
         SyncState.Text=!view.HasSnapshot ? t.Choose("Ожидание","Waiting") : view.NeedsResync ? t.Choose("Нужен вход","Login required") :
-            view.Source=="Живые данные игры" ? t.Choose("Онлайн","Live") : t.Choose("Запись","Recording");
+            view.Source=="Живые данные игры" ? (receiving ? t.Choose("Онлайн","Live") : t.Choose("Ожидание сети","Waiting for network")) : t.Choose("Запись","Recording");
         SyncState.Foreground=new SolidColorBrush(view.HasSnapshot && !view.NeedsResync ? Color.FromRgb(121,215,195) : Color.FromRgb(216,181,115));
         var projected=preferences.FocusMode ? database?.Focus(view,categories ?? preferences.Categories,world) ?? new HudTargets([],0,0,0) : HudProjection.Select(view,preferences.HudTargets,preferences.HudRows);
         var sig=$"{view.LastTimeMs}:{view.HasSnapshot}:{view.NeedsResync}:{_language}:{string.Join(',',preferences.HudTargets)}:{preferences.HudRows}:{preferences.FocusMode}:{string.Join(',',projected.Visible.Select(x=>x.Id))}";

@@ -1,3 +1,9 @@
+# 0.3.1 — 2026-10-21
+
+Тестовое исправление сетевого захвата: одновременное чтение старого и нового адаптера при смене маршрута; стабильный входящий фильтр игрового порта при смене сервера; обновление списка VPN-адаптеров; повторный запуск остановленного захвата. Исправлено распознавание разбитых между TCP-сегментами heartbeat-сообщений, повторное использование TCP-соединения и сохранение частично прочитанного кадра при сетевой паузе. Добавлена диагностика причин потери синхронизации и ошибок чтения душ. HUD показывает ожидание сети. Требуется длительная проверка с ClearVPN в игре.
+
+Network capture test fix: overlapping adapter capture during route changes, stable inbound game-port filters during server transfers, refreshed VPN adapter discovery and recovery of stopped capture. Fixed fragmented heartbeat detection, reused TCP connection handling and partial-frame retention during quiet periods. Added bounded synchronization-loss diagnostics and explicit unreadable soul-gain reporting. HUD indicates when it is waiting for network traffic. Extended in-game ClearVPN verification is still required.
+
 # 0.3.0 — 2026-10-20
 
 Quiet connections preserve synchronization; late TCP retransmissions wait up to five seconds before a confirmed gap. Capture status reads use a consistent flow snapshot. Actual data loss still requires synchronization.

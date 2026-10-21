@@ -27,6 +27,9 @@ public sealed class TcpReassembler
     public long Duplicates { get; private set; }
     public long OutOfOrder { get; private set; }
     public long Gaps { get; private set; }
+    public string LastGapReason {get;private set;}="";
+    public uint LastGapMissingBytes {get;private set;}
+
 
     /// <summary>Anchor the stream at a known sequence number (ISN + 1 after a SYN).</summary>
     public void Start(uint nextSeq)
@@ -72,6 +75,7 @@ public sealed class TcpReassembler
         // Give up on a hole that is not going to be filled (packet lost before the capture point).
         while (_pending.Count > 0 && (_pendingBytes > MaxPendingBytes || timeMs - OldestPendingTime() > GapTimeoutMs))
         {
+            LastGapReason=_pendingBytes>MaxPendingBytes ? "reorder buffer full" : "retransmission timeout";
             SkipToEarliestPending();
             DrainPending();
         }
@@ -89,6 +93,7 @@ public sealed class TcpReassembler
         var best = 0;
         for (var i = 1; i < _pending.Count; i++)
             if ((int)(_pending[i].Seq - _pending[best].Seq) < 0) best = i;
+        LastGapMissingBytes=_pending[best].Seq-_next;
         _next = _pending[best].Seq;
         Gaps++;
         _onGap();

@@ -7,7 +7,7 @@ internal sealed class UiText(string language)
     public bool Russian => language=="ru";
     public string Choose(string ru,string en) => Russian ? ru : en;
     public string Title => Choose("Коллекция душ","Soul collection");
-    public string Subtitle => Choose("Aion 2 · Global EU · версия 0.3.0","Aion 2 · Global EU · version 0.3.0");
+    public string Subtitle => Choose("Aion 2 · Global EU · версия 0.3.1","Aion 2 · Global EU · version 0.3.1");
     public string Summary(CollectionView view)
     {
         if(!view.HasSnapshot) return Choose("Ожидается коллекция из игры","Waiting for the game collection");
@@ -72,7 +72,8 @@ internal sealed class UiText(string language)
         value=value.Replace(": уровень ",": level ",StringComparison.Ordinal);
         var messages=new Dictionary<string,string>
         {
-            ["Начато прослушивание: для актуальной коллекции нужен новый вход в персонажа"]="Capture started: log in again to sync the collection",
+            ["Не удалось прочитать получение души; нужен новый вход в персонажа"]="Could not decode a soul gain; log in again to synchronize",
+                ["Начато прослушивание: для актуальной коллекции нужен новый вход в персонажа"]="Capture started: log in again to sync the collection",
             ["В записи есть пропуски; требуется новая синхронизация"]="The recording has gaps; a new sync is required",
             ["Пропущен участок сети; нужен новый вход в персонажа"]="Network data was missed; log in again to sync",
             ["Соединение прервано; после входа ожидается новая коллекция"]="Connection interrupted; waiting for a new collection after login"

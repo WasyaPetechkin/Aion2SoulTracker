@@ -92,7 +92,7 @@ public partial class MainWindow
                 if(gain.WorldId is int world && _spawns.Worlds.ContainsKey(world) && v.Pets.Any(p=>p.Id==gain.PetId && p.IsRegular && !p.Completed))pins.Add(gain.PetId);
             if(pins.Count!=_preferences.HudTargets.Length){_preferences.HudTargets=pins.Order().ToArray();QueueSettingsSave();force=true;}
         }
-        _hud.Refresh(v,_preferences,EnabledCategories(),_spawns,_session.Navigation.View().WorldId);
+        _hud.Refresh(v,_preferences,EnabledCategories(),_spawns,_session.Navigation.View().WorldId,_session.Status.StartsWith("Capturing",StringComparison.Ordinal));
         _map.Refresh(v,_session.Navigation.View(),EnabledCategories());
         var t=Text;
         Summary.Text = t.Summary(v);
@@ -128,7 +128,7 @@ public partial class MainWindow
                     _session.LiveSnapshotReceived, _session.RejectedPetMessages, v.HasSnapshot, v.NeedsResync,
                     HudVisible=_hud.IsVisible,HudLocked=_preferences.HudLocked,HudTargets=_preferences.HudTargets,
                     MapVisible=_map.IsVisible,MapWorld=_preferences.MapWorld,MapSpawns=_map.SpawnCount,Navigation=_session.Navigation.View(),
-                    CaptureHealth=_session.Health,MapPositionIntervalMs=_navigationTimer.Interval.TotalMilliseconds,
+                    CaptureHealth=_session.Health,CaptureAdapters=_session.CaptureAdapters,CaptureErrors=_session.CaptureErrors,NetworkEvents=_session.NetworkEvents,MapPositionIntervalMs=_navigationTimer.Interval.TotalMilliseconds,
                     HotkeysAvailable=!_hotkeyUnavailable })); }
             catch(Exception ex) when(ex is IOException or UnauthorizedAccessException) { _notice=ex.Message; }
         }

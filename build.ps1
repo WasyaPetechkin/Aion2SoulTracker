@@ -1,4 +1,4 @@
-param([string]$DotnetPath='dotnet',[string]$IsccPath='', [string]$Version='0.3.0',[string]$SigningScript='')
+param([string]$DotnetPath='dotnet',[string]$IsccPath='', [string]$Version='0.3.1',[string]$SigningScript='')
 $ErrorActionPreference='Stop'
 $root=$PSScriptRoot
 $dist=Join-Path $root 'dist'
