@@ -128,7 +128,11 @@ public partial class MainWindow
     }
     private static void Render(Window window,string path)
     {
-        var content=(FrameworkElement)window.Content;content.UpdateLayout();
+        RenderElement((FrameworkElement)window.Content,path);
+    }
+    private static void RenderElement(FrameworkElement content,string path)
+    {
+        content.UpdateLayout();
         var bitmap=new RenderTargetBitmap((int)Math.Ceiling(content.ActualWidth+content.Margin.Left+content.Margin.Right),
             (int)Math.Ceiling(content.ActualHeight+content.Margin.Top+content.Margin.Bottom),96,96,PixelFormats.Pbgra32);
         bitmap.Render(content);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bitmap));

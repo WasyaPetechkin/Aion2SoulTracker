@@ -1,4 +1,4 @@
-﻿Aion 2 Soul Tracker · 0.3.2
+﻿Aion 2 Soul Tracker · 0.3.3
 Windows 10 / 11, 64-bit
 
 БЫСТРЫЙ СТАРТ
@@ -33,7 +33,7 @@ Windows 10 / 11, 64-bit
 • .NET включён в комплект. Python, SDK и инструменты разработчика не нужны.
 • Npcap распространяется отдельно по условиям его лицензии.
 
-Обратная связь: что ожидали, что произошло, скриншот и версия 0.3.2.
+Обратная связь: что ожидали, что произошло, скриншот и версия 0.3.3.
 При проблеме запуска журнал startup-error.txt находится в папке данных.
 
 QUICK START (ENGLISH)
@@ -54,14 +54,14 @@ GPL-3.0. License texts and third-party attribution are in licenses/.
 The matching complete project source is included in source.zip.
 This is an independent fan project, not an official NCSOFT product.
 
-НОВОЕ В 0.3.2
+НОВОЕ В 0.3.3
 • Режим фокуса: ближайшие к MAX в счётчике и на карте, все лидеры при равенстве.
 • Раздел «Настройки»: язык, свои горячие клавиши и размер строк HUD 65–150%.
 • Наведите на «?» рядом с настройкой, чтобы прочесть краткое пояснение.
 • Перед обновлением полностью закройте приложение через «Выход».
 • Тестовая сборка пока не подписана доверенным сертификатом издателя.
 
-ИЗМЕНЕНИЯ 0.3.2 / CHANGES
+ИЗМЕНЕНИЯ 0.3.3 / CHANGES
 Фокус выбирает цели только в текущей локации игрока. / Focus uses the current player location.
 Крестик в строке HUD снимает цель. / A HUD row cross removes that target.
 Отмеченные цели всегда наверху каталога, даже вне фильтров. / Pinned targets stay first, even outside filters.

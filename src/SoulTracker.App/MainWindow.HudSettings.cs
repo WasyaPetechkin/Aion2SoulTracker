@@ -7,7 +7,7 @@ public partial class MainWindow
 {
     private ContextMenu BuildHudQuickSettings()
     {
-        var menu=new ContextMenu();
+        var menu=new ContextMenu {Background=System.Windows.Media.Brushes.WhiteSmoke,Foreground=System.Windows.Media.Brushes.Black};
         MenuItem Toggle(CheckBox source,string topic)
         {
             var item=new MenuItem {Header=source.Content,Tag=source.Name,IsCheckable=true,StaysOpenOnClick=true,
@@ -32,10 +32,19 @@ public partial class MainWindow
         var clickThrough=Toggle(HudLocked,"lock");clickThrough.StaysOpenOnClick=false;menu.Items.Add(clickThrough);
         var open=new MenuItem {Header=Text.Choose("Открыть каталог…","Open collection…")};
         open.Click+=(_,_)=>StartupWindow.ShowVisible(this);menu.Items.Add(open);
-        // The app's global TextBlock style is light: keep native menu text readable.
-        var textStyle=new Style(typeof(TextBlock));
-        textStyle.Setters.Add(new Setter(TextBlock.ForegroundProperty,SystemColors.MenuTextBrush));
-        menu.Resources[typeof(TextBlock)]=textStyle;
+        // Generated native menu headers can still pick up App.xaml's light implicit
+        // TextBlock style. Set the actual header foreground locally, including submenus.
+        void StyleHeaders(ItemsControl parent)
+        {
+            foreach(var item in parent.Items.OfType<MenuItem>())
+            {
+                item.Foreground=System.Windows.Media.Brushes.Black;
+                item.Background=System.Windows.Media.Brushes.WhiteSmoke;
+                item.Header=new TextBlock {Text=item.Header?.ToString(),Foreground=System.Windows.Media.Brushes.Black,FontSize=13};
+                StyleHeaders(item);
+            }
+        }
+        StyleHeaders(menu);
         menu.Closed+=(_,_)=>
         {
             void Release(ItemsControl parent)

@@ -67,6 +67,20 @@ public partial class MainWindow
         _preferences.Save(Path.Combine(directory,"hud-menu-preferences.json"));
         var menuSaved=AppPreferences.Load(Path.Combine(directory,"hud-menu-preferences.json"));
         Check("hud_menu_preferences_saved",menuSaved.FocusMode && menuSaved.Categories.SequenceEqual(_preferences.Categories));
+        _hud.QuickSettingsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        var visibleMenu=_hud.QuickSettingsButton.ContextMenu!;
+        visibleMenu.UpdateLayout();
+        bool Readable(ItemsControl parent)=>parent.Items.OfType<MenuItem>().All(item=>
+            item.Header is TextBlock {Foreground:System.Windows.Media.SolidColorBrush brush} &&
+            brush.Color==System.Windows.Media.Colors.Black && Readable(item));
+        Check("hud_menu_headers_readable",visibleMenu.IsOpen && Readable(visibleMenu));
+        RenderElement(visibleMenu,Path.Combine(directory,"hud-menu.png"));
+        var submenu=visibleMenu.Items.OfType<MenuItem>().Single(x=>x.HasItems);
+        submenu.IsSubmenuOpen=true;submenu.UpdateLayout();
+        var popup=submenu.Template.FindName("PART_Popup",submenu) as Popup;
+        Check("hud_submenu_opens",popup?.IsOpen==true);
+        if(popup?.Child is FrameworkElement child)RenderElement(child,Path.Combine(directory,"hud-submenu.png"));
+        submenu.IsSubmenuOpen=false;visibleMenu.IsOpen=false;
         var leader=tied with {LastTimeMs=tied.LastTimeMs+1,Pets=tied.Pets.Select(p=>p.Id==1120 ? p with {Souls=71} : p).ToArray()};
         _session.State.Restore(leader);Refresh(true);
         Check("focus_narrows_after_gain",_hud.Targets.Items.Count==1 && _map.SpawnCount==Expected(_session.State.View()));
