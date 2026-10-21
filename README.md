@@ -203,13 +203,14 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Исходный код и сборка / Source and build
 
-Код 0.3.3: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/v0.3.3). Главная страница содержит описание проекта; для сборки выберите этот тег или исходный архив релиза. / The main page contains project information; to build, use this tag or the release source archive.
+Код 0.3.3: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/9bbc6426d14b616ede2c1715adfb60bbdb72acb7). Главная страница содержит описание проекта; для сборки используйте указанный коммит или архив `Aion2SoulTracker-v0.3.3-source.zip`. / The main page contains project information; to build, use the linked commit or `Aion2SoulTracker-v0.3.3-source.zip`.
 
 Для сборки нужны .NET 10 SDK и Inno Setup 7. / Building requires .NET 10 SDK and Inno Setup 7.
 
 ```powershell
-git clone --branch v0.3.3 https://github.com/WasyaPetechkin/Aion2SoulTracker.git
+git clone https://github.com/WasyaPetechkin/Aion2SoulTracker.git
 cd Aion2SoulTracker
+git checkout 9bbc6426d14b616ede2c1715adfb60bbdb72acb7
 dotnet test tests/SoulTracker.Tests -c Release
 dotnet build src/SoulTracker.App -c Release
 ./build.ps1
@@ -224,6 +225,6 @@ dotnet build src/SoulTracker.App -c Release
 - Захват и разбор пакетов / Capture and parsing: [aion2-dps-meter](https://github.com/cyberbadger6969/aion2-dps-meter).
 - Карты, данные и портреты / Maps, data and portraits: [aion2-nyerk](https://github.com/xCROv/aion2-nyerk), [Questlog](https://questlog.gg/aion-2/en/map).
 - Игровые изображения, названия и данные принадлежат соответствующим правообладателям. / Game artwork, names and data belong to their respective owners.
-- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.3/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.3/licenses/THIRD-PARTY.md).
+- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/9bbc6426d14b616ede2c1715adfb60bbdb72acb7/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/9bbc6426d14b616ede2c1715adfb60bbdb72acb7/licenses/THIRD-PARTY.md).
 
 Тестовая версия для Global EU; обновления игры могут потребовать обновления трекера. / A test version for Global EU; game updates may require tracker updates.
