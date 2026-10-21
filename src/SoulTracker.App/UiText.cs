@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using SoulTracker.Core;
 
 namespace SoulTracker.App;
@@ -7,7 +7,7 @@ internal sealed class UiText(string language)
     public bool Russian => language=="ru";
     public string Choose(string ru,string en) => Russian ? ru : en;
     public string Title => Choose("Коллекция душ","Soul collection");
-    public string Subtitle => Choose("Aion 2 · Global EU · версия 0.3.1","Aion 2 · Global EU · version 0.3.1");
+    public string Subtitle => Choose("Aion 2 · Global EU · версия 0.3.2","Aion 2 · Global EU · version 0.3.2");
     public string Summary(CollectionView view)
     {
         if(!view.HasSnapshot) return Choose("Ожидается коллекция из игры","Waiting for the game collection");

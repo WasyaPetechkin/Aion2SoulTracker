@@ -15,6 +15,7 @@ public partial class HudWindow : Window
     private string _signature="";
     private readonly bool _preview;
     internal event Action? CatalogRequested;
+    internal Func<System.Windows.Controls.ContextMenu>? QuickSettingsRequested;
     internal event Action? HideRequested;
     internal event Action? LockRequested;
     internal event Action<int>? UntrackRequested;
@@ -49,6 +50,9 @@ public partial class HudWindow : Window
         PanelBackground.Opacity=preferences.HudOpacity;
         if(_handle!=0) OverlayNative.SetClickThrough(_handle,_locked);
         var t=new UiText(language);
+        QuickSettingsButton.Content=t.Choose("Настройки HUD ▾","HUD settings ▾");
+        QuickSettingsButton.ToolTip=t.Choose("Фокус, автодобавление душ, категории и карта. Для управления отключи «Клики в игру».","Focus, automatic soul tracking, categories and map. Disable click through to use these controls.");
+        if(_locked && QuickSettingsButton.ContextMenu is {} menu)menu.IsOpen=false;
         HudTitle.Text=preferences.FocusMode ? t.Choose("ФОКУС","FOCUS") : t.Choose("ДУШИ","SOULS");
         CatalogButton.ToolTip=t.Choose("Открыть каталог","Open collection");
         HideButton.ToolTip=t.Choose("Скрыть HUD · ","Hide HUD · ")+preferences.HudHotkey;
@@ -115,6 +119,12 @@ public partial class HudWindow : Window
         GeometryChanged?.Invoke();
     }
     private void OpenCatalog(object sender,RoutedEventArgs e)=>CatalogRequested?.Invoke();
+    private void OpenQuickSettings(object sender,RoutedEventArgs e)
+    {
+        if(_locked || QuickSettingsRequested?.Invoke() is not {} menu)return;
+        QuickSettingsButton.ContextMenu=menu;
+        menu.PlacementTarget=QuickSettingsButton;menu.Placement=PlacementMode.Top;menu.IsOpen=true;
+    }
     private void Untrack(object sender,RoutedEventArgs e)
     {if(sender is System.Windows.Controls.Button {DataContext:TargetRow row} && row.CanRemove)UntrackRequested?.Invoke(row.Id);}
     private void HideHud(object sender,RoutedEventArgs e)=>HideRequested?.Invoke();

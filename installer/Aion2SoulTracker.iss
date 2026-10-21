@@ -1,5 +1,5 @@
-#ifndef AppVer
- #define AppVer "0.3.1"
+﻿#ifndef AppVer
+ #define AppVer "0.3.2"
 #endif
 #ifndef PayloadDir
  #error Pass /DPayloadDir=<published application directory>

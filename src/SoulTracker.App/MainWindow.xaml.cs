@@ -60,6 +60,7 @@ public partial class MainWindow : Window
         _map.HideRequested+=()=>SetMapVisibility(false);
         _map.LockRequested+=()=>SetHudLock(!_preferences.HudLocked);
         _hud.CatalogRequested+=()=>StartupWindow.ShowVisible(this);
+        _hud.QuickSettingsRequested=BuildHudQuickSettings;
         _hud.HideRequested+=()=>SetHudVisibility(false);
         _hud.LockRequested+=()=>SetHudLock(!_preferences.HudLocked);
         _hud.UntrackRequested+=id=>{_preferences.HudTargets=_preferences.HudTargets.Where(x=>x!=id).ToArray();QueueSettingsSave();Refresh(true);};
