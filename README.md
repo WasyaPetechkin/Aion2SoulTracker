@@ -2,7 +2,7 @@
 <h1 align="center">Aion 2 Soul Tracker</h1>
 <p align="center">Коллекция душ · Компактный HUD · Интерактивная карта<br>Soul collection · Compact HUD · Interactive map</p>
 <p align="center"><strong>Windows 10 / 11 x64 · Aion 2 Global EU · Русский / English</strong></p>
-<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.3">Скачать / Download 0.3.3</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
+<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.4">Скачать / Download 0.3.4</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
 
 ## Русский
 
@@ -10,9 +10,9 @@
 
 ### Скачать и установить
 
-**[Скачать установщик 0.3.3 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.3/Aion2SoulTracker-Setup-v0.3.3.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Скачать установщик 0.3.4 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.4/Aion2SoulTracker-Setup-v0.3.4.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Запустите `Aion2SoulTracker-Setup-v0.3.3.exe`, установите программу и откройте её с ярлыка.
+1. Запустите `Aion2SoulTracker-Setup-v0.3.4.exe`, установите программу и откройте её с ярлыка.
 2. Если приложение попросит **Npcap**, установите его с [официального сайта](https://npcap.com/#download) с настройками по умолчанию, затем нажмите «Проверить снова». Если Npcap уже установлен, повторная установка обычно не нужна.
 3. Войдите в персонажа **после запуска трекера**. Если уже играете, вернитесь к выбору персонажа и войдите снова: так приложение получает начальную коллекцию.
 4. Включите нужные категории и отметьте цели в колонке **HUD**. Для отображения HUD используйте оконный режим игры или окно без рамки.
@@ -21,10 +21,10 @@
 
 | Файл в Releases → Assets | Для чего |
 | --- | --- |
-| `Aion2SoulTracker-Setup-v0.3.3.exe` | Обычная установка — рекомендуемый вариант |
-| `Aion2SoulTracker-v0.3.3-portable-win-x64.zip` | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
-| `Aion2SoulTracker-v0.3.3-source.zip` | Исходный код для разработчиков |
-| `SHA256SUMS-v0.3.3.txt` | Контрольные суммы файлов |
+| `Aion2SoulTracker-Setup-v0.3.4.exe` | Обычная установка — рекомендуемый вариант |
+| `Aion2SoulTracker-v0.3.4-portable-win-x64.zip` | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
+| `Aion2SoulTracker-v0.3.4-source.zip` | Исходный код для разработчиков |
+| `SHA256SUMS-v0.3.4.txt` | Контрольные суммы файлов |
 
 ### Возможности
 
@@ -102,9 +102,9 @@
 
 ### Download and install
 
-**[Download the Windows installer 0.3.3](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.3/Aion2SoulTracker-Setup-v0.3.3.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Download the Windows installer 0.3.4](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.4/Aion2SoulTracker-Setup-v0.3.4.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Run `Aion2SoulTracker-Setup-v0.3.3.exe`, install the application and open its shortcut.
+1. Run `Aion2SoulTracker-Setup-v0.3.4.exe`, install the application and open its shortcut.
 2. If prompted for **Npcap**, install it from the [official website](https://npcap.com/#download) with the default options, then click “Check again”. An existing Npcap installation usually does not need reinstalling.
 3. Log in to your character **after starting the tracker**. If already playing, return to character selection and log in again so the tracker receives your initial collection.
 4. Enable your categories and pin targets in the **HUD** column. Use windowed or borderless game mode for the HUD.
@@ -113,10 +113,10 @@
 
 | File under Releases → Assets | Purpose |
 | --- | --- |
-| `Aion2SoulTracker-Setup-v0.3.3.exe` | Standard installation — recommended |
-| `Aion2SoulTracker-v0.3.3-portable-win-x64.zip` | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
-| `Aion2SoulTracker-v0.3.3-source.zip` | Source code for developers |
-| `SHA256SUMS-v0.3.3.txt` | File checksums |
+| `Aion2SoulTracker-Setup-v0.3.4.exe` | Standard installation — recommended |
+| `Aion2SoulTracker-v0.3.4-portable-win-x64.zip` | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
+| `Aion2SoulTracker-v0.3.4-source.zip` | Source code for developers |
+| `SHA256SUMS-v0.3.4.txt` | File checksums |
 
 ### Features
 
@@ -190,7 +190,7 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Скриншоты / Screenshots
 
-Меню HUD 0.3.3 / HUD menu in 0.3.3:
+Меню HUD 0.3.4 / HUD menu in 0.3.4:
 
 ![HUD settings](https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/fix/hud-controls-v0.3.2/docs/images/hud-menu.png)
 
@@ -199,11 +199,11 @@ Fully close the old version using **Exit**, run the new installer and select the
 ![Collection / Коллекция](https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/collection.png)
 <p><img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/hud.png" width="310" alt="HUD"> <img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/f94568c87c70902fb26f855d502caa07e8786c86/docs/images/map.png" width="310" alt="Map"></p>
 
-Скриншоты предыдущего оформления; портреты и новые элементы 0.3.3 описаны выше. / Screenshots show the earlier layout; portraits and new 0.3.3 controls are described above.
+Скриншоты предыдущего оформления; портреты и новые элементы 0.3.4 описаны выше. / Screenshots show the earlier layout; portraits and new 0.3.4 controls are described above.
 
 ## Исходный код и сборка / Source and build
 
-Код 0.3.3: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/9bbc6426d14b616ede2c1715adfb60bbdb72acb7). Главная страница содержит описание проекта; для сборки используйте указанный коммит или архив `Aion2SoulTracker-v0.3.3-source.zip`. / The main page contains project information; to build, use the linked commit or `Aion2SoulTracker-v0.3.3-source.zip`.
+Код 0.3.4: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/9bbc6426d14b616ede2c1715adfb60bbdb72acb7). Главная страница содержит описание проекта; для сборки используйте указанный коммит или архив `Aion2SoulTracker-v0.3.4-source.zip`. / The main page contains project information; to build, use the linked commit or `Aion2SoulTracker-v0.3.4-source.zip`.
 
 Для сборки нужны .NET 10 SDK и Inno Setup 7. / Building requires .NET 10 SDK and Inno Setup 7.
 
