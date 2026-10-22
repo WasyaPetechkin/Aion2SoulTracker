@@ -75,6 +75,26 @@ public partial class MainWindow
         _preferences.HudTargets=original;_catalogSort="RemainingSort";_catalogDirection=ListSortDirection.Ascending;
         foreach(var c in Pets.Columns)c.SortDirection=null;
         _session.State.Restore(sample with {LastTimeMs=sample.LastTimeMs+300});Refresh(true);
+        var savedPins=_preferences.HudTargets;_preferences.HudTargets=[];
+        HideCompleted.IsChecked=false;
+        var completed=sample with {LastTimeMs=sample.LastTimeMs+301,Pets=sample.Pets.Select(p=>p with {Level=3,Souls=0}).ToArray()};
+        _session.State.Restore(completed);Refresh(true);
+        Check("completed_pet_territory_visible",Pets.Items.Cast<PetRow>().Any(p=>p.Id==1106 && p.Territory.Contains("Асмо")));
+        TerritoryFilter.SelectedValue="asmodians";
+        Check("catalog_territory_filter",Pets.Items.Count>0 && Pets.Items.Cast<PetRow>().All(p=>_spawns.MatchesTerritory(p.Id,"asmodians")));
+        Check("completed_catalog_does_not_fill_hud",_hud.Targets.Items.Count==0);
+        TerritoryFilter.SelectedValue="unknown";
+        Check("catalog_unknown_territory",Pets.Items.Count>0 && Pets.Items.Cast<PetRow>().All(p=>p.Territory.Contains("неизвестна")));
+        TerritoryFilter.SelectedValue="elyos";LanguagePicker.SelectedIndex=1;
+        Check("territory_filter_survives_language",Equals(TerritoryFilter.SelectedValue,"elyos") && TerritoryLabel.Text=="Territory");
+        LanguagePicker.SelectedIndex=0;
+        _preferences.Save(Path.Combine(directory,"territory-preferences.json"));
+        Check("territory_filter_saved",AppPreferences.Load(Path.Combine(directory,"territory-preferences.json")).CatalogTerritory=="elyos");
+        TerritoryFilter.SelectedValue="all";Search.Text="1106";Refresh(true);
+        Check("completed_pet_lookup_by_id",Pets.Items.Count==1 && ((PetRow)Pets.Items[0]).Id==1106);
+        Render(this,Path.Combine(directory,"completed-territory.png"));
+        Search.Clear();HideCompleted.IsChecked=true;_preferences.HudTargets=savedPins;
+        _session.State.Restore(sample with {LastTimeMs=sample.LastTimeMs+302});Refresh(true);
         Render(_hud,Path.Combine(directory,"hud-portraits.png"));Render(this,Path.Combine(directory,"collection-farming.png"));
     }
 }

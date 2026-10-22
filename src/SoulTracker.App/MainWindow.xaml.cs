@@ -34,7 +34,7 @@ public partial class MainWindow : Window
     private string _language="ru";
     private int _ticks;
     private UiText Text=>new(_language);
-    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack,int LevelSort,int SoulsSort,int RemainingSort);
+    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack,int LevelSort,int SoulsSort,int RemainingSort,string Territory="",string Locations="");
 
     public MainWindow(string[] args)
     {

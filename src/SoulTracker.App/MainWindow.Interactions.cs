@@ -24,7 +24,24 @@ public partial class MainWindow
         e.Column.SortDirection=_catalogDirection;Refresh(true);
     }
     private object SortValue(PetRow row)=>_catalogSort switch
-    {"Name"=>row.Name,"Genus"=>row.Genus,"Id"=>row.Id,"LevelSort"=>row.LevelSort,"SoulsSort"=>row.SoulsSort,_=>row.RemainingSort};
+    {"Name"=>row.Name,"Genus"=>row.Genus,"Territory"=>row.Territory,"Id"=>row.Id,"LevelSort"=>row.LevelSort,"SoulsSort"=>row.SoulsSort,_=>row.RemainingSort};
+    private sealed record TerritoryOption(string Key,string Label);
+    private bool _loadingTerritories;
+    private void TranslateTerritories()
+    {
+        _loadingTerritories=true;
+        TerritoryLabel.Text=Text.Choose("Территория","Territory");TerritoryColumn.Header=TerritoryLabel.Text;
+        TerritoryFilter.ItemsSource=new[]{new TerritoryOption("all",Text.Choose("Все территории","All territories")),
+            new TerritoryOption("asmodians",Text.Choose("Асмодиане","Asmodians")),new TerritoryOption("elyos",Text.Choose("Элийцы","Elyos")),
+            new TerritoryOption("abyss",Text.Choose("Бездна","Abyss")),new TerritoryOption("unknown",Text.Choose("Территория неизвестна","Territory unknown"))};
+        TerritoryFilter.SelectedValue=_preferences.CatalogTerritory;
+        _loadingTerritories=false;
+    }
+    private void TerritoryChanged(object sender,SelectionChangedEventArgs e)
+    {
+        if(_session is null || _loadingTerritories || TerritoryFilter.SelectedValue is not string key)return;
+        _preferences.CatalogTerritory=key;QueueSettingsSave();Refresh(true);
+    }
     private void FilterChanged(object sender, RoutedEventArgs e)
     {
         if(_session is null)return;
@@ -53,6 +70,7 @@ public partial class MainWindow
         Natura.Content=PetText.Category("Natura",_language);
         Varian.Content=PetText.Category("Varian",_language);
         Special.Content=PetText.Category("Special",_language);
+        TranslateTerritories();
         CategoryHint.Text=t.Choose("Категории фильтруют список и карту. Если цели HUD не выбраны, карта показывает всех незавершённых из этих категорий.",
             "Categories filter the list and map. With no HUD targets selected, the map shows all incomplete targets in these categories.");
         HideCompleted.Content=t.Choose("Скрыть MAX","Hide MAX");
@@ -112,9 +130,10 @@ public partial class MainWindow
             var selectedId=(Pets.SelectedItem as PetRow)?.Id;
             var rows = v.HasSnapshot ? v.Pets.Where(x => _preferences.HudTargets.Contains(x.Id) ||
                     (enabled.Contains(x.Genus) && (HideCompleted.IsChecked!=true || !x.Completed) &&
-                    (OwnedOnly.IsChecked!=true || x.Level>0) && PetText.Matches(x,text)))
+                    (OwnedOnly.IsChecked!=true || x.Level>0) && _spawns.MatchesTerritory(x.Id,_preferences.CatalogTerritory) && PetText.Matches(x,text)))
                 .Select(x=>new PetRow(x.Id,PetText.Name(x,_language),PetText.Category(x.Genus,_language),
-                    PetText.Level(x,_language),x.Stage,PetText.Remaining(x,_language),_preferences.HudTargets.Contains(x.Id),x.IsRegular,x.Level,x.Souls,x.Remaining ?? int.MaxValue)).ToArray() : Array.Empty<PetRow>();
+                    PetText.Level(x,_language),x.Stage,PetText.Remaining(x,_language),_preferences.HudTargets.Contains(x.Id),x.IsRegular,x.Level,x.Souls,x.Remaining ?? int.MaxValue,
+                    _spawns.Territories(x.Id,_language),_spawns.LocationNames(x.Id,_language))).ToArray() : Array.Empty<PetRow>();
             var pinnedFirst=rows.OrderByDescending(x=>x.IsTracked);
             Pets.ItemsSource=(_catalogDirection==ListSortDirection.Ascending ? pinnedFirst.ThenBy(SortValue) : pinnedFirst.ThenByDescending(SortValue)).ThenBy(x=>x.Name).ToArray();
             foreach(var column in Pets.Columns)column.SortDirection=column.SortMemberPath==_catalogSort ? _catalogDirection : null;

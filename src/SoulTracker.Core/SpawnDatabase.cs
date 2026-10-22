@@ -47,10 +47,22 @@ public sealed class SpawnDatabase
     }
     public string Territories(int petId,string language)
     {
-        if(!Pets.TryGetValue(petId,out var drops))return language=="ru" ? "Территория неизвестна" : "Territory unknown";
-        var groups=drops.SelectMany(x=>x.Worlds).Where(x=>x.Points.Length>0 && Worlds.ContainsKey(x.World)).Select(x=>Worlds[x.World].Group).Distinct();
+        var groups=TerritoryGroups(petId);
+        if(groups.Length==0)return language=="ru" ? "Территория неизвестна" : "Territory unknown";
         return string.Join(" · ",groups.Select(x=>x switch {"asmodians"=>language=="ru" ? "◆ Асмо" : "◆ Asmo","elyos"=>language=="ru" ? "◇ Элийцы" : "◇ Elyos",_=>language=="ru" ? "◈ Бездна" : "◈ Abyss"}));
     }
+    public string[] TerritoryGroups(int petId)=>Pets.TryGetValue(petId,out var drops)
+        ? drops.SelectMany(x=>x.Worlds).Where(x=>x.Points.Length>0 && Worlds.ContainsKey(x.World))
+            .Select(x=>Worlds[x.World].Group).Distinct().Order().ToArray() : [];
+    public bool MatchesTerritory(int petId,string filter)
+    {
+        if(filter=="all")return true;
+        var groups=TerritoryGroups(petId);
+        return filter=="unknown" ? groups.Length==0 : groups.Contains(filter);
+    }
+    public string LocationNames(int petId,string language)=>Pets.TryGetValue(petId,out var drops)
+        ? string.Join(", ",drops.SelectMany(x=>x.Worlds).Where(x=>x.Points.Length>0 && Worlds.ContainsKey(x.World))
+            .Select(x=>Worlds[x.World].Name).Distinct()) : Territories(petId,language);
     public int PointCount=>_byWorld.Values.Sum(x=>x.Length);
     public static (double X,double Y) Project(MapWorld world,double x,double y)
     {

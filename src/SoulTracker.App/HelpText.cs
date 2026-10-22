@@ -3,6 +3,7 @@ internal static class HelpText
 {
     private static readonly Dictionary<string,(string Ru,string En)> Texts=new()
     {
+        ["territory"]=("Фильтрует каталог по известным территориям появления. Отмеченные цели остаются видимыми. На HUD, карту и фокус этот фильтр не влияет. Чтобы найти уже завершённого моба, снимите «Скрыть MAX». Территория неизвестна означает, что данных нет, а не что моб нигде не встречается.","Filters the catalogue by known spawn territories. Pinned targets stay visible. This filter does not affect HUD, map or focus. Disable Hide MAX to find completed monsters. Unknown territory means missing data, not that the monster has no spawns."),
         ["autoTrack"]=("После получения души добавляет незавершённого моба в HUD. Работает на известных открытых территориях и в Бездне; в подземельях и при неизвестной локации не добавляет. Старые сохранения и вход в игру не считаются получением души.","Adds an incomplete mob to HUD after receiving a soul. Works in known open-world zones and Abyss, excluding dungeons and unknown zones. Loading saved progress or logging in does not count as a soul gain."),
         ["collection"]=("Коллекция питомцев, категории, выбор целей и управление HUD.","Pet collection, categories, target selection and HUD controls."),
         ["settings"]=("Язык, горячие клавиши и размер строк счётчика. Настройки сохраняются автоматически, клавиши — кнопкой «Применить».","Language, hotkeys and counter row size. Settings save automatically; hotkeys use Apply."),

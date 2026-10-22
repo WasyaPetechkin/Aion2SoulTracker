@@ -61,6 +61,12 @@
    <StackPanel Orientation="Horizontal"><CheckBox x:Name="Special" Content="Специальные" IsChecked="False" Checked="FilterChanged" Unchecked="FilterChanged" Margin="0"/><local:HelpBadge Topic="special"/></StackPanel>
    </WrapPanel>
    <TextBlock x:Name="CategoryHint" Foreground="#8BA5BE" FontSize="12" Margin="0,7,0,0" TextWrapping="Wrap"/>
+   <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+    <TextBlock x:Name="TerritoryLabel" Text="Территория" VerticalAlignment="Center" Margin="0,0,8,0"/>
+    <ComboBox x:Name="TerritoryFilter" Width="200" SelectedValuePath="Key" SelectionChanged="TerritoryChanged">
+     <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Label}" Foreground="Black"/></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox><local:HelpBadge Topic="territory"/>
+   </StackPanel>
   </StackPanel>
   <Grid Grid.Row="3" Margin="0,0,0,15">
    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
@@ -91,6 +97,12 @@
     <DataGridTextColumn Header="Души на ступени" Binding="{Binding Stage}" SortMemberPath="SoulsSort" Width="140"/>
     <DataGridTextColumn Header="До максимума" Binding="{Binding RemainingText}" SortMemberPath="RemainingSort" Width="130"/>
     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
+    <DataGridTextColumn x:Name="TerritoryColumn" Header="Территория" Binding="{Binding Territory}" SortMemberPath="Territory" Width="190">
+     <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#B6DCD8"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+      <Setter Property="ToolTip" Value="{Binding Locations}"/>
+     </Style></DataGridTextColumn.ElementStyle>
+    </DataGridTextColumn>
    </DataGrid.Columns>
   </DataGrid>
   <StackPanel Grid.Row="5" Margin="0,15,0,0">

@@ -10,8 +10,15 @@ public partial class MainWindow
         var menu=new ContextMenu {Background=System.Windows.Media.Brushes.WhiteSmoke,Foreground=System.Windows.Media.Brushes.Black};
         MenuItem Toggle(CheckBox source,string topic)
         {
-            var item=new MenuItem {Header=source.Content,Tag=source.Name,IsCheckable=true,StaysOpenOnClick=true,
-                ToolTip=HelpText.Get(topic,_language)};
+            var item=new MenuItem {Header=source.Content,Tag=source.Name,IsCheckable=true,StaysOpenOnClick=true};
+            var tip=new ToolTip {Content=new TextBlock {Text=HelpText.Get(topic,_language),TextWrapping=TextWrapping.Wrap,MaxWidth=300},
+                PlacementTarget=item,Placement=System.Windows.Controls.Primitives.PlacementMode.Right,IsHitTestVisible=false};
+            item.ToolTip=tip;
+            ToolTipService.SetInitialShowDelay(item,450);
+            ToolTipService.SetShowDuration(item,8000);
+            item.MouseLeave+=(_,_)=>tip.IsOpen=false;
+            item.Click+=(_,_)=>tip.IsOpen=false;
+            item.Unloaded+=(_,_)=>tip.IsOpen=false;
             // Share the actual collection controls: checked/unchecked handlers apply,
             // refresh and persist exactly the same settings from either window.
             item.SetBinding(MenuItem.IsCheckedProperty,new Binding(nameof(CheckBox.IsChecked))
@@ -48,7 +55,7 @@ public partial class MainWindow
         menu.Closed+=(_,_)=>
         {
             void Release(ItemsControl parent)
-            {foreach(var child in parent.Items.OfType<MenuItem>()){BindingOperations.ClearAllBindings(child);Release(child);}}
+            {foreach(var child in parent.Items.OfType<MenuItem>()){if(child.ToolTip is ToolTip tip)tip.IsOpen=false;BindingOperations.ClearAllBindings(child);Release(child);}}
             Release(menu);
         };
         return menu;

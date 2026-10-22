@@ -2,7 +2,7 @@
  <PropertyGroup>
   <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms>
   <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>Aion2SoulTracker</AssemblyName>
-  <Product>Aion 2 Soul Tracker</Product><Description>Aion 2 Soul Tracker</Description><Version>0.3.3</Version>
+  <Product>Aion 2 Soul Tracker</Product><Description>Aion 2 Soul Tracker</Description><Version>0.3.4</Version>
   <ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>../../assets/app.ico</ApplicationIcon>
   <DebugType>none</DebugType><DebugSymbols>false</DebugSymbols>
   <!-- WPF owns DPI through the manifest; WinForms is used only for the tray icon. -->

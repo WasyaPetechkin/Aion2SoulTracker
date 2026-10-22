@@ -74,13 +74,22 @@ public partial class MainWindow
             item.Header is TextBlock {Foreground:System.Windows.Media.SolidColorBrush brush} &&
             brush.Color==System.Windows.Media.Colors.Black && Readable(item));
         Check("hud_menu_headers_readable",visibleMenu.IsOpen && Readable(visibleMenu));
+        var helpItem=visibleMenu.Items.OfType<MenuItem>().First(x=>x.ToolTip is ToolTip);
+        var helpTip=(ToolTip)helpItem.ToolTip;
+        Check("hud_menu_help_wraps",helpTip.Content is TextBlock {TextWrapping:TextWrapping.Wrap,MaxWidth:300} && !helpTip.IsHitTestVisible);
+        helpTip.IsOpen=true;
+        helpTip.UpdateLayout();RenderElement(helpTip,Path.Combine(directory,"hud-help-wrapped.png"));
+        helpItem.RaiseEvent(new System.Windows.Input.MouseEventArgs(System.Windows.Input.Mouse.PrimaryDevice,0){RoutedEvent=MouseLeaveEvent});
+        Check("hud_menu_help_closes_on_leave",!helpTip.IsOpen);
         RenderElement(visibleMenu,Path.Combine(directory,"hud-menu.png"));
         var submenu=visibleMenu.Items.OfType<MenuItem>().Single(x=>x.HasItems);
         submenu.IsSubmenuOpen=true;submenu.UpdateLayout();
         var popup=submenu.Template.FindName("PART_Popup",submenu) as Popup;
         Check("hud_submenu_opens",popup?.IsOpen==true);
         if(popup?.Child is FrameworkElement child)RenderElement(child,Path.Combine(directory,"hud-submenu.png"));
-        submenu.IsSubmenuOpen=false;visibleMenu.IsOpen=false;
+        submenu.IsSubmenuOpen=false;helpTip.IsOpen=true;visibleMenu.IsOpen=false;
+        Dispatcher.Invoke(()=>{},System.Windows.Threading.DispatcherPriority.ContextIdle);
+        Check("hud_menu_help_closes_with_menu",!helpTip.IsOpen);
         var leader=tied with {LastTimeMs=tied.LastTimeMs+1,Pets=tied.Pets.Select(p=>p.Id==1120 ? p with {Souls=71} : p).ToArray()};
         _session.State.Restore(leader);Refresh(true);
         Check("focus_narrows_after_gain",_hud.Targets.Items.Count==1 && _map.SpawnCount==Expected(_session.State.View()));

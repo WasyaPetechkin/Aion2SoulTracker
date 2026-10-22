@@ -1,4 +1,10 @@
-﻿# 0.3.3 — 2026-10-21
+﻿# 0.3.4 — 2026-10-22
+
+Подсказки HUD переносятся на строки и закрываются при уходе мыши, выборе пункта и закрытии меню. Добавлены территории в каталоге, в том числе для MAX, и отдельный фильтр каталога по территориям.
+
+HUD tooltips wrap and close on pointer leave, item selection and menu closure. Added catalogue territory labels, including completed pets, and a separate catalogue territory filter.
+
+# 0.3.3 — 2026-10-21
 
 Исправлена читаемость текста в меню настроек HUD и вложенных пунктах.
 
