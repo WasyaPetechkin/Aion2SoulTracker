@@ -5,9 +5,24 @@ namespace SoulTracker.App;
 
 public partial class MainWindow
 {
+    private sealed class HudContextMenu : ContextMenu
+    {
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if(e.Property!=IsOpenProperty || e.NewValue is not false)return;
+            // Popup.Closed may be delayed by animation; close help immediately.
+            void CloseHelp(ItemsControl parent)
+            {
+                foreach(var item in parent.Items.OfType<MenuItem>())
+                {if(item.ToolTip is ToolTip tip)tip.IsOpen=false;CloseHelp(item);}
+            }
+            CloseHelp(this);
+        }
+    }
     private ContextMenu BuildHudQuickSettings()
     {
-        var menu=new ContextMenu {Background=System.Windows.Media.Brushes.WhiteSmoke,Foreground=System.Windows.Media.Brushes.Black};
+        var menu=new HudContextMenu {Background=System.Windows.Media.Brushes.WhiteSmoke,Foreground=System.Windows.Media.Brushes.Black};
         MenuItem Toggle(CheckBox source,string topic)
         {
             var item=new MenuItem {Header=source.Content,Tag=source.Name,IsCheckable=true,StaysOpenOnClick=true};

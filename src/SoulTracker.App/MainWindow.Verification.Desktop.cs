@@ -88,7 +88,6 @@ public partial class MainWindow
         Check("hud_submenu_opens",popup?.IsOpen==true);
         if(popup?.Child is FrameworkElement child)RenderElement(child,Path.Combine(directory,"hud-submenu.png"));
         submenu.IsSubmenuOpen=false;helpTip.IsOpen=true;visibleMenu.IsOpen=false;
-        Dispatcher.Invoke(()=>{},System.Windows.Threading.DispatcherPriority.ContextIdle);
         Check("hud_menu_help_closes_with_menu",!helpTip.IsOpen);
         var leader=tied with {LastTimeMs=tied.LastTimeMs+1,Pets=tied.Pets.Select(p=>p.Id==1120 ? p with {Souls=71} : p).ToArray()};
         _session.State.Restore(leader);Refresh(true);
