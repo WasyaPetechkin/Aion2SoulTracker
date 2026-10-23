@@ -50,9 +50,17 @@
 - **«Добавлять в HUD при получении души» нужно включить отдельно.** Функция реагирует на новые души в известных открытых локациях. Вход в персонажа, загрузка сохранений и получение душ в данжах цели не добавляют.
 - Поиск, «Скрыть MAX» и «Только полученные» фильтруют каталог; отмеченные цели остаются видимыми. Категории также влияют на карту и фокус.
 
+### Территории в каталоге
+
+Колонка **«Территория»** показывает, где известны места появления: Асмодиане, Элийцы или Бездна. При наведении видны названия локаций. Данные доступны и для завершённых мобов: снимите **«Скрыть MAX»**, затем найдите моба по имени или ID. Добавлять его в HUD не нужно.
+
+Фильтр **«Территория»** над поиском ограничивает только каталог. Отмеченные вручную цели остаются видимыми. На HUD, карту и режим фокуса этот фильтр не влияет. «Территория неизвестна» означает отсутствие данных.
+
 ### Настройки прямо в HUD
 
 Внизу счётчика нажмите **«Настройки HUD ▾»**. Здесь доступны режим фокуса, автодобавление при получении души, категории, показ карты и «Клики в игру». В подменю «Фильтры каталога» — диковинные, «Скрыть MAX» и «Только полученные». Изменения сразу синхронизируются с главным окном. Категории влияют на карту и фокус; фильтры каталога — только на список в основном окне.
+
+Подсказки меню переносятся на строки и закрываются при уходе мыши, выборе пункта или закрытии меню.
 
 Если меню не нажимается, отключите «Клики в игру» сочетанием `Ctrl+Alt+L` (или своим назначенным сочетанием). В режиме фокуса крестики строк скрыты: цели выбираются автоматически. Выключите фокус, чтобы вернуться к ручным целям.
 
@@ -80,7 +88,7 @@
 
 ### Частые вопросы
 
-**Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. Временная пауза сама по себе не должна сбрасывать синхронизацию. В 0.3.1–0.3.3 улучшены переключение сетевых адаптеров, обработка смены сервера и восстановление захвата. Это не гарантирует восстановление счётчика после настоящей потери данных.
+**Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. Временная пауза сама по себе не должна сбрасывать синхронизацию. Начиная с 0.3.1 улучшены переключение сетевых адаптеров, обработка смены сервера и восстановление захвата. Это не гарантирует восстановление счётчика после настоящей потери данных.
 
 **Души считаются, но цели не добавляются автоматически?** Проверьте галочку «Добавлять в HUD при получении души». Автодобавление выключено по умолчанию, не работает в данжах и не добавляет уже завершённые цели. В режиме фокуса видимый список определяется фокусом.
 
@@ -142,9 +150,17 @@
 - **Enable “Add to HUD when a soul is received” separately.** It reacts to new gains in known open-world locations. Character login, loading saved progress and dungeon gains do not add targets.
 - Search, “Hide MAX” and “Owned only” filter the catalogue; pinned targets remain visible. Categories also affect the map and focus.
 
+### Territories in the catalogue
+
+The **Territory** column shows known spawn territories: Asmodians, Elyos or Abyss. Hover it for location names. Completed monsters retain this information: disable **Hide MAX**, then search by name or ID. There is no need to add them to the HUD.
+
+The **Territory** filter above search affects only the catalogue. Manually pinned targets remain visible. HUD, map and focus are unaffected. “Territory unknown” means missing data.
+
 ### Settings directly in the HUD
 
 Click **“HUD settings ▾”** at the bottom of the counter. It provides focus, automatic soul tracking, categories, map visibility and click through. The “Collection filters” submenu contains special pets, “Hide MAX” and “Owned only”. Changes immediately synchronize with the main window. Categories affect the map and focus; collection filters affect only the main catalogue.
+
+Menu tooltips wrap and close when the pointer leaves, an item is selected or the menu closes.
 
 If the menu does not respond, disable click through with `Ctrl+Alt+L` (or your custom shortcut). Row crosses are hidden in focus mode because targets are selected automatically. Turn focus off to return to manual targets.
 
@@ -172,7 +188,7 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ### Frequently asked questions
 
-**Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. A temporary pause alone should not reset synchronization. Versions 0.3.1–0.3.3 improve network adapter transitions, server transfers and capture recovery. This does not guarantee counter recovery after actual data loss.
+**Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. A temporary pause alone should not reset synchronization. Improvements introduced in 0.3.1 cover network adapter transitions, server transfers and capture recovery. This does not guarantee counter recovery after actual data loss.
 
 **Souls are counted, but targets are not added automatically?** Check “Add to HUD when a soul is received”. It is off by default, excludes dungeons and does not add completed targets. While focus is active, focus determines which targets are visible.
 
@@ -190,7 +206,7 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Скриншоты / Screenshots
 
-Меню HUD 0.3.4 / HUD menu in 0.3.4:
+Меню настроек HUD / HUD settings menu:
 
 ![HUD settings](https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/fix/hud-controls-v0.3.2/docs/images/hud-menu.png)
 
@@ -203,14 +219,14 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Исходный код и сборка / Source and build
 
-Код 0.3.4: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/9bbc6426d14b616ede2c1715adfb60bbdb72acb7). Главная страница содержит описание проекта; для сборки используйте указанный коммит или архив `Aion2SoulTracker-v0.3.4-source.zip`. / The main page contains project information; to build, use the linked commit or `Aion2SoulTracker-v0.3.4-source.zip`.
+Код 0.3.4: [исходный код релиза / release source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/4328d8366a8ba1fba64e594167861752fdf3f08e). Главная страница содержит описание проекта; для сборки используйте указанный коммит или архив `Aion2SoulTracker-v0.3.4-source.zip`. / The main page contains project information; to build, use the linked commit or `Aion2SoulTracker-v0.3.4-source.zip`.
 
 Для сборки нужны .NET 10 SDK и Inno Setup 7. / Building requires .NET 10 SDK and Inno Setup 7.
 
 ```powershell
 git clone https://github.com/WasyaPetechkin/Aion2SoulTracker.git
 cd Aion2SoulTracker
-git checkout 9bbc6426d14b616ede2c1715adfb60bbdb72acb7
+git checkout 4328d8366a8ba1fba64e594167861752fdf3f08e
 dotnet test tests/SoulTracker.Tests -c Release
 dotnet build src/SoulTracker.App -c Release
 ./build.ps1
@@ -225,6 +241,6 @@ dotnet build src/SoulTracker.App -c Release
 - Захват и разбор пакетов / Capture and parsing: [aion2-dps-meter](https://github.com/cyberbadger6969/aion2-dps-meter).
 - Карты, данные и портреты / Maps, data and portraits: [aion2-nyerk](https://github.com/xCROv/aion2-nyerk), [Questlog](https://questlog.gg/aion-2/en/map).
 - Игровые изображения, названия и данные принадлежат соответствующим правообладателям. / Game artwork, names and data belong to their respective owners.
-- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/9bbc6426d14b616ede2c1715adfb60bbdb72acb7/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/9bbc6426d14b616ede2c1715adfb60bbdb72acb7/licenses/THIRD-PARTY.md).
+- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/4328d8366a8ba1fba64e594167861752fdf3f08e/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/4328d8366a8ba1fba64e594167861752fdf3f08e/licenses/THIRD-PARTY.md).
 
 Тестовая версия для Global EU; обновления игры могут потребовать обновления трекера. / A test version for Global EU; game updates may require tracker updates.
