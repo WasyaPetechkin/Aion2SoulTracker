@@ -33,6 +33,21 @@ public sealed class NetworkTransitionTests
         var plan=CapturePlan.Create([new(IPAddress.Loopback,100,IPAddress.Loopback,13328)], [new("loopback",true,[IPAddress.Loopback])]);
         Assert.Single(plan);
     }
+    [Fact] public void AcceleratorOnDynamicLocalPortIsCaptured()
+    {
+        var plan=CapturePlan.Create([new(IPAddress.Loopback,59783,IPAddress.Loopback,56549,true)],
+            [new("loopback",true,[IPAddress.Loopback]),new("ethernet",false,[Local])]);
+        Assert.Single(plan);
+        Assert.Equal("tcp and src host 127.0.0.1 and src port 56549",plan["loopback"]);
+    }
+    [Fact] public void AcceleratorAndDirectServerAreCapturedDuringTransition()
+    {
+        var plan=CapturePlan.Create([new(Local,50000,Server,13328),new(IPAddress.Loopback,59783,IPAddress.Loopback,56549,true),new(IPAddress.Loopback,100,IPAddress.Loopback,101)],
+            [new("loopback",true,[IPAddress.Loopback]),new("ethernet",false,[Local])]);
+        Assert.Equal(2,plan.Count);
+        Assert.Equal("tcp and src port 13328",plan["ethernet"]);
+        Assert.Equal("tcp and src host 127.0.0.1 and src port 56549",plan["loopback"]);
+    }
     [Fact] public void ReusedTcpTupleStartsFreshDecoder()
     {
         var pipe=new PacketPipeline(GameData.Empty,_=>{}){LockThreshold=1};var received=0;

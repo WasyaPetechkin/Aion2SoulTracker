@@ -11,13 +11,13 @@ public static class CapturePlan
         {if(devices.Any(x=>x.Name==forced))result[forced]="tcp and src port 13328";return result;}
         var all=connections.ToArray();var game=all.Where(c=>c.RemotePort==PacketPipeline.GamePort).ToArray();
         // Ignore the game's own local IPC sockets: they are not a game server.
-        var chosen=game.Length>0 ? game : all.Where(c=>!c.LocalIp.Equals(c.RemoteIp) && !IPAddress.IsLoopback(c.RemoteIp)).ToArray();
+        var chosen=all.Where(c=>c.LocalRelay || (game.Length>0 ? c.RemotePort==PacketPipeline.GamePort : !c.LocalIp.Equals(c.RemoteIp) && !IPAddress.IsLoopback(c.RemoteIp))).ToArray();
         foreach(var c in chosen)
         {
             var device=devices.FirstOrDefault(d=>IPAddress.IsLoopback(c.RemoteIp) ? d.Loopback : d.Addresses.Contains(c.LocalIp));
             if(device is null)continue;
             // Stable port filter covers server transfers before the next TCP-table poll.
-            var filter=game.Length>0 ? "tcp and src port 13328" : $"tcp and src host {c.RemoteIp} and src port {c.RemotePort}";
+            var filter=c.RemotePort==PacketPipeline.GamePort ? "tcp and src port 13328" : $"tcp and src host {c.RemoteIp} and src port {c.RemotePort}";
             if(result.TryGetValue(device.Name,out var old) && old!=filter)result[device.Name]=$"({old}) or ({filter})";
             else result[device.Name]=filter;
         }

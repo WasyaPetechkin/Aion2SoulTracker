@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AionMeter.Core.Capture;
 
-public readonly record struct GameConnection(IPAddress LocalIp, ushort LocalPort, IPAddress RemoteIp, ushort RemotePort);
+public readonly record struct GameConnection(IPAddress LocalIp, ushort LocalPort, IPAddress RemoteIp, ushort RemotePort, bool LocalRelay = false);
 
 /// <summary>Finds the running AION 2 client and the TCP connections it owns (via the Windows TCP table).</summary>
 public static class GameProcessLocator
@@ -40,13 +40,22 @@ public static class GameProcessLocator
             var count = Marshal.ReadInt32(buffer);
             var rowPtr = buffer + 4;
             var rowSize = Marshal.SizeOf<MibTcpRowOwnerPid>();
+            var rows = new List<MibTcpRowOwnerPid>(count);
             for (var i = 0; i < count; i++, rowPtr += rowSize)
+                rows.Add(Marshal.PtrToStructure<MibTcpRowOwnerPid>(rowPtr));
+            foreach (var row in rows)
             {
-                var row = Marshal.PtrToStructure<MibTcpRowOwnerPid>(rowPtr);
                 if (row.State != MIB_TCP_STATE_ESTAB || !pids.Contains((int)row.OwningPid)) continue;
                 var remotePort = Port(row.RemotePort);
-                if (remotePort is 80 or 443) continue;
-                result.Add(new GameConnection(new IPAddress(row.LocalAddr), Port(row.LocalPort), new IPAddress(row.RemoteAddr), remotePort));
+                var remoteIp = new IPAddress(row.RemoteAddr);
+                // Accelerators can relay through a dynamically assigned local TCP listener.
+                // Require another process to own that listener; the game's own IPC stays excluded.
+                var relay = IPAddress.IsLoopback(remoteIp) && rows.Any(peer =>
+                    peer.State == 2 && !pids.Contains((int)peer.OwningPid) &&
+                    Port(peer.LocalPort) == remotePort &&
+                    (peer.LocalAddr == row.RemoteAddr || peer.LocalAddr == 0));
+                if (remotePort is 80 or 443 && !relay) continue;
+                result.Add(new GameConnection(new IPAddress(row.LocalAddr), Port(row.LocalPort), remoteIp, remotePort, relay));
             }
         }
         finally
