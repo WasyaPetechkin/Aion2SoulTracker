@@ -102,8 +102,6 @@
 
 **Почему после крестика приложение осталось запущено?** Главное окно сворачивается в трей. Для полного закрытия используйте «Выход» слева или в меню значка трея.
 
-**При сбоях с VPN:** запишите время и версию программы. Если недоступны игра и роутер, полностью закройте трекер через «Выход», оставив VPN включённым, и проверьте связь ещё раз. Укажите результат в обращении; связь сбоя с трекером пока не подтверждена.
-
 ### Обратная связь
 
 [Сообщить об ошибке или предложить улучшение](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Напишите версию программы, локацию, что ожидали, что произошло и как повторить. Скриншот поможет; перед отправкой скройте имя персонажа. Не публикуйте сетевые записи и всю папку сохранений. При проблемах запуска полезен `startup-error.txt` из папки данных.
@@ -207,8 +205,6 @@ Fully close the old version using **Exit**, run the new installer and select the
 **Why are points missing or the player marker delayed?** Some monsters have no known coordinates: the dataset currently covers 160 of 200 regular pets. The player marker uses confirmed game messages and can lag; its age is shown on the map. Spawn points indicate possible locations, not currently living monsters.
 
 **Why is the app still running after clicking X?** The main window hides to the tray. Use Exit in the sidebar or tray menu to quit completely.
-
-**For VPN issues:** note the time and app version. If both the game and router become unreachable, fully exit the tracker while leaving VPN enabled and check connectivity again. Include the result in your report; a connection between this outage and the tracker has not been established.
 
 ### Feedback
 
