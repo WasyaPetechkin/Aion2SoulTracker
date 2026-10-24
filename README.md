@@ -28,9 +28,9 @@
 
 ### LagoFast и другие ускорители
 
-В 0.3.5 исправлено чтение игровых соединений через локальный посредник LagoFast. Трекер автоматически определяет его порт и использует Loopback. Проверены вход в персонажа и получение души в данже через LagoFast. Запускайте трекер до входа в персонажа; при обновлении полностью закройте старую версию.
+В 0.3.5 исправлено чтение игровых соединений через локальный посредник LagoFast. Трекер автоматически определяет его порт и использует Loopback. Проверены вход в персонажа и обновление счётчика душ через LagoFast. Запускайте трекер до входа в персонажа; при обновлении полностью закройте старую версию.
 
-В данжах души учитываются в коллекции, но цели не добавляются в HUD автоматически. Другие ускорители с похожим устройством могут работать, однако отдельно не проверены.
+Другие ускорители с похожим устройством могут работать, однако отдельно не проверены.
 
 ### Возможности
 
@@ -134,9 +134,9 @@
 
 ### LagoFast and other accelerators
 
-Version 0.3.5 fixes capture through the LagoFast local relay. The tracker automatically detects its port and uses Loopback. Character login and a dungeon soul gain have been verified with LagoFast. Start the tracker before logging in to your character; fully exit the old version before updating.
+Version 0.3.5 fixes capture through the LagoFast local relay. The tracker automatically detects its port and uses Loopback. Character login and soul counter updates have been verified with LagoFast. Start the tracker before logging in to your character; fully exit the old version before updating.
 
-Dungeon souls count towards the collection, but dungeon targets are not automatically added to the HUD. Other accelerators using a similar relay may work but have not been tested separately.
+Other accelerators using a similar relay may work but have not been tested separately.
 
 ### Features
 
