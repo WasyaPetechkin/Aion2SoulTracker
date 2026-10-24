@@ -1,4 +1,10 @@
-﻿# 0.3.4 — 2026-10-22
+# 0.3.5 — 2026-10-24
+
+Исправлен захват игрового трафика через локальный TCP-посредник LagoFast на динамическом порту. Служебные соединения самой игры по-прежнему исключаются. Прямые и локальные соединения могут захватываться одновременно при смене маршрута. Проверены загрузка коллекции и получение души в данже через LagoFast.
+
+Fixed game traffic capture through the LagoFast local TCP relay on a dynamically assigned port. Internal game IPC remains excluded. Direct and local connections can be captured together during route transitions. Collection synchronization and a dungeon soul gain have been verified with LagoFast.
+
+# 0.3.4 — 2026-10-22
 
 Подсказки HUD переносятся на строки и закрываются при уходе мыши, выборе пункта и закрытии меню. Добавлены территории в каталоге, в том числе для MAX, и отдельный фильтр каталога по территориям.
 
