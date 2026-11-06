@@ -49,8 +49,8 @@
     <TextBlock x:Name="HudOpacityLabel" Text="Плотность фона" VerticalAlignment="Center" Margin="0,0,8,0"/>
     <StackPanel Orientation="Horizontal"><Slider x:Name="HudOpacity" Minimum="0.25" Maximum="1" Width="90" VerticalAlignment="Center" ValueChanged="HudAppearanceChanged"/><local:HelpBadge Topic="opacity"/></StackPanel>
    </WrapPanel>
-   <WrapPanel Margin="0,0,0,10"><CheckBox x:Name="FocusMode" Content="Режим фокуса" Margin="0" Checked="FocusChanged" Unchecked="FocusChanged"/><local:HelpBadge Topic="focus"/>
-    <CheckBox x:Name="AutoTrackSouls" Content="Добавлять в HUD при получении души" Margin="8,0,0,0" Checked="AutoTrackChanged" Unchecked="AutoTrackChanged"/><local:HelpBadge Topic="autoTrack"/>
+   <WrapPanel Margin="0,0,0,10">
+    <CheckBox x:Name="AutoTrackSouls" Content="Добавлять в HUD при получении души" Margin="0" Checked="AutoTrackChanged" Unchecked="AutoTrackChanged"/><local:HelpBadge Topic="autoTrack"/>
    </WrapPanel>
    <TextBlock x:Name="HudHint" Text="Отметь цели в колонке HUD · Ctrl+Alt+H показать · Ctrl+Alt+L клики в игру" Foreground="#8BA5BE" FontSize="12" Margin="0,0,0,13" TextWrapping="Wrap"/>
    <WrapPanel>
@@ -97,12 +97,17 @@
     <DataGridTextColumn Header="Души на ступени" Binding="{Binding Stage}" SortMemberPath="SoulsSort" Width="140"/>
     <DataGridTextColumn Header="До максимума" Binding="{Binding RemainingText}" SortMemberPath="RemainingSort" Width="130"/>
     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
-    <DataGridTextColumn x:Name="TerritoryColumn" Header="Территория" Binding="{Binding Territory}" SortMemberPath="Territory" Width="190">
-     <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#B6DCD8"/><Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-      <Setter Property="ToolTip" Value="{Binding Locations}"/>
-     </Style></DataGridTextColumn.ElementStyle>
-    </DataGridTextColumn>
+    <DataGridTemplateColumn x:Name="TerritoryColumn" Header="Территория" SortMemberPath="Territory" Width="190">
+     <DataGridTemplateColumn.CellTemplate><DataTemplate>
+      <StackPanel Margin="8,4" VerticalAlignment="Center">
+       <StackPanel.ToolTip><ToolTip><TextBlock Text="{Binding Locations}" TextWrapping="Wrap" MaxWidth="340"/></ToolTip></StackPanel.ToolTip>
+       <TextBlock Text="{Binding Territory}" Foreground="#B6DCD8" TextTrimming="CharacterEllipsis"/>
+       <TextBlock Text="{Binding BossLabel}" Foreground="#EDC878" FontSize="11">
+        <TextBlock.Style><Style TargetType="TextBlock"><Style.Triggers><DataTrigger Binding="{Binding BossLabel}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
+       </TextBlock>
+      </StackPanel>
+     </DataTemplate></DataGridTemplateColumn.CellTemplate>
+    </DataGridTemplateColumn>
    </DataGrid.Columns>
   </DataGrid>
   <StackPanel Grid.Row="5" Margin="0,15,0,0">

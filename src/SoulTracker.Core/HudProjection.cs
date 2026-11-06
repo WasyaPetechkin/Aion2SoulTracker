@@ -4,18 +4,6 @@ public sealed record HudTargets(IReadOnlyList<PetProgress> Visible,int ActiveCou
 
 public static class HudProjection
 {
-    public static HudTargets Focus(CollectionView view,IEnumerable<string> categories)
-    {
-        if(!view.HasSnapshot)return new([],0,0,0);
-        var enabled=categories.ToHashSet();
-        var eligible=view.Pets.Where(x=>x.IsRegular && enabled.Contains(x.Genus)).ToArray();
-        var active=eligible.Where(x=>!x.Completed && x.Remaining.HasValue).ToArray();
-        if(active.Length==0)return new([],0,eligible.Count(x=>x.Completed),0);
-        var nearest=active.Min(x=>x.Remaining!.Value);
-        // All ties are intentional, including when there are more leaders than normal HUD rows.
-        var leaders=active.Where(x=>x.Remaining==nearest).OrderBy(x=>x.Id).ToArray();
-        return new(leaders,active.Length,eligible.Count(x=>x.Completed),0);
-    }
     public static HudTargets Select(CollectionView view,IEnumerable<int> selectedIds,int limit=6)
     {
         var selected=selectedIds.ToHashSet();

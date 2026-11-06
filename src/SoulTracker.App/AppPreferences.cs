@@ -14,7 +14,6 @@ internal sealed class AppPreferences
     public int[] HudTargets {get;set;}=[];
     public int HudRows {get;set;}=6;
     public double HudRowScale {get;set;}=1;
-    public bool FocusMode {get;set;}
     public bool AutoTrackSouls {get;set;}
     public string CatalogTerritory {get;set;}="all";
     public string[] Categories {get;set;}=["Cogni","Fera","Natura","Varian"];
@@ -38,7 +37,7 @@ internal sealed class AppPreferences
         {
             var p=File.Exists(path) ? JsonSerializer.Deserialize<AppPreferences>(File.ReadAllText(path)) ?? new() : new();
             p.Language=p.Language=="en" ? "en" : "ru";
-            if(p.CatalogTerritory is not ("all" or "asmodians" or "elyos" or "abyss" or "unknown"))p.CatalogTerritory="all";
+            if(p.CatalogTerritory is not ("all" or "asmodians" or "elyos" or "abyss" or "dungeons" or "worldboss" or "chests" or "other"))p.CatalogTerritory="all";
             p.HudOpacity=Limit(p.HudOpacity,.25,1,.92);
             p.HudWidth=Limit(p.HudWidth,300,1600,360);p.HudHeight=Limit(p.HudHeight,220,1600,460);
             p.MapWidth=Limit(p.MapWidth,280,1600,360);p.MapHeight=Limit(p.MapHeight,300,1600,380);

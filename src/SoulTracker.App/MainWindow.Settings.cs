@@ -32,7 +32,6 @@ public partial class MainWindow
         ScaleTitle.Text=t.Choose("Размер строк счётчика","Counter row size");
         ScaleHelp.Text=t.Choose("Меняет бары, имена и числа. Размер окна HUD остаётся прежним.","Scales bars, names and numbers. The HUD window keeps its size.");
         ScaleValue.Text=$"{_preferences.HudRowScale:P0}";
-        FocusMode.Content=t.Choose("Режим фокуса","Focus mode");
         SelectPage(_settingsVisible);HelpBadge.TranslateTree(this,_language);
         _tray?.Configure(_language,_preferences.HudVisible,_preferences.MapVisible);
     }
@@ -89,12 +88,6 @@ public partial class MainWindow
         if(_session is null)return;
         _preferences.HudRowScale=HudRowScale.Value;ScaleValue.Text=$"{_preferences.HudRowScale:P0}";
         _hud.Configure(_preferences,_language);QueueSettingsSave();
-    }
-    private void FocusChanged(object sender,RoutedEventArgs e)
-    {
-        if(_session is null)return;
-        _preferences.FocusMode=FocusMode.IsChecked==true;
-        _hud.Configure(_preferences,_language);_map.Configure(_language);Refresh(true);QueueSettingsSave();
     }
     private void ExitClicked(object sender,RoutedEventArgs e)=>ExitApplication();
     internal void PrepareExit()=>_exiting=true;

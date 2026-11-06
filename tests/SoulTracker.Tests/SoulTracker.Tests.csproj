@@ -6,5 +6,7 @@
   <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4"/>
   <ProjectReference Include="../../src/SoulTracker.Core/SoulTracker.Core.csproj"/>
   <Using Include="Xunit"/>
+  <Content Include="../../assets/maps/spawns.json" Link="spawns.json" CopyToOutputDirectory="PreserveNewest"/>
+  <Content Include="../../assets/pet-catalog.json" Link="pet-catalog.json" CopyToOutputDirectory="PreserveNewest"/>
  </ItemGroup>
 </Project>

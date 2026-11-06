@@ -74,10 +74,8 @@ public partial class MapWindow : Window
         Map.SetWorld(_database.Worlds[_preferences.MapWorld]);
         _changing=false;HelpBadge.TranslateTree(this,_language);UpdateFollowButton();KeepOnScreen();RenderData();
     }
-    private IEnumerable<int> ChosenTargets()=>_preferences.FocusMode ?
-        (_collection is null ? [] : _database.Focus(_collection,_categories,_navigation.WorldId).Visible.Select(x=>x.Id)) :
-        _preferences.MapPetId>0 ? new[]{_preferences.MapPetId} : _preferences.HudTargets;
-    private bool ShowAll=>!_preferences.FocusMode && (_collection is null || !_collection.Pets.Any(p=>p.IsRegular && !p.Completed && _preferences.HudTargets.Contains(p.Id)));
+    private IEnumerable<int> ChosenTargets()=>_preferences.MapPetId>0 ? new[]{_preferences.MapPetId} : _preferences.HudTargets;
+    private bool ShowAll=>(_collection is null || !_collection.Pets.Any(p=>p.IsRegular && !p.Completed && _preferences.HudTargets.Contains(p.Id)));
     private void ToggleSettings(object sender,RoutedEventArgs e)
     {
         _preferences.MapSettingsExpanded=!_preferences.MapSettingsExpanded;
@@ -94,22 +92,22 @@ public partial class MapWindow : Window
         var t=new UiText(_language);
         return _database.Worlds.OrderBy(x=>x.Value.Group).ThenBy(x=>x.Key).Select(x=>new WorldOption(x.Key,
             x.Value.Name+" · "+(x.Value.Group switch {"elyos"=>t.Choose("Элийцы","Elyos"),"asmodians"=>t.Choose("Асмодиане","Asmodians"),_=>t.Choose("Бездна","Abyss")})+
-            (_collection is null ? "" : $" · {_database.Select(x.Key,_collection,ChosenTargets(),ShowAll,_categories,!_preferences.FocusMode).Count}"))).ToArray();
+            (_collection is null ? "" : $" · {_database.Select(x.Key,_collection,ChosenTargets(),ShowAll,_categories).Count}"))).ToArray();
     }
     private void UpdateOptions()
     {
-        var signature=$"{_navigation.WorldId}:{_collection!.LastTimeMs}:{_collection.HasSnapshot}:{_language}:{_preferences.FocusMode}:{_preferences.MapAllIncomplete}:{_preferences.MapPetId}:{string.Join(',',_preferences.HudTargets)}:{string.Join(',',_categories)}";
+        var signature=$"{_navigation.WorldId}:{_collection!.LastTimeMs}:{_collection.HasSnapshot}:{_language}:{_preferences.MapAllIncomplete}:{_preferences.MapPetId}:{string.Join(',',_preferences.HudTargets)}:{string.Join(',',_categories)}";
         if(signature==_optionsSignature)return;
         _changing=true;
         var eligible=_collection.Pets.Where(x=>x.IsRegular && !x.Completed && _preferences.HudTargets.Contains(x.Id)).ToArray();
-        if(!_preferences.FocusMode && !eligible.Any(x=>x.Id==_preferences.MapPetId))_preferences.MapPetId=0;
+        if(!eligible.Any(x=>x.Id==_preferences.MapPetId))_preferences.MapPetId=0;
         AllIncomplete.IsChecked=ShowAll;
         var t=new UiText(_language);
-        TargetPicker.ItemsSource=new[]{new WorldOption(0,_preferences.FocusMode ? t.Choose("Фокус: ближайшие к MAX","Focus: closest to MAX") : _preferences.HudTargets.Length==0 ?
+        TargetPicker.ItemsSource=new[]{new WorldOption(0,_preferences.HudTargets.Length==0 ?
             t.Choose("Все незавершённые по категориям","All incomplete by category") : t.Choose("Отмеченные цели HUD","Pinned HUD targets"))}
             .Concat(eligible.OrderBy(x=>PetText.Name(x,_language)).Select(x=>new WorldOption(x.Id,PetText.Name(x,_language)))).ToArray();
-        TargetPicker.SelectedValue=_preferences.FocusMode ? 0 : _preferences.MapPetId;
-        TargetPicker.IsEnabled=!_preferences.FocusMode && !ShowAll && eligible.Length>0;
+        TargetPicker.SelectedValue=_preferences.MapPetId;
+        TargetPicker.IsEnabled=!ShowAll && eligible.Length>0;
         WorldPicker.ItemsSource=WorldOptions();WorldPicker.SelectedValue=_preferences.MapWorld;
         Legend.Children.Clear();
         foreach(var category in _categories)
@@ -125,8 +123,8 @@ public partial class MapWindow : Window
     internal void RefreshNavigation(NavigationView navigation)
     {
         if(_navigation==navigation)return;
-        var worldChanged=_navigation.WorldId!=navigation.WorldId;_navigation=navigation;
-        if(FollowWorld() || (_preferences.FocusMode && worldChanged))RenderData();else RenderPosition();
+        _navigation=navigation;
+        if(FollowWorld())RenderData();else RenderPosition();
     }
     private bool FollowWorld()
     {
@@ -144,14 +142,14 @@ public partial class MapWindow : Window
         UpdateOptions();
         var t=new UiText(_language);var world=_preferences.MapWorld;
         var targets=ChosenTargets().ToArray();
-        var byCategory=!_preferences.FocusMode && (ShowAll || targets.Length==0);
-        var points=_database.Select(world,_collection,targets,ShowAll,_categories,!_preferences.FocusMode);
+        var byCategory=(ShowAll || targets.Length==0);
+        var points=_database.Select(world,_collection,targets,ShowAll,_categories);
         SpawnCount=points.Count;
         Map.SetSpawns(points,_collection.Pets,_language);
-        var eligible=SpawnDatabase.FilterTargets(_collection,targets,ShowAll,_categories,!_preferences.FocusMode);
-        MapScope.Text=_preferences.FocusMode ? t.Choose("Фокус · ближайшие к MAX","Focus · closest to MAX") : byCategory ? t.Choose("По категориям · без MAX","By category · excluding MAX") :
+        var eligible=SpawnDatabase.FilterTargets(_collection,targets,ShowAll,_categories);
+        MapScope.Text=byCategory ? t.Choose("По категориям · без MAX","By category · excluding MAX") :
             t.Choose("Выбранные цели · без MAX","Selected targets · excluding MAX");
-        MapScope.ToolTip=_preferences.FocusMode ? t.Choose("Те же ближайшие к MAX цели, что в счётчике. При равенстве показаны все лидеры.","The same closest-to-MAX targets as the counter. All tied leaders are shown.") : t.Choose("Категории: ","Categories: ")+string.Join(", ",_categories.Select(x=>PetText.Category(x,_language)))+
+        MapScope.ToolTip=t.Choose("Категории: ","Categories: ")+string.Join(", ",_categories.Select(x=>PetText.Category(x,_language)))+
             (byCategory ? t.Choose(". На карте — все незавершённые цели этих категорий.",". The map shows all incomplete targets in these categories.") :
                 t.Choose(". Сними выбор всех целей HUD, чтобы увидеть всех незавершённых по категориям.",". Unpin all HUD targets to show all incomplete targets by category."));
         var missing=eligible.Count(x=>!_database.Pets.TryGetValue(x.Id,out var drops) || !drops.Any(d=>d.Worlds.Any(w=>w.Points.Length>0)));
@@ -162,9 +160,16 @@ public partial class MapWindow : Window
         EmptyPanel.Visibility=points.Count==0 ? Visibility.Visible : Visibility.Collapsed;
         EmptyText.Text=!_collection.HasSnapshot ? t.Choose("Войди в персонажа, чтобы загрузить коллекцию.","Log in to load the collection.") : _categories.Length==0 ?
             t.Choose("Выбери категории в каталоге.","Enable categories in the collection.") : eligible.Count==0 ?
-            _preferences.FocusMode ? t.Choose("В текущей локации игрока нет подходящих целей. Проверь категории и определение локации.","No eligible targets in the player’s current location. Check categories and location detection.") : byCategory ? t.Choose("В этих категориях все цели уже MAX.","All targets in these categories are already MAX.") :
+            byCategory ? t.Choose("В этих категориях все цели уже MAX.","All targets in these categories are already MAX.") :
                 t.Choose("Среди выбранных целей нет незавершённых в этих категориях.","No selected targets are incomplete in these categories.") :
             t.Choose("Здесь нет известных точек этих целей. Проверь другие территории в списке.","No known locations for these targets here. Check other territories above.");
+        if(points.Count==0 && eligible.Count==1)
+        {
+            var pet=eligible[0];
+            EmptyText.Text=PetText.Name(pet,_language)+"\n"+_database.LocationNames(pet.Id,_language)+"\n\n"+
+                t.Choose("На выбранной карте нет точек этой цели. Карты подземелий пока недоступны.",
+                    "No points for this target on the selected map. Dungeon maps are not available yet.");
+        }
         RenderPosition();UpdateFollowButton();
     }
     private void RenderPosition()

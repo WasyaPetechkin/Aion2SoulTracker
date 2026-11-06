@@ -61,17 +61,11 @@ public partial class MainWindow
         Check("snapshot_does_not_queue_gains",_session.DrainReceivedSouls().Count==0);
         _session.ProcessLivePetMessage(sample.LastTimeMs+200,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
         Check("open_world_gain_auto_pins",_preferences.HudTargets.Contains(1120));
-        _preferences.HudTargets=[];SetVerificationWorld(9999);
+        _preferences.HudTargets=[];SetVerificationWorld(600032);
         _session.ProcessLivePetMessage(sample.LastTimeMs+201,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
-        Check("dungeon_gain_does_not_auto_pin",_preferences.HudTargets.Length==0);
+        Check("dungeon_gain_auto_pins",_preferences.HudTargets.Contains(1120));
         AutoTrackSouls.IsChecked=false;SetVerificationWorld(1110);
-        FocusMode.IsChecked=true;Refresh(true);
-        Check("focus_local_targets",_hud.Targets.Items.Cast<HudWindow.TargetRow>().Select(x=>x.Id).SequenceEqual(_spawns.Focus(_session.State.View(),EnabledCategories(),1110).Visible.Select(x=>x.Id)));
-        SetVerificationWorld(1010);Refresh(true);
-        Check("focus_excludes_opposite_only_pet",!_spawns.Focus(_session.State.View(),EnabledCategories(),1010).Visible.Any(x=>x.Id==1106));
-        Check("focus_changes_with_player_world",_hud.Targets.Items.Cast<HudWindow.TargetRow>().Select(x=>x.Id).SequenceEqual(_spawns.Focus(_session.State.View(),EnabledCategories(),1010).Visible.Select(x=>x.Id)));
-        SetVerificationWorld(9999);Refresh(true);Check("unknown_location_has_no_focus_targets",_hud.Targets.Items.Count==0 && _map.SpawnCount==0);
-        FocusMode.IsChecked=false;SetVerificationWorld(1110);_preferences.MapFollowPlayer=true;
+        SetVerificationWorld(1110);_preferences.MapFollowPlayer=true;
         _preferences.HudTargets=original;_catalogSort="RemainingSort";_catalogDirection=ListSortDirection.Ascending;
         foreach(var c in Pets.Columns)c.SortDirection=null;
         _session.State.Restore(sample with {LastTimeMs=sample.LastTimeMs+300});Refresh(true);
@@ -83,8 +77,16 @@ public partial class MainWindow
         TerritoryFilter.SelectedValue="asmodians";
         Check("catalog_territory_filter",Pets.Items.Count>0 && Pets.Items.Cast<PetRow>().All(p=>_spawns.MatchesTerritory(p.Id,"asmodians")));
         Check("completed_catalog_does_not_fill_hud",_hud.Targets.Items.Count==0);
-        TerritoryFilter.SelectedValue="unknown";
-        Check("catalog_unknown_territory",Pets.Items.Count>0 && Pets.Items.Cast<PetRow>().All(p=>p.Territory.Contains("неизвестна")));
+        TerritoryFilter.SelectedValue="dungeons";
+        Check("catalog_dungeons",Pets.Items.Count>0 && Pets.Items.Cast<PetRow>().All(p=>_spawns.MatchesTerritory(p.Id,"dungeons")));
+        Check("completed_saraswati_draupnir",Pets.Items.Cast<PetRow>().Any(p=>p.Id==1215 && p.Territory=="Драупнир" && p.BossLabel==""));
+        Render(this,Path.Combine(directory,"catalog-dungeons.png"));
+        TerritoryFilter.SelectedValue="worldboss";
+        Check("catalog_world_bosses",Pets.Items.Count==5 && Pets.Items.Cast<PetRow>().All(p=>p.BossLabel.Contains("Мировой босс")));
+        Render(this,Path.Combine(directory,"catalog-world-bosses.png"));
+        TerritoryFilter.SelectedValue="chests";
+        Check("catalog_chest_sources",Pets.Items.Count==23 && Pets.Items.Cast<PetRow>().All(p=>p.Territory=="Сундуки" && p.Locations.Contains("сундуков")));
+        Render(this,Path.Combine(directory,"catalog-chests.png"));
         TerritoryFilter.SelectedValue="elyos";LanguagePicker.SelectedIndex=1;
         Check("territory_filter_survives_language",Equals(TerritoryFilter.SelectedValue,"elyos") && TerritoryLabel.Text=="Territory");
         LanguagePicker.SelectedIndex=0;
@@ -96,5 +98,15 @@ public partial class MainWindow
         Search.Clear();HideCompleted.IsChecked=true;_preferences.HudTargets=savedPins;
         _session.State.Restore(sample with {LastTimeMs=sample.LastTimeMs+302});Refresh(true);
         Render(_hud,Path.Combine(directory,"hud-portraits.png"));Render(this,Path.Combine(directory,"collection-farming.png"));
+        _preferences.HudTargets=[1215];Refresh(true);
+        Check("dungeon_target_empty_map_explains_source",_map.SpawnCount==0 && _map.EmptyText.Text.Contains("Драупнир"));
+        Render(_map,Path.Combine(directory,"map-dungeon-target.png"));
+        _preferences.HudTargets=[1215,1206,1198];Refresh(true);
+        Check("hud_dungeon_and_boss_labels",_hud.Targets.Items.Cast<HudWindow.TargetRow>().Any(p=>p.Id==1215 && p.Territory=="Драупнир") &&
+            _hud.Targets.Items.Cast<HudWindow.TargetRow>().Any(p=>p.Id==1206 && p.BossLabel.Contains("Мировой босс")));
+        Render(_hud,Path.Combine(directory,"hud-farming-sources.png"));
+        LanguagePicker.SelectedIndex=1;Render(_hud,Path.Combine(directory,"hud-farming-sources-en.png"));
+        Check("hud_sources_english",_hud.Targets.Items.Cast<HudWindow.TargetRow>().Any(p=>p.Id==1215 && p.Territory=="Draupnir"));
+        LanguagePicker.SelectedIndex=0;_preferences.HudTargets=savedPins;Refresh(true);
     }
 }

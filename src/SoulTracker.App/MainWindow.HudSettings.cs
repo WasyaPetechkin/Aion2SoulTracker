@@ -40,7 +40,6 @@ public partial class MainWindow
                 {Source=source,Mode=BindingMode.TwoWay,UpdateSourceTrigger=UpdateSourceTrigger.PropertyChanged});
             return item;
         }
-        menu.Items.Add(Toggle(FocusMode,"focus"));
         menu.Items.Add(Toggle(AutoTrackSouls,"autoTrack"));
         menu.Items.Add(Toggle(MapVisible,"map"));
         menu.Items.Add(new Separator());

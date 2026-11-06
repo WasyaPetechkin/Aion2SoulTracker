@@ -33,7 +33,9 @@ public partial class MainWindow
         TerritoryLabel.Text=Text.Choose("Территория","Territory");TerritoryColumn.Header=TerritoryLabel.Text;
         TerritoryFilter.ItemsSource=new[]{new TerritoryOption("all",Text.Choose("Все территории","All territories")),
             new TerritoryOption("asmodians",Text.Choose("Асмодиане","Asmodians")),new TerritoryOption("elyos",Text.Choose("Элийцы","Elyos")),
-            new TerritoryOption("abyss",Text.Choose("Бездна","Abyss")),new TerritoryOption("unknown",Text.Choose("Территория неизвестна","Territory unknown"))};
+            new TerritoryOption("abyss",Text.Choose("Бездна","Abyss")),new TerritoryOption("dungeons",Text.Choose("Подземелья","Dungeons")),
+            new TerritoryOption("worldboss",Text.Choose("Мировые боссы","World bosses")),new TerritoryOption("chests",Text.Choose("Сундуки питомцев","Pet chests")),
+            new TerritoryOption("other",Text.Choose("Другие источники","Other sources"))};
         TerritoryFilter.SelectedValue=_preferences.CatalogTerritory;
         _loadingTerritories=false;
     }
@@ -107,7 +109,7 @@ public partial class MainWindow
         {
             var pins=_preferences.HudTargets.ToHashSet();
             foreach(var gain in gains)
-                if(gain.WorldId is int world && _spawns.Worlds.ContainsKey(world) && v.Pets.Any(p=>p.Id==gain.PetId && p.IsRegular && !p.Completed))pins.Add(gain.PetId);
+                if(v.Pets.Any(p=>p.Id==gain.PetId && p.IsRegular && !p.Completed))pins.Add(gain.PetId);
             if(pins.Count!=_preferences.HudTargets.Length){_preferences.HudTargets=pins.Order().ToArray();QueueSettingsSave();force=true;}
         }
         _hud.Refresh(v,_preferences,EnabledCategories(),_spawns,_session.Navigation.View().WorldId,_session.Status.StartsWith("Capturing",StringComparison.Ordinal));
@@ -133,7 +135,7 @@ public partial class MainWindow
                     (OwnedOnly.IsChecked!=true || x.Level>0) && _spawns.MatchesTerritory(x.Id,_preferences.CatalogTerritory) && PetText.Matches(x,text)))
                 .Select(x=>new PetRow(x.Id,PetText.Name(x,_language),PetText.Category(x.Genus,_language),
                     PetText.Level(x,_language),x.Stage,PetText.Remaining(x,_language),_preferences.HudTargets.Contains(x.Id),x.IsRegular,x.Level,x.Souls,x.Remaining ?? int.MaxValue,
-                    _spawns.Territories(x.Id,_language),_spawns.LocationNames(x.Id,_language))).ToArray() : Array.Empty<PetRow>();
+                    _spawns.Territories(x.Id,_language),_spawns.LocationNames(x.Id,_language),_spawns.WorldBossLabel(x.Id,_language))).ToArray() : Array.Empty<PetRow>();
             var pinnedFirst=rows.OrderByDescending(x=>x.IsTracked);
             Pets.ItemsSource=(_catalogDirection==ListSortDirection.Ascending ? pinnedFirst.ThenBy(SortValue) : pinnedFirst.ThenByDescending(SortValue)).ThenBy(x=>x.Name).ToArray();
             foreach(var column in Pets.Columns)column.SortDirection=column.SortMemberPath==_catalogSort ? _catalogDirection : null;

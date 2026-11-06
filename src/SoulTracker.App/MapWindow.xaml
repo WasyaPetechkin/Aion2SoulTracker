@@ -41,14 +41,17 @@
      <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Label}" Foreground="#101823" TextTrimming="CharacterEllipsis"/></DataTemplate></ComboBox.ItemTemplate>
     </ComboBox></DockPanel>
     <Grid Grid.Row="3">
-     <local:MapCanvas x:Name="Map"/>
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+     <local:MapCanvas x:Name="Map" Grid.RowSpan="2"/>
      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5">
       <Button x:Name="PlayerButton" Style="{StaticResource MapButton}" Content="Я" Click="FollowPlayer"/><local:HelpBadge Topic="follow" Margin="1,0,2,0"/>
       <Button Style="{StaticResource MapButton}" Content="−" Click="ZoomOut" ToolTip="−"/><local:HelpBadge Topic="zoomOut" Margin="1,0,2,0"/>
       <Button Style="{StaticResource MapButton}" Content="+" Click="ZoomIn" ToolTip="+"/><local:HelpBadge Topic="zoomIn" Margin="1,0,2,0"/>
      </StackPanel>
-     <Border x:Name="EmptyPanel" Background="#C4152130" CornerRadius="5" Padding="12" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="12">
-      <TextBlock x:Name="EmptyText" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
+     <Border x:Name="EmptyPanel" Grid.Row="1" Background="#E6152130" CornerRadius="5" Padding="12" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="12,6,12,12">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+       <TextBlock x:Name="EmptyText" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
+      </ScrollViewer>
      </Border>
     </Grid>
     <StackPanel Grid.Row="4" Margin="0,5,0,0">

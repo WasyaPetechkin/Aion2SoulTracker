@@ -34,7 +34,7 @@ public partial class MainWindow : Window
     private string _language="ru";
     private int _ticks;
     private UiText Text=>new(_language);
-    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack,int LevelSort,int SoulsSort,int RemainingSort,string Territory="",string Locations="");
+    public sealed record PetRow(int Id,string Name,string Genus,string LevelText,string Stage,string RemainingText,bool IsTracked,bool CanTrack,int LevelSort,int SoulsSort,int RemainingSort,string Territory="",string Locations="",string BossLabel="");
 
     public MainWindow(string[] args)
     {
@@ -47,7 +47,7 @@ public partial class MainWindow : Window
         LanguagePicker.SelectedIndex=_language=="ru" ? 0 : 1;
         HudVisible.IsChecked=_preferences.HudVisible;MapVisible.IsChecked=_preferences.MapVisible;
         HudLocked.IsChecked=_preferences.HudLocked;HudOpacity.Value=_preferences.HudOpacity;
-        FocusMode.IsChecked=_preferences.FocusMode;HudRowScale.Value=_preferences.HudRowScale;LoadHotkeyInputs();
+        HudRowScale.Value=_preferences.HudRowScale;LoadHotkeyInputs();
         AutoTrackSouls.IsChecked=_preferences.AutoTrackSouls;
         Cogni.IsChecked=_preferences.Categories.Contains("Cogni");Fera.IsChecked=_preferences.Categories.Contains("Fera");
         Natura.IsChecked=_preferences.Categories.Contains("Natura");Varian.IsChecked=_preferences.Categories.Contains("Varian");

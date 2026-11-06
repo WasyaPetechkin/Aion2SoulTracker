@@ -1,3 +1,9 @@
+# 0.3.6 — 2026-11-06
+
+Удалён режим фокуса. Обновлены источники душ: названия подземелий, метки мировых боссов и отдельные сведения о сундуках получения питомцев. Добавлены фильтры каталога по этим источникам. Автодобавление в HUD теперь работает и в подземельях. Карты данжей не добавлены; подтверждённые места можно посмотреть в каталоге и HUD.
+
+Removed focus mode. Refreshed soul sources with dungeon names, world boss labels and separate pet acquisition chest details. Added matching catalogue filters. Automatic HUD pinning now works in dungeons. Dungeon maps are not included; documented sources appear in the catalogue and HUD.
+
 # 0.3.5 — 2026-10-24
 
 Исправлен захват игрового трафика через локальный TCP-посредник LagoFast на динамическом порту. Служебные соединения самой игры по-прежнему исключаются. Прямые и локальные соединения могут захватываться одновременно при смене маршрута. Проверены загрузка коллекции и получение души в данже через LagoFast.

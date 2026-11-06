@@ -33,25 +33,8 @@ public partial class MainWindow
         HudRowScale.Value=1;
         SelectPage(false);
         Check("collection_navigation",CollectionPage.IsVisible && !SettingsPage.IsVisible && !LanguagePicker.IsVisible);
-        var manualTargets=_preferences.HudTargets.ToArray();var manualMapTarget=_preferences.MapPetId;
-        // Known mapped pets; all others complete so leadership and map counts are deterministic.
-        var tied=sample with {LastTimeMs=sample.LastTimeMs+10, Pets=sample.Pets.Select(p=>p with {Level=3, Souls=0})
-            .Select(p=>p.Id is 1120 or 1106 ? p with {Level=2, Souls=70} : p).ToArray()};
-        SetVerificationWorld(1110);
-        _session!.State.Restore(tied);FocusMode.IsChecked=true;Refresh(true);
-        int Expected(CollectionView v)=>_spawns.Select(_preferences.MapWorld,v,_spawns.Focus(v,EnabledCategories(),1110).Visible.Select(p=>p.Id),false,EnabledCategories(),false).Count;
-        Check("focus_ties_in_counter_and_map",_hud.Targets.Items.Count==2 && _map.SpawnCount==Expected(_session.State.View()) && _map.SpawnCount>0 && !_map.AllIncomplete.IsEnabled && !_map.TargetPicker.IsEnabled);
-        Render(_hud,Path.Combine(directory,"focus-tie.png"));
-        _hud.UpdateLayout();
-        var focusedRow=_hud.Targets.ItemContainerGenerator.ContainerFromIndex(0);
-        Check("focus_remove_button_collapsed",FindVisual<Button>(focusedRow) is {Visibility:Visibility.Collapsed});
         var quick=BuildHudQuickSettings();
         MenuItem Quick(string name)=>quick.Items.OfType<MenuItem>().Single(x=>Equals(x.Tag,name));
-        Check("hud_menu_reflects_focus",Quick("FocusMode").IsChecked);
-        Quick("FocusMode").IsChecked=false;
-        Check("hud_menu_changes_focus",!_preferences.FocusMode && FocusMode.IsChecked==false);
-        FocusMode.IsChecked=true;
-        Check("catalog_updates_hud_menu",Quick("FocusMode").IsChecked);
         var autoBefore=_preferences.AutoTrackSouls;
         Quick("AutoTrackSouls").IsChecked=!autoBefore;
         Check("hud_menu_changes_auto_tracking",_preferences.AutoTrackSouls==!autoBefore);
@@ -66,7 +49,7 @@ public partial class MainWindow
         Quick("MapVisible").IsChecked=mapBefore;
         _preferences.Save(Path.Combine(directory,"hud-menu-preferences.json"));
         var menuSaved=AppPreferences.Load(Path.Combine(directory,"hud-menu-preferences.json"));
-        Check("hud_menu_preferences_saved",menuSaved.FocusMode && menuSaved.Categories.SequenceEqual(_preferences.Categories));
+        Check("hud_menu_preferences_saved",menuSaved.Categories.SequenceEqual(_preferences.Categories));
         _hud.QuickSettingsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         var visibleMenu=_hud.QuickSettingsButton.ContextMenu!;
         visibleMenu.UpdateLayout();
@@ -89,19 +72,6 @@ public partial class MainWindow
         if(popup?.Child is FrameworkElement child)RenderElement(child,Path.Combine(directory,"hud-submenu.png"));
         submenu.IsSubmenuOpen=false;helpTip.IsOpen=true;visibleMenu.IsOpen=false;
         Check("hud_menu_help_closes_with_menu",!helpTip.IsOpen);
-        var leader=tied with {LastTimeMs=tied.LastTimeMs+1,Pets=tied.Pets.Select(p=>p.Id==1120 ? p with {Souls=71} : p).ToArray()};
-        _session.State.Restore(leader);Refresh(true);
-        Check("focus_narrows_after_gain",_hud.Targets.Items.Count==1 && _map.SpawnCount==Expected(_session.State.View()));
-        Render(_map,Path.Combine(directory,"map-focus.png"));
-        var next=leader with {LastTimeMs=leader.LastTimeMs+1,Pets=leader.Pets.Select(p=>p.Id==1120 ? p with {Level=3, Souls=0} : p).ToArray()};
-        _session.State.Restore(next);Refresh(true);
-        Check("focus_advances_after_max",_hud.Targets.Items.Count==1 && _map.SpawnCount==Expected(_session.State.View()) &&
-            ((HudWindow.TargetRow)_hud.Targets.Items[0]).Name==PetText.Name(next.Pets.Single(p=>p.Id==1106),_language));
-        var done=next with {LastTimeMs=next.LastTimeMs+1,Pets=next.Pets.Select(p=>p with {Level=3, Souls=0}).ToArray()};
-        _session.State.Restore(done);Refresh(true);
-        Check("focus_empty_no_category_fallback",_hud.Targets.Items.Count==0 && _map.SpawnCount==0);
-        _session.State.Restore(sample with {LastTimeMs=done.LastTimeMs+1});Refresh(true);FocusMode.IsChecked=false;Refresh(true);
-        Check("focus_preserves_manual_choices",_preferences.HudTargets.SequenceEqual(manualTargets) && _preferences.MapPetId==manualMapTarget);
         _map.SettingsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         Check("map_settings_can_expand",_map.TargetSettings.Visibility==Visibility.Visible);
         Render(_map,Path.Combine(directory,"map-expanded.png"));
