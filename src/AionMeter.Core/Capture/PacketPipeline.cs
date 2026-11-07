@@ -27,6 +27,8 @@ public sealed class PacketPipeline
     private readonly Dictionary<FlowKey, Flow> _flows = new();
     private readonly PacketParser _parser;
     private long _lastPruneMs;
+    private static long _generation;
+    private readonly Dictionary<FlowKey,LossEvidence> _pendingLoss=[];
 
     public PacketPipeline(GameData data, Action<GameEvent> sink)
     {
@@ -49,16 +51,59 @@ public sealed class PacketPipeline
     public event Action<FlowKey>? FlowLocked;
     public event Action<FlowKey,string>? StreamDiscontinuity;
     public FlowKey? CurrentFlow {get;private set;}
+    public StreamContext? CurrentContext {get;private set;}
+    public event Action<StreamLoss>? LossObserved;
+    public event Action<int[]>? ProcessesObserved;
+    public void ObserveProcesses(int[] pids)=>ProcessesObserved?.Invoke(pids);
+    public void InvalidateAll(string reason)
+    {foreach(var f in _flows.Values.Where(x=>x.IsGame))ReportLoss(f,new(f.Key,f.LastSeenMs,reason,ProcessId:f.Context.ProcessId));}
+    public void ReportCaptureLoss(LossEvidence loss)
+    {
+        if(_flows.TryGetValue(loss.Flow,out var f) && f.Context.ProcessId==loss.ProcessId)
+        {
+            if(f.IsGame && loss.Sequence is uint start && loss.EndSequence is uint end && unchecked((int)(end-start))>0)
+            {
+                if(f.Reassembler!.AlreadyDelivered(start,end))return;
+                // A known missing range can still arrive through retransmission or another
+                // capture adapter. TCP will hold later bytes; do not invalidate prematurely.
+                if(f.CaptureLosses.Count<64){f.CaptureLosses.TryAdd((start,end),loss);return;}
+            }
+            if(f.IsGame)ReportLoss(f,loss);else f.InitialLoss=loss;
+        }
+        else
+        {
+            _pendingLoss[loss.Flow]=loss;
+            while(_pendingLoss.Count>512)_pendingLoss.Remove(_pendingLoss.MinBy(x=>x.Value.TimeMs).Key);
+        }
+    }
+    private void ReportLoss(Flow flow,LossEvidence loss)
+    {
+        StreamDiscontinuity?.Invoke(flow.Key,loss.Reason);
+        LossObserved?.Invoke(new(flow.Context,loss));
+    }
+    private Flow NewFlow(FlowKey key,int pid,long time)
+    {
+        var flow=new Flow(key,new(key,Interlocked.Increment(ref _generation),pid,time)){LastSeenMs=time};
+        if(_pendingLoss.Remove(key,out var loss) && loss.ProcessId==pid)flow.InitialLoss=loss;
+        return flow;
+    }
 
-    public void OnSegment(long timeMs, FlowKey key, uint seq, bool syn, bool finOrRst, ReadOnlySpan<byte> payload)
+    public void OnSegment(long timeMs, FlowKey key, uint seq, bool syn, bool finOrRst, ReadOnlySpan<byte> payload,int processId=0)
     {
         Segments++;
         if (timeMs - _lastPruneMs > 10_000) Prune(timeMs);
 
-        if (!_flows.TryGetValue(key, out var flow))
+        if (!_flows.TryGetValue(key, out var flow) || flow.Context.ProcessId!=processId)
         {
             if (payload.IsEmpty && !syn) return;
-            flow = new Flow(key);
+            if(flow is {IsGame:true})ReportLoss(flow,new(key,timeMs,"TCP owner changed",ProcessId:flow.Context.ProcessId));
+            if(_flows.Count>=512 && !_flows.ContainsKey(key))
+            {
+                var oldest=_flows.MinBy(x=>x.Value.LastSeenMs);
+                if(oldest.Value.IsGame)ReportLoss(oldest.Value,new(oldest.Key,timeMs,"Stream capacity exceeded"));
+                _flows.Remove(oldest.Key);
+            }
+            flow = NewFlow(key,processId,timeMs);
             _flows[key] = flow;
         }
         flow.LastSeenMs = timeMs;
@@ -67,8 +112,12 @@ public sealed class PacketPipeline
         {
             if(flow.SynNext!=seq+1)
             {
-                if(flow.IsGame)StreamDiscontinuity?.Invoke(key,"TCP connection restarted");
-                flow=new Flow(key){LastSeenMs=timeMs,SynNext=seq+1};_flows[key]=flow;
+                if(flow.SynNext.HasValue || flow.IsGame)
+                {
+                    if(flow.IsGame)ReportLoss(flow,new(key,timeMs,"TCP connection restarted",seq,unchecked(seq+1),processId));
+                    flow=NewFlow(key,processId,timeMs);_flows[key]=flow;
+                }
+                flow.SynNext=unchecked(seq+1);
             }
             return;
         }
@@ -96,7 +145,7 @@ public sealed class PacketPipeline
                     var joined=new byte[previous+data.Length];flow.ProbeTail.CopyTo(joined,0);data.Span.CopyTo(joined.AsSpan(previous));
                     flow.Heartbeats+=CountHeartbeats(joined,previous);
                     flow.ProbeTail=joined.AsSpan(Math.Max(0,joined.Length-10)).ToArray();
-                },()=>{flow.ProbeTail=[];flow.Heartbeats=0;});
+                },()=>{flow.ProbeTail=[];flow.Heartbeats=0;flow.InitialLoss=new(key,timeMs,"Pre-lock sequence gap",ProcessId:processId);});
                 flow.Probe.Start(flow.SynNext ?? seq);
             }
             flow.Probe.Push(seq,payload,timeMs);
@@ -104,9 +153,11 @@ public sealed class PacketPipeline
             flow.PreLockBytes += payload.Length;
             while (flow.PreLockBytes > PreLockBufferBytes && flow.PreLock.Count > 1)
             {
+                var dropped=flow.PreLock[0];
                 flow.PreLockBytes -= flow.PreLock[0].Data.Length;
                 flow.PreLock.RemoveAt(0);
                 flow.SynNext = null; // the start of the stream is gone
+                flow.InitialLoss=new(key,timeMs,"Pre-lock buffer full",dropped.Seq,unchecked(dropped.Seq+(uint)dropped.Data.Length),processId);
             }
 
             var threshold = key.SrcPort == GamePort ? Math.Min(3, LockThreshold) : LockThreshold;
@@ -125,11 +176,11 @@ public sealed class PacketPipeline
         var aligned = flow.SynNext.HasValue;
         flow.Decoder = new FrameDecoder(Handle, aligned);
         var decoder = flow.Decoder;
-        decoder.DataLost+=reason=>StreamDiscontinuity?.Invoke(flow.Key,reason);
+        decoder.DataLost+=reason=>ReportLoss(flow,new(flow.Key,flow.LastSeenMs,reason,ProcessId:flow.Context.ProcessId));
         flow.Reassembler = new TcpReassembler(d => decoder.Feed(d.Span), () =>
         {
             Gaps++;
-            StreamDiscontinuity?.Invoke(flow.Key,"TCP sequence gap: "+flow.Reassembler!.LastGapReason+$"; missing={flow.Reassembler.LastGapMissingBytes}");
+            ReportLoss(flow,new(flow.Key,flow.LastSeenMs,"TCP sequence gap: "+flow.Reassembler!.LastGapReason+$"; missing={flow.Reassembler.LastGapMissingBytes}",flow.Reassembler.LastGapStartSequence,flow.Reassembler.LastGapEndSequence,flow.Context.ProcessId));
             decoder.Reset();
         });
         flow.Reassembler.Start(flow.SynNext ?? first.Seq);
@@ -138,17 +189,30 @@ public sealed class PacketPipeline
         var buffered = flow.PreLock;
         flow.PreLock = new();
         flow.PreLockBytes = 0;
+        if(flow.InitialLoss is {} loss)ReportLoss(flow,loss);
         foreach (var (seq, data, time) in buffered) Feed(flow, seq, data, time);
         FlowLocked?.Invoke(flow.Key);
     }
 
     private void Feed(Flow flow, uint seq, ReadOnlySpan<byte> payload, long timeMs)
     {
-        CurrentFlow=flow.Key;
+        CurrentFlow=flow.Key;CurrentContext=flow.Context;
         _parser.TimeMs = timeMs;
         GameBytes += payload.Length;
         LastGameDataMs = timeMs;
-        flow.Reassembler!.Push(seq, payload, timeMs);
+        try {flow.Reassembler!.Push(seq, payload, timeMs);}
+        catch(Exception ex) when(ex is not OutOfMemoryException)
+        {
+            ReportLoss(flow,new(flow.Key,timeMs,"Packet handler failed: "+ex.GetType().Name,seq,unchecked(seq+(uint)payload.Length),flow.Context.ProcessId));
+            flow.Decoder!.Reset();
+        }
+        finally {CurrentFlow=null;CurrentContext=null;}
+        foreach(var (range,loss) in flow.CaptureLosses.ToArray())
+        {
+            if(flow.Reassembler!.AlreadyDelivered(range.Start,range.End))flow.CaptureLosses.Remove(range);
+            else if(timeMs-loss.TimeMs>TcpReassembler.GapTimeoutMs)
+            {flow.CaptureLosses.Remove(range);ReportLoss(flow,loss);}
+        }
     }
 
     private void Handle(ushort opcode, ReadOnlySpan<byte> body) => _parser.Handle(opcode, body);
@@ -179,15 +243,18 @@ public sealed class PacketPipeline
         _lastPruneMs = nowMs;
         List<FlowKey>? dead = null;
         foreach (var (k, f) in _flows)
-            if (nowMs-f.LastSeenMs>(f.IsGame ? 30*60_000 : FlowIdleMs)) (dead ??= new()).Add(k);
+            if (!f.IsGame && nowMs-f.LastSeenMs>FlowIdleMs) (dead ??= new()).Add(k);
         if (dead is not null)
             foreach (var k in dead)
-            {if(_flows[k].IsGame)StreamDiscontinuity?.Invoke(k,"Inactive TCP stream retired");_flows.Remove(k);}
+            {_flows.Remove(k);}
     }
 
-    private sealed class Flow(FlowKey key)
+    private sealed class Flow(FlowKey key,StreamContext context)
     {
         public FlowKey Key { get; } = key;
+        public StreamContext Context {get;}=context;
+        public LossEvidence? InitialLoss;
+        public Dictionary<(uint Start,uint End),LossEvidence> CaptureLosses=[];
         public bool IsGame;
         public bool IsTls;
         public int Heartbeats;

@@ -186,7 +186,7 @@ public sealed class FrameDecoder
             try
             {
                 var n = LZ4Codec.Decode(frame[o..], target.AsSpan(0, (int)rawSize));
-                if (n <= 0)
+                if (n != rawSize)
                 {
                     BadBundles++;
                 DataLost?.Invoke("Invalid compressed bundle");

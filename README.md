@@ -6,7 +6,9 @@
 
 ## Русский
 
-Инструкция для сборки **0.3.6**. Опубликованные версии доступны по ссылке ниже.
+Инструкция для сборки **0.3.7**. Опубликованные версии доступны по ссылке ниже.
+
+В 0.3.7 усилена защита счётчика при смене соединения и персонажа, обработка пропущенных пакетов и повторной доставки. Новая сессия подтверждается персонажем и полной коллекцией; при невосстановимой потере данных по-прежнему может потребоваться повторный вход. Технические подробности и границы проверки: [надёжность коллекции](docs/session-integrity.md).
 
 **Aion 2 Soul Tracker** помогает собирать души и выбирать следующую цель для фарма. Каталог показывает прогресс коллекции, компактный HUD — сколько осталось до MAX, а отдельная интерактивная карта — известные места появления монстров.
 
@@ -115,7 +117,9 @@
 
 ## English
 
-Instructions for build **0.3.6**. Published versions are available at the link below.
+Instructions for build **0.3.7**. Published versions are available at the link below.
+
+Version 0.3.7 strengthens counter isolation across connection and character changes, missing-packet handling and retransmission recovery. A new session requires both character identity and a complete collection; unrecoverable data loss may still require logging in again. See [collection integrity](docs/session-integrity.md) for technical details and validation limits.
 
 **Aion 2 Soul Tracker** helps you collect souls and choose your next farming target. The catalogue tracks your collection, a compact HUD shows souls remaining to MAX, and a separate interactive map displays known monster spawn locations.
 

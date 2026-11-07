@@ -32,9 +32,9 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
     private readonly List<string> _history = new();
     private long _snapshotTime;
     private long _lastTime;
-    private long _lastIdentityTime;
     private bool _hasSnapshot;
     private bool _needsResync;
+    public bool IsTrusted {get {lock(_gate)return _hasSnapshot && !_needsResync;}}
     private string _character = "";
     private int? _server;
     private string _source = "Запись";
@@ -45,7 +45,7 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
         {
             if (op == PetProtocol.SnapshotOpcode)
             {
-                if (!PetProtocol.TrySnapshot(timeMs, body, out var s)) return false;
+                if ((_hasSnapshot && timeMs<_lastTime) || !PetProtocol.TrySnapshot(timeMs, body, out var s)) return false;
                 _levels = s!.Levels.ToDictionary(x => x.PetId, x => x.Level);
                 _souls = new(s.Souls);
                 _snapshotTime = _lastTime = timeMs;
@@ -57,6 +57,8 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
             if (op != PetProtocol.GainOpcode || !PetProtocol.TryGains(body, out var gains)) return false;
             // A gain without a snapshot cannot reveal how many souls the character already had.
             if (!_hasSnapshot || _needsResync || timeMs < _snapshotTime) return false;
+            // Validate the whole update before changing any counter or history entry.
+            if(gains.GroupBy(x=>x.PetId).Any(g=>(long)_souls.GetValueOrDefault(g.Key)+g.Sum(x=>(long)x.Amount)>int.MaxValue))return false;
             foreach (var g in gains)
             {
                 var before = _souls.GetValueOrDefault(g.PetId);
@@ -108,7 +110,6 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
             _lastTime=saved.LastTimeMs;
             _character=saved.Character;
             _server=saved.ServerId;
-            _lastIdentityTime=saved.LastTimeMs;
             _hasSnapshot=true;
             _needsResync=true; // A saved cache does not establish continuity during app downtime.
             _source="Сохранённая запись; ожидается синхронизация при входе";
@@ -139,16 +140,12 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
             int? server=serverId>0 ? serverId : _character==name ? _server : null;
             if (_character.Length > 0 && (_character != name || (_server.HasValue && server.HasValue && _server != server)))
             {
-                // Do not attribute a previous character's cached counts to a new character.
-                // On EU, the fresh snapshot can precede SelfInfo by several seconds.
-                if (_snapshotTime <= _lastIdentityTime || timeMs - _snapshotTime > 30_000)
-                {
-                    _levels.Clear(); _souls.Clear(); _hasSnapshot = false; _needsResync = true;
-                }
+                // A snapshot belongs to a transport session; time proximity is not proof of identity.
+                _levels.Clear();_souls.Clear();_hasSnapshot=false;_needsResync=true;
+                _snapshotTime=_lastTime=0;
             }
             _character = name;
             _server = server;
-            _lastIdentityTime = timeMs;
         }
     }
     public CollectionView View()

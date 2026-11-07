@@ -146,6 +146,8 @@ public partial class MainWindow
             SaveCollection();
             try { File.WriteAllText(Path.Combine(Path.GetDirectoryName(_export)!,"status.json"),
                 JsonSerializer.Serialize(new { Time=DateTimeOffset.UtcNow, _session.Status,
+                    Session=new{_session.Streams.Epoch,_session.Streams.PendingStreams,
+                        ActiveStream=_session.Streams.ActiveStream is {} stream ? new{stream.Generation,stream.ProcessId,stream.StartedMs,Flow=stream.Flow.ToString()} : null},
                     _session.LiveSnapshotReceived, _session.RejectedPetMessages, v.HasSnapshot, v.NeedsResync,
                     HudVisible=_hud.IsVisible,HudLocked=_preferences.HudLocked,HudTargets=_preferences.HudTargets,
                     MapVisible=_map.IsVisible,MapWorld=_preferences.MapWorld,MapSpawns=_map.SpawnCount,Navigation=_session.Navigation.View(),

@@ -13,7 +13,8 @@ public sealed class TrackerSession : IDisposable
     public IReadOnlyList<ReceivedSoul> DrainReceivedSouls()
     {var result=new List<ReceivedSoul>();while(_receivedSouls.TryDequeue(out var gain))result.Add(gain);return result;}
     public CollectionState State { get; }
-    public NavigationState Navigation {get;}=new();
+    public CollectionSession Streams {get;}
+    public NavigationState Navigation=>Streams.Navigation;
     public string Status { get; private set; } = "Capture stopped";
     public bool LiveSnapshotReceived { get; private set; }
     public long ObservedPackets { get; private set; }
@@ -21,7 +22,7 @@ public sealed class TrackerSession : IDisposable
     public CaptureHealth? Health=>_live?.Health();
     private readonly GameData _data;
     private LiveCapture? _live;
-    private FlowKey? _collectionFlow;
+    private PacketPipeline? _inputPipeline;
     public sealed record NetworkEvent(DateTimeOffset Time,string Kind,string Detail);
     private readonly ConcurrentQueue<NetworkEvent> _networkEvents=new();
     public NetworkEvent[] NetworkEvents=>_networkEvents.ToArray();
@@ -30,37 +31,25 @@ public sealed class TrackerSession : IDisposable
     private CaptureState? _lastCaptureState;
     private void LogNetwork(string kind,string detail)
     {if(_networkEvents.LastOrDefault() is { } last && last.Kind==kind && last.Detail==detail)return;_networkEvents.Enqueue(new(DateTimeOffset.UtcNow,kind,detail));while(_networkEvents.Count>100)_networkEvents.TryDequeue(out _);}
-    public void ObserveDiscontinuity(FlowKey flow,string reason)
-    {
-        LogNetwork("stream",reason+" · "+flow);
-        if(_collectionFlow is not null && _collectionFlow!=flow)return;
-        Navigation.MarkGap();State.MarkUncertain("Пропущен участок сети; нужен новый вход в персонажа");LiveSnapshotReceived=false;
-    }
     private bool _hasConnected;
 
     public TrackerSession(IReadOnlyList<PetDefinition> catalog, GameData data)
     {
         State = new(catalog);
         _data = data;
+        Streams=new(State,QueueGains,LogNetwork,()=>_receivedSouls.Clear());
     }
     public void Replay(string path)
     {
+        Streams.Reset("Открыта запись игрового обмена",replay:true);
         Navigation.Reset(replay:true);
         using var replay = new PcapReplaySource(_data, path, false);
-        replay.Pipeline.Parser.Tap = (time,op,body) =>
-        {
-            ObservedPackets++;
-            Navigation.Process(time,op,body);
-            if (op is PetProtocol.SnapshotOpcode or PetProtocol.GainOpcode)
-            {
-                if (!State.Process(time,op,body)) RejectedPetMessages++;
-            }
-        };
+        BindPipeline(replay.Pipeline);
         replay.EventDecoded += HandleEvent;
         replay.RunToEnd();
         State.SetSource("Запись игрового обмена");
         Status = $"Запись прочитана; пропусков потока: {replay.Pipeline.Gaps}";
-        if (replay.Pipeline.Gaps > 0) State.MarkUncertain("В записи есть пропуски; требуется новая синхронизация");
+        UpdateLiveTrust();
     }
     public bool Restore(string path)
     {
@@ -77,23 +66,11 @@ public sealed class TrackerSession : IDisposable
     }
     public void StartLive(string? recordDirectory = null)
     {
-        Navigation.Reset();
+        Streams.Reset("Начат захват новой игровой сессии");
         State.SetSource("Сохранённая запись; ожидается синхронизация при входе");
         State.MarkUncertain("Начато прослушивание: для актуальной коллекции нужен новый вход в персонажа");
         _live = new LiveCapture(_data, new LiveCaptureOptions { RecordDirectory = recordDirectory });
-        _live.Pipeline.Parser.Tap = (time,op,body) =>
-        {
-            ObservedPackets++;
-            Navigation.Process(time,op,body);
-            if (op is not (PetProtocol.SnapshotOpcode or PetProtocol.GainOpcode)) return;
-            if (!ProcessLivePetMessage(time,op,body,_live.Pipeline.CurrentFlow)) { RejectedPetMessages++; return; }
-            if (op == PetProtocol.SnapshotOpcode)
-            {
-                LiveSnapshotReceived = true;
-                State.SetSource("Живые данные игры");
-            }
-        };
-        _live.Pipeline.StreamDiscontinuity+=ObserveDiscontinuity;
+        BindPipeline(_live.Pipeline);
         _live.EventDecoded += HandleEvent;
         _live.StatusChanged += ObserveCaptureStatus;
         _live.Start();
@@ -112,15 +89,16 @@ public sealed class TrackerSession : IDisposable
         if(_lastCaptureState!=status.State){LogNetwork("capture",status.State+": "+status.Message);_lastCaptureState=status.State;}
         if(status.State==CaptureState.Capturing)_hasConnected=true;
         // A quiet connection or a temporary absence from the TCP table is not lost data.
-        if(_hasConnected && status.State is CaptureState.Error or CaptureState.WaitingForGame)
+        if(_hasConnected && status.State==CaptureState.WaitingForGame)
         {
-            Navigation.Reset();
-            State.MarkUncertain("Соединение прервано; после входа ожидается новая коллекция");
+            Streams.Reset("Соединение прервано; после входа ожидается новая коллекция");
             LiveSnapshotReceived=false;_hasConnected=false;
         }
     }
-    public bool ProcessLivePetMessage(long time,ushort op,ReadOnlySpan<byte> body,FlowKey? flow=null)
+    // Synthetic/offline verification entry point. Live and replay messages always use BindPipeline.
+    public bool ProcessSyntheticPetMessage(long time,ushort op,ReadOnlySpan<byte> body)
     {
+        if(_inputPipeline is not null || _live is not null)throw new InvalidOperationException("Synthetic input is not permitted during capture or replay");
         var wellFormed=op==PetProtocol.SnapshotOpcode ? PetProtocol.TrySnapshot(time,body,out _) : op==PetProtocol.GainOpcode && PetProtocol.TryGains(body,out _);
         if(!wellFormed)
         {
@@ -129,18 +107,33 @@ public sealed class TrackerSession : IDisposable
             return false;
         }
         if(!State.Process(time,op,body)){LogNetwork("ignored-pet-message",$"opcode={op:X4}; synchronization required");return false;}
-        if(flow is not null)_collectionFlow=flow;
         if(op==PetProtocol.SnapshotOpcode)LogNetwork("snapshot","Collection synchronized");
         if(op==PetProtocol.GainOpcode && PetProtocol.TryGains(body,out var gains))
         {
-            foreach(var gain in gains)_receivedSouls.Enqueue(new(gain.PetId,Navigation.View().WorldId));
-            while(_receivedSouls.Count>4096)_receivedSouls.TryDequeue(out _);
+            QueueGains(gains,Navigation.View().WorldId);
         }
         return true;
     }
+    private void QueueGains(IReadOnlyList<SoulGain> gains,int? world)
+    {foreach(var gain in gains)_receivedSouls.Enqueue(new(gain.PetId,world));while(_receivedSouls.Count>4096)_receivedSouls.TryDequeue(out _);}
+    private void UpdateLiveTrust()=>LiveSnapshotReceived=State.IsTrusted;
+    private void BindPipeline(PacketPipeline pipeline)
+    {
+        _inputPipeline=pipeline;
+        pipeline.Parser.Tap=(time,op,body)=>
+        {
+            ObservedPackets++;
+            if(pipeline.CurrentContext is not {} context)return;
+            if(!Streams.Process(context,time,op,body) && op is PetProtocol.SnapshotOpcode or PetProtocol.GainOpcode)RejectedPetMessages++;
+            UpdateLiveTrust();
+        };
+        pipeline.LossObserved+=loss=>{Streams.ObserveLoss(loss);UpdateLiveTrust();};
+        pipeline.ProcessesObserved+=pids=>{Streams.ObserveProcesses(pids);UpdateLiveTrust();};
+    }
     private void HandleEvent(GameEvent ev)
     {
-        if (ev is SelfIdentifiedEvent self) State.Identify(self.TimeMs,self.Name,self.ServerId);
+        if(ev is SelfIdentifiedEvent self && _inputPipeline?.CurrentContext is {} context)
+        {Streams.Identify(context,self.TimeMs,self.Name,self.ServerId);UpdateLiveTrust();}
     }
     public void Dispose() => _live?.Dispose();
 }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AionMeter.Core.Capture;
 
-public readonly record struct GameConnection(IPAddress LocalIp, ushort LocalPort, IPAddress RemoteIp, ushort RemotePort, bool LocalRelay = false);
+public readonly record struct GameConnection(IPAddress LocalIp, ushort LocalPort, IPAddress RemoteIp, ushort RemotePort, bool LocalRelay = false,int ProcessId=0);
 
 /// <summary>Finds the running AION 2 client and the TCP connections it owns (via the Windows TCP table).</summary>
 public static class GameProcessLocator
@@ -55,7 +55,7 @@ public static class GameProcessLocator
                     Port(peer.LocalPort) == remotePort &&
                     (peer.LocalAddr == row.RemoteAddr || peer.LocalAddr == 0));
                 if (remotePort is 80 or 443 && !relay) continue;
-                result.Add(new GameConnection(new IPAddress(row.LocalAddr), Port(row.LocalPort), remoteIp, remotePort, relay));
+                result.Add(new GameConnection(new IPAddress(row.LocalAddr), Port(row.LocalPort), remoteIp, remotePort, relay,(int)row.OwningPid));
             }
         }
         finally

@@ -1,3 +1,9 @@
+# 0.3.7 — 2026-11-07
+
+Защита коллекции при смене персонажа, процесса игры и соединения. Новый снимок ожидает подтверждения персонажа; данные закрытой сессии не меняют актуальные счётчики. Потери в буферах, TCP и декодере учитываются для соответствующего потока. Повторно доставленные пакеты не прибавляют души дважды; восстановление известного пропуска через TCP получает время до сброса синхронизации. Усилена проверка повреждённых сообщений и добавлены сценарные и случайно сгенерированные тесты. При невосстановимой потере данных повторный вход всё ещё может потребоваться. Длительную проверку новой версии с VPN и LagoFast нужно провести в игре.
+
+Collection isolation across character, game-process and connection changes. New snapshots wait for character confirmation; retired sessions cannot change current counters. Buffer, TCP and decoder losses are attributed to their stream. Retransmitted bytes do not count souls twice, and known missing ranges get time for TCP recovery before invalidation. Strengthened malformed-message validation and added scenario and randomized tests. Unrecoverable loss can still require another character login. Extended in-game VPN and LagoFast validation of this version remains necessary.
+
 # 0.3.6 — 2026-11-06
 
 Удалён режим фокуса. Обновлены источники душ: названия подземелий, метки мировых боссов и отдельные сведения о сундуках получения питомцев. Добавлены фильтры каталога по этим источникам. Автодобавление в HUD теперь работает и в подземельях. Карты данжей не добавлены; подтверждённые места можно посмотреть в каталоге и HUD.

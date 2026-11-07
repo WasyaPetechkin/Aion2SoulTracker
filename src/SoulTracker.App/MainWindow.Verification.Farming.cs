@@ -57,12 +57,12 @@ public partial class MainWindow
         // Only genuinely received deltas can auto-pin; a login snapshot never queues targets.
         _preferences.HudTargets=[];AutoTrackSouls.IsChecked=true;SetVerificationWorld(1110);
         _session.State.Restore(numeric);Refresh(true);Check("restore_does_not_auto_pin",_preferences.HudTargets.Length==0);
-        _session.ProcessLivePetMessage(sample.LastTimeMs+199,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000046000000"));
+        _session.ProcessSyntheticPetMessage(sample.LastTimeMs+199,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000046000000"));
         Check("snapshot_does_not_queue_gains",_session.DrainReceivedSouls().Count==0);
-        _session.ProcessLivePetMessage(sample.LastTimeMs+200,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
+        _session.ProcessSyntheticPetMessage(sample.LastTimeMs+200,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
         Check("open_world_gain_auto_pins",_preferences.HudTargets.Contains(1120));
         _preferences.HudTargets=[];SetVerificationWorld(600032);
-        _session.ProcessLivePetMessage(sample.LastTimeMs+201,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
+        _session.ProcessSyntheticPetMessage(sample.LastTimeMs+201,PetProtocol.GainOpcode,Convert.FromHexString("016004000001000000"));Refresh(true);
         Check("dungeon_gain_auto_pins",_preferences.HudTargets.Contains(1120));
         AutoTrackSouls.IsChecked=false;SetVerificationWorld(1110);
         SetVerificationWorld(1110);_preferences.MapFollowPlayer=true;

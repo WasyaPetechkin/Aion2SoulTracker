@@ -27,20 +27,22 @@ public sealed class SessionContinuityTests
     {
         using var session=new TrackerSession([new(1120,"Pet","Fera","")],GameData.Empty);
         var flow=new FlowKey(System.Net.IPAddress.Loopback,13328,System.Net.IPAddress.Loopback,50000);
-        session.ProcessLivePetMessage(100,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000048000000"),flow);
-        session.ObserveDiscontinuity(flow with {DstPort=50001},"Other stream gap");
+        var context=new StreamContext(flow,1,42,90);
+        session.Streams.Identify(context,90,"Demo",1101);
+        session.Streams.Process(context,100,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000048000000"));
+        session.Streams.ObserveLoss(new(context with {Generation=2,Flow=flow with {DstPort=50001}},new(flow,110,"Other stream gap")));
         Assert.False(session.State.View().NeedsResync);
-        session.ObserveDiscontinuity(flow,"Collection stream gap");
+        session.Streams.ObserveLoss(new(context,new(flow,120,"Collection stream gap")));
         Assert.True(session.State.View().NeedsResync);
     }
     [Fact] public void UnreadableGainNeverLeavesCounterSilentlyTrusted()
     {
         using var session=new TrackerSession([new(1120,"Pet","Fera","")],GameData.Empty);
-        session.ProcessLivePetMessage(100,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000048000000"));
-        Assert.False(session.ProcessLivePetMessage(101,PetProtocol.GainOpcode,new byte[]{1}));
+        session.ProcessSyntheticPetMessage(100,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000048000000"));
+        Assert.False(session.ProcessSyntheticPetMessage(101,PetProtocol.GainOpcode,new byte[]{1}));
         Assert.True(session.State.View().NeedsResync);
         Assert.Contains(session.NetworkEvents,x=>x.Kind=="invalid-pet-message");
-        session.ProcessLivePetMessage(102,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000049000000"));
+        session.ProcessSyntheticPetMessage(102,PetProtocol.SnapshotOpcode,Convert.FromHexString("0000000001600400006004000002000000016004000049000000"));
         Assert.False(session.State.View().NeedsResync);
         Assert.Equal(73,session.State.View().Pets[0].Souls);
     }

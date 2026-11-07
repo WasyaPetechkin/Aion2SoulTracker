@@ -127,7 +127,7 @@ public sealed class PacketParser
                 try
                 {
                     var decoded = K4os.Compression.LZ4.LZ4Codec.Decode(b[(i + 6)..(int)end], target.AsSpan(0, (int)raw));
-                    if (decoded <= 0) continue;
+                    if (decoded != raw) continue;
                     EmbeddedBundles++;
                     ScanForIdentities(target.AsSpan(0, decoded));
                     ScanForRoster(target.AsSpan(0, decoded));

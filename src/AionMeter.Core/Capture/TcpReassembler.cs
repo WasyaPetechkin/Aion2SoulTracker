@@ -29,6 +29,10 @@ public sealed class TcpReassembler
     public long Gaps { get; private set; }
     public string LastGapReason {get;private set;}="";
     public uint LastGapMissingBytes {get;private set;}
+    public uint LastGapStartSequence {get;private set;}
+    public uint LastGapEndSequence {get;private set;}
+    public bool AlreadyDelivered(uint start,uint end)=>_started && start!=end &&
+        unchecked((int)(start-_next))<0 && unchecked((int)(end-_next))<=0 && unchecked((int)(end-start))>0;
 
 
     /// <summary>Anchor the stream at a known sequence number (ISN + 1 after a SYN).</summary>
@@ -93,6 +97,7 @@ public sealed class TcpReassembler
         var best = 0;
         for (var i = 1; i < _pending.Count; i++)
             if ((int)(_pending[i].Seq - _pending[best].Seq) < 0) best = i;
+        LastGapStartSequence=_next;LastGapEndSequence=_pending[best].Seq;
         LastGapMissingBytes=_pending[best].Seq-_next;
         _next = _pending[best].Seq;
         Gaps++;

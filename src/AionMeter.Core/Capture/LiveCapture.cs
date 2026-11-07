@@ -49,7 +49,8 @@ public sealed class LiveCapture : IEventSource
     {
         _options = options;
         _pipeline = new PacketPipeline(data, OnEvent) { LockThreshold = 3 };
-        _connections=new(s=>_pipeline.OnSegment(s.TimeMs,s.Key,s.Seq,s.Syn,s.FinOrRst,s.Payload));
+        _connections=new(s=>_pipeline.OnSegment(s.TimeMs,s.Key,s.Seq,s.Syn,s.FinOrRst,s.Payload,_connections!.CurrentProcessId));
+        _connections.DataLost+=_pipeline.ReportCaptureLoss;
     }
 
     public event Action<GameEvent>? EventDecoded;
@@ -132,6 +133,7 @@ public sealed class LiveCapture : IEventSource
             {
                 Interlocked.Increment(ref _captureErrors);
                 SetStatus(CaptureState.Error,"Capture error: "+ex.GetType().Name+": "+ex.Message);
+                lock(_pipelineGate)_pipeline.InvalidateAll("Capture failed: "+ex.GetType().Name);
                 CloseDevices();
             }
             try
@@ -148,6 +150,7 @@ public sealed class LiveCapture : IEventSource
     private void Refresh()
     {
         var pids=GameProcessLocator.FindGameProcessIds();
+        lock(_pipelineGate)_pipeline.ObserveProcesses(pids);
         if(pids.Length==0 && _options.DeviceName is null)
         {CloseDevices();lock(_pipelineGate)_connections.Clear();SetStatus(CaptureState.WaitingForGame,"AION 2 is not running");return;}
         var connections=GameProcessLocator.FindConnections(pids);
@@ -223,16 +226,19 @@ public sealed class LiveCapture : IEventSource
     private void OnPacketArrival(Binding binding,PacketCapture e)
     {
         var raw=e.GetPacket();Interlocked.Increment(ref _packets);
-        try
+        lock(_pipelineGate)
         {
-            lock(_pipelineGate)
+            // A recording write failure must not prevent decoding a successfully captured packet.
+            try {binding.Writer?.Write(raw);}catch(Exception ex) when(ex is not OutOfMemoryException)
+            {Interlocked.Increment(ref _captureErrors);System.Diagnostics.Debug.WriteLine(ex);}
+            SegmentReader.Segment? segment=null;
+            try {if(SegmentReader.TryRead(raw,out var seg)){segment=seg;_connections.Push(seg);}}
+            catch(Exception ex) when(ex is not OutOfMemoryException)
             {
-                binding.Writer?.Write(raw);
-                if(SegmentReader.TryRead(raw,out var seg))_connections.Push(seg);
+                Interlocked.Increment(ref _captureErrors);System.Diagnostics.Debug.WriteLine(ex);
+                if(segment is {} known)_connections.ReportFailure(known,"Packet delivery failed: "+ex.GetType().Name);
             }
         }
-        catch(Exception ex) when(ex is not OutOfMemoryException)
-        {Interlocked.Increment(ref _captureErrors);System.Diagnostics.Debug.WriteLine(ex);}
     }
 
     private void OnEvent(GameEvent e)
