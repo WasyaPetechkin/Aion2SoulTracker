@@ -6,7 +6,9 @@
 
 ## Русский
 
-Инструкция для сборки **0.3.7**. Опубликованные версии доступны по ссылке ниже.
+Инструкция для сборки **0.3.8**. Опубликованные версии доступны по ссылке ниже.
+
+В 0.3.8 исправлена обработка повреждённых сжатых пакетов: вся структура проверяется до передачи содержащихся в ней сообщений счётчику. Добавлены общие ограничения распаковки и проверка переполнения длины. Подробности: [целостность сжатых пакетов](docs/bundle-integrity.md).
 
 В 0.3.7 усилена защита счётчика при смене соединения и персонажа, обработка пропущенных пакетов и повторной доставки. Новая сессия подтверждается персонажем и полной коллекцией; при невосстановимой потере данных по-прежнему может потребоваться повторный вход. Технические подробности и границы проверки: [надёжность коллекции](docs/session-integrity.md).
 
@@ -117,7 +119,9 @@
 
 ## English
 
-Instructions for build **0.3.7**. Published versions are available at the link below.
+Instructions for build **0.3.8**. Published versions are available at the link below.
+
+Version 0.3.8 fixes malformed compressed packet handling: the entire structure is validated before any contained message reaches the counter. Added aggregate decompression limits and length-overflow validation. Details: [compressed bundle integrity](docs/bundle-integrity.md).
 
 Version 0.3.7 strengthens counter isolation across connection and character changes, missing-packet handling and retransmission recovery. A new session requires both character identity and a complete collection; unrecoverable data loss may still require logging in again. See [collection integrity](docs/session-integrity.md) for technical details and validation limits.
 

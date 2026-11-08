@@ -19,6 +19,12 @@ public sealed class FrameDecoder
     public const int MaxFrame = 65_535;
     public const int MaxUnbundledWait = 16_384;
     public const int MaxBundle = 8 * 1024 * 1024;
+    // Per outer bundle, including every nested expansion. A per-node limit alone
+    // permits a small compressed tree to cause unbounded aggregate work.
+    public const int MaxExpandedBundleBytes = 32 * 1024 * 1024;
+    public const int MaxBundleFrames = 65_536;
+    public const int MaxBundleNodes = 1024;
+    private const int MaxBundleDepth = 4;
     private const int MaxHuntBytes = 256 * 1024;
 
     private static readonly byte[][] HeartbeatSignatures = [[0x0E, 0x00, 0x36], [0x06, 0x00, 0x36]];
@@ -122,7 +128,7 @@ public sealed class FrameDecoder
                 break; // wait for the rest of the frame
             }
 
-            HandleFrame(span[..(int)size], vlen, depth: 0);
+            HandleFrame(span[..(int)size], vlen);
             pos += (int)size;
         }
 
@@ -165,38 +171,36 @@ public sealed class FrameDecoder
         return o + 1 < frame.Length && frame[o] == 0xFF && frame[o + 1] == 0xFF;
     }
 
-    private void HandleFrame(ReadOnlySpan<byte> frame, int vlen, int depth)
+    private void HandleFrame(ReadOnlySpan<byte> frame, int vlen)
     {
         Frames++;
         var o = vlen;
         if (o < frame.Length && frame[o] is >= 0xF0 and <= 0xFE) o++;
-        if (o + 2 > frame.Length) return;
+        if (o + 2 > frame.Length)
+        {
+            DataLost?.Invoke("Incomplete frame opcode");
+            return;
+        }
 
         if (frame[o] == 0xFF && frame[o + 1] == 0xFF)
         {
-            Bundles++;
-            o += 2;
-            if (!Wire.TryU32(frame, ref o, out var rawSize) || rawSize == 0 || rawSize > MaxBundle || depth > 4)
-            {
-                BadBundles++;
-                DataLost?.Invoke("Invalid compressed bundle");
-                return;
-            }
-            var target = ArrayPool<byte>.Shared.Rent((int)rawSize);
+            var batch = new BundleBatch();
             try
             {
-                var n = LZ4Codec.Decode(frame[o..], target.AsSpan(0, (int)rawSize));
-                if (n != rawSize)
+                if (!DecodeBundle(frame[(o + 2)..], 0, batch))
                 {
                     BadBundles++;
-                DataLost?.Invoke("Invalid compressed bundle");
+                    DataLost?.Invoke(batch.Error);
                     return;
                 }
-                WalkInner(target.AsSpan(0, n), depth + 1);
+                // Do not expose a valid prefix (or later siblings) of an invalid
+                // compressed tree. Every pooled buffer stays alive until dispatch ends.
+                foreach (var packet in batch.Packets)
+                    _onPacket(packet.Opcode, packet.Body.Span);
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(target);
+                foreach (var buffer in batch.Buffers) ArrayPool<byte>.Shared.Return(buffer);
             }
             return;
         }
@@ -205,23 +209,63 @@ public sealed class FrameDecoder
         _onPacket(opcode, frame[(o + 2)..]);
     }
 
-    /// <summary>Frames inside a decompressed bundle. No resync here: an invalid length ends the bundle.</summary>
-    private void WalkInner(ReadOnlySpan<byte> data, int depth)
+    private readonly record struct PendingPacket(ushort Opcode, ReadOnlyMemory<byte> Body);
+    private sealed class BundleBatch
+    {
+        public List<byte[]> Buffers { get; } = [];
+        public List<PendingPacket> Packets { get; } = [];
+        public int ExpandedBytes, Frames, Nodes;
+        public string Error { get; private set; } = "Invalid compressed bundle";
+        public bool Fail(string reason) { Error = reason; return false; }
+    }
+
+    private bool DecodeBundle(ReadOnlySpan<byte> body, int depth, BundleBatch batch)
+    {
+        Bundles++;
+        if (depth > MaxBundleDepth || ++batch.Nodes > MaxBundleNodes)
+            return batch.Fail("Compressed bundle nesting limit exceeded");
+        var offset = 0;
+        if (!Wire.TryU32(body, ref offset, out var rawSize) || rawSize == 0 || rawSize > MaxBundle)
+            return batch.Fail("Invalid compressed bundle size");
+        if (rawSize > MaxExpandedBundleBytes - batch.ExpandedBytes)
+            return batch.Fail("Compressed bundle expansion limit exceeded");
+        batch.ExpandedBytes += (int)rawSize;
+        var target = ArrayPool<byte>.Shared.Rent((int)rawSize);
+        batch.Buffers.Add(target);
+        var count = LZ4Codec.Decode(body[offset..], target.AsSpan(0, (int)rawSize));
+        if (count != rawSize) return batch.Fail("Invalid compressed bundle");
+        return WalkInner(target.AsMemory(0, count), depth + 1, batch);
+    }
+
+    /// <summary>Validate and stage a whole decompressed tree; no resynchronization inside a bundle.</summary>
+    private bool WalkInner(ReadOnlyMemory<byte> data, int depth, BundleBatch batch)
     {
         var pos = 0;
         while (pos < data.Length)
         {
-            if (data[pos] == 0x00)
+            if (data.Span[pos] == 0x00)
             {
                 pos++;
                 continue;
             }
-            var span = data[pos..];
-            if (!Wire.TryVarint(span, 0, out var len, out var vlen)) {BadBundles++;DataLost?.Invoke("Invalid inner frame length");return;}
+            var span = data.Span[pos..];
+            if (!Wire.TryVarint(span, 0, out var len, out var vlen)) return batch.Fail("Invalid inner frame length");
             var size = (long)len + vlen - 4;
-            if (len < 6 || size > span.Length) {BadBundles++;DataLost?.Invoke("Truncated inner frame");return;}
-            HandleFrame(span[..(int)size], vlen, depth);
+            if (len < 6 || size > span.Length) return batch.Fail("Truncated inner frame");
+            if (++batch.Frames > MaxBundleFrames) return batch.Fail("Compressed bundle frame limit exceeded");
+            Frames++;
+            var frame = span[..(int)size];
+            var offset = vlen;
+            if (frame[offset] is >= 0xF0 and <= 0xFE) offset++;
+            if (offset + 2 > frame.Length) return batch.Fail("Incomplete inner frame opcode");
+            var opcode = (ushort)(frame[offset] << 8 | frame[offset + 1]);
+            if (opcode == 0xFFFF)
+            {
+                if (!DecodeBundle(frame[(offset + 2)..], depth, batch)) return false;
+            }
+            else batch.Packets.Add(new(opcode, data.Slice(pos + offset + 2, (int)size - offset - 2)));
             pos += (int)size;
         }
+        return true;
     }
 }

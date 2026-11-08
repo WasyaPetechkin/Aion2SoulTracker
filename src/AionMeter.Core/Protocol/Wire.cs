@@ -14,6 +14,11 @@ public static class Wire
         for (var i = offset; i < data.Length && i - offset < 5; i++)
         {
             var b = data[i];
+            if (shift == 28 && (b & 0xF0) != 0)
+            {
+                value = 0;
+                return false; // A fifth byte has only four bits in a uint32.
+            }
             value |= (uint)(b & 0x7F) << shift;
             if ((b & 0x80) == 0)
             {

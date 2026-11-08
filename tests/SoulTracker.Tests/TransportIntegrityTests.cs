@@ -10,7 +10,7 @@ namespace SoulTracker.Tests;
 
 public sealed class TransportIntegrityTests
 {
-    private static byte[] Identity()
+    internal static byte[] Identity()
     {
         using var ms=new MemoryStream();using var w=new BinaryWriter(ms);
         w.Write((byte)42);w.Write(0);w.Write((byte)1);w.Write((byte)4);w.Write(Encoding.UTF8.GetBytes("Demo"));
