@@ -12,7 +12,7 @@ public enum CaptureState
     Error,
 }
 
-public sealed record CaptureStatus(CaptureState State, string Message, long Packets = 0, long Events = 0)
+public sealed record CaptureStatus(CaptureState State, string Message, long Packets = 0, long Events = 0, CaptureIssue Issue = CaptureIssue.None)
 {
     public static CaptureStatus Stopped { get; } = new(CaptureState.Stopped, "Capture stopped");
 }

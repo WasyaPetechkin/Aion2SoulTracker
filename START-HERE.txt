@@ -1,4 +1,4 @@
-Aion 2 Soul Tracker · 0.3.8
+Aion 2 Soul Tracker · 0.3.9
 Windows 10 / 11, 64-bit
 
 БЫСТРЫЙ СТАРТ
@@ -33,8 +33,18 @@ Windows 10 / 11, 64-bit
 • .NET включён в комплект. Python, SDK и инструменты разработчика не нужны.
 • Npcap распространяется отдельно по условиям его лицензии.
 
-Обратная связь: что ожидали, что произошло, скриншот и версия 0.3.8.
+Обратная связь: что ожидали, что произошло, скриншот и версия 0.3.9.
 При проблеме запуска журнал startup-error.txt находится в папке данных.
+
+ЕСЛИ СЧЁТЧИК НЕ ОБНОВЛЯЕТСЯ
+Нажмите «Диагностика» в главном окне, пока проблема проявляется.
+Вверху показаны состояние подключения и подсказка; ниже — этапы от игры до душ.
+«Подготовить отчёт» открывает просмотр одного снимка. Проверьте его и нажмите
+«Сохранить JSON» или «Копировать». Приложите отчёт к описанию проблемы.
+«К состоянию» возвращает обновление, после чего можно подготовить новый снимок.
+Отчёт содержит состояния, счётчики и возраст событий, версию и время создания;
+без имени персонажа, IP-адресов, имён адаптеров и содержимого пакетов.
+Автоматической отправки нет. Отсутствие новых душ само по себе — не ошибка.
 
 QUICK START (ENGLISH)
 Install and open Aion 2 Soul Tracker. Install Npcap from its official site
@@ -48,6 +58,15 @@ Ctrl+Alt+H: counter. Ctrl+Alt+M: map. Ctrl+Alt+L: click through / edit.
 Use borderless or windowed game mode. The main window X hides it to the tray;
 choose Exit in the sidebar or tray menu to quit. User data stays in %LOCALAPPDATA%\Aion2SoulTracker.
 .NET is included. Npcap is a separate dependency. No development tools needed.
+
+IF THE COUNTER STOPS UPDATING
+Click Diagnostics in the main window while the problem is occurring.
+Read the summary and suggested action, then click Prepare report.
+Review the snapshot and choose Save JSON or Copy; attach it to your bug report.
+Back to status resumes updates so you can prepare a fresh snapshot.
+The report contains states, counters, event ages, version and creation time;
+no character names, IP addresses, adapter names or packet contents.
+Nothing is sent automatically. No new soul gains alone is not an error.
 
 LICENSES AND SOURCE
 GPL-3.0. License texts and third-party attribution are in licenses/.

@@ -23,6 +23,10 @@ public sealed class TrackerSession : IDisposable
     private readonly GameData _data;
     private LiveCapture? _live;
     private PacketPipeline? _inputPipeline;
+    private DiagnosticMode _diagnosticMode=DiagnosticMode.Offline;
+    public DiagnosticReport Diagnostics(Version version,bool npcapInstalled,DateTimeOffset? now=null,bool liveRequested=false)=>
+        DiagnosticReport.Create(version,now??DateTimeOffset.UtcNow,_diagnosticMode==DiagnosticMode.Offline&&liveRequested?DiagnosticMode.Live:_diagnosticMode,npcapInstalled,
+            _live?.Diagnostics(),Streams.Diagnostics(),ObservedPackets,RejectedPetMessages,NetworkEvents);
     public sealed record NetworkEvent(DateTimeOffset Time,string Kind,string Detail);
     private readonly ConcurrentQueue<NetworkEvent> _networkEvents=new();
     public NetworkEvent[] NetworkEvents=>_networkEvents.ToArray();
@@ -41,6 +45,7 @@ public sealed class TrackerSession : IDisposable
     }
     public void Replay(string path)
     {
+        _diagnosticMode=DiagnosticMode.Replay;
         Streams.Reset("Открыта запись игрового обмена",replay:true);
         Navigation.Reset(replay:true);
         using var replay = new PcapReplaySource(_data, path, false);
@@ -66,6 +71,7 @@ public sealed class TrackerSession : IDisposable
     }
     public void StartLive(string? recordDirectory = null)
     {
+        _diagnosticMode=DiagnosticMode.Live;
         Streams.Reset("Начат захват новой игровой сессии");
         State.SetSource("Сохранённая запись; ожидается синхронизация при входе");
         State.MarkUncertain("Начато прослушивание: для актуальной коллекции нужен новый вход в персонажа");

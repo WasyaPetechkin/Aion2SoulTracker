@@ -7,6 +7,12 @@ namespace SoulTracker.App;
 public partial class MainWindow
 {
     private bool _settingsVisible;
+    private void OpenDiagnostics(object sender,RoutedEventArgs e)
+    {
+        var version=typeof(MainWindow).Assembly.GetName().Version ?? new Version(0,0);
+        var window=new DiagnosticsWindow(()=>_session!.Diagnostics(version,AionMeter.Core.Capture.LiveCapture.IsNpcapInstalled(),liveRequested:!_offline),_language){Owner=this};
+        window.ShowDialog();
+    }
     private void ShowCollectionPage(object sender,RoutedEventArgs e)=>SelectPage(false);
     private void ShowSettingsPage(object sender,RoutedEventArgs e)=>SelectPage(true);
     private void SelectPage(bool settings)

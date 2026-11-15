@@ -1,3 +1,9 @@
+# 0.3.9 — 2026-11-15
+
+Добавлено окно «Диагностика» с этапами подключения, временем последней коллекции и принятого начисления души. Сохранённые данные, ожидание трафика и необходимость синхронизации показаны отдельно; отсутствие новых душ не считается ошибкой. Отчёт можно просмотреть, сохранить в JSON или скопировать. В него входят только заранее определённые состояния, счётчики и возраст событий, версия и время создания — без имени персонажа, сетевых адресов, имён адаптеров и содержимого пакетов. Автоматической отправки нет. Окно читает имеющиеся счётчики захвата, не запускает дополнительный сетевой захват. Исправления целостности пакетов из 0.3.8 сохранены.
+
+Added Diagnostics with connection stages and the age of the latest collection and accepted soul gain. Saved data, waiting for traffic and required synchronization are shown separately; no new souls is not treated as an error. Reports can be previewed, saved as JSON or copied. They contain only predefined states, counters and event ages, version and creation time — no character names, network addresses, adapter names or packet contents. Nothing is sent automatically. The window reads existing capture counters without starting an additional network capture. The packet-integrity fixes from 0.3.8 are retained.
+
 # 0.3.8 — 2026-11-08
 
 Исправлена частичная обработка повреждённых сжатых пакетов. Вложенная структура теперь проверяется целиком до передачи сообщений счётчику; ошибка внутри пакета не позволяет более поздним сообщениям из него ошибочно восстановить доверие к коллекции. Добавлены общие ограничения распаковки, числа вложенных блоков и сообщений. Неполный код сообщения сообщает о потере данных, переполнение 32-битной длины отклоняется. Изменение проверено на искусственно повреждённых пакетах и четырёх собственных игровых записях; оно не устанавливает причину прежних сбоев VPN.

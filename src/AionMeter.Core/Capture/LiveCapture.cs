@@ -38,6 +38,8 @@ public sealed class LiveCapture : IEventSource
     private readonly Dictionary<string,Binding> _devices=[];
     private long _closedReceived,_closedDropped;
     private long _captureErrors;
+    private int _processCount, _connectionCount, _relayCount;
+    private long _discoveryTimeMs;
     public long CaptureErrors=>Interlocked.Read(ref _captureErrors);
     public string[] ActiveAdapters {get {lock(_gate)return _devices.Values.Select(x=>Describe(x.Device)).ToArray();}}
 
@@ -59,6 +61,21 @@ public sealed class LiveCapture : IEventSource
     public CaptureStatus Status => _status;
     public PacketPipeline Pipeline => _pipeline;
     public string? RecordingPath { get; private set; }
+
+    public CaptureDiagnostics Diagnostics()
+    {
+        // Match Health's lock order. Read managed counters only: no device statistics,
+        // process lookup, route changes or extra network capture for this screen.
+        lock(_gate) lock(_pipelineGate)
+        {
+            var readers=_devices.Values.Where(x=>x.Device.Started).ToArray();
+            return new(_processCount,_connectionCount,_relayCount,
+                readers.Count(x=>!IsLoopback(x.Device)),readers.Count(x=>IsLoopback(x.Device)),
+                _discoveryTimeMs,Interlocked.Read(ref _packets),_pipeline.Segments,
+                _pipeline.GameFlows,_pipeline.LastGameDataMs,_pipeline.Gaps,
+                _connections.PendingCount,_connections.Discarded,CaptureErrors,_status.State,_status.Issue);
+        }
+    }
 
     /// <summary>Npcap's capture library is on this PC (its own folder, or System32 in WinPcap-compatible mode).</summary>
     public static bool IsNpcapInstalled() =>
@@ -123,16 +140,16 @@ public sealed class LiveCapture : IEventSource
             }
             catch (DllNotFoundException)
             {
-                SetStatus(CaptureState.Error, "Npcap is not installed — get it from npcap.com");
+                SetStatus(CaptureState.Error, "Npcap is not installed — get it from npcap.com",CaptureIssue.NpcapUnavailable);
             }
             catch (TypeInitializationException)
             {
-                SetStatus(CaptureState.Error, "Npcap is not installed — get it from npcap.com");
+                SetStatus(CaptureState.Error, "Npcap is not installed — get it from npcap.com",CaptureIssue.NpcapUnavailable);
             }
             catch (Exception ex) when(ex is not OutOfMemoryException)
             {
                 Interlocked.Increment(ref _captureErrors);
-                SetStatus(CaptureState.Error,"Capture error: "+ex.GetType().Name+": "+ex.Message);
+                SetStatus(CaptureState.Error,"Capture error: "+ex.GetType().Name+": "+ex.Message,CaptureIssue.MonitorFailure);
                 lock(_pipelineGate)_pipeline.InvalidateAll("Capture failed: "+ex.GetType().Name);
                 CloseDevices();
             }
@@ -150,11 +167,20 @@ public sealed class LiveCapture : IEventSource
     private void Refresh()
     {
         var pids=GameProcessLocator.FindGameProcessIds();
-        lock(_pipelineGate)_pipeline.ObserveProcesses(pids);
+        lock(_pipelineGate)
+        {
+            _processCount=pids.Length;_connectionCount=0;_relayCount=0;
+            _discoveryTimeMs=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            _pipeline.ObserveProcesses(pids);
+        }
         if(pids.Length==0 && _options.DeviceName is null)
         {CloseDevices();lock(_pipelineGate)_connections.Clear();SetStatus(CaptureState.WaitingForGame,"AION 2 is not running");return;}
         var connections=GameProcessLocator.FindConnections(pids);
-        lock(_pipelineGate)_connections.Update(connections,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+        lock(_pipelineGate)
+        {
+            _connectionCount=connections.Count;_relayCount=connections.Count(x=>x.LocalRelay);
+            _connections.Update(connections,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+        }
         var list=CaptureDeviceList.Instance;list.Refresh();
         var available=list.OfType<LibPcapLiveDevice>().ToArray();
         var plan=CapturePlan.Create(connections,available.Select(d=>new CaptureAdapter(d.Name,IsLoopback(d),d.Addresses.Select(a=>a.Addr?.ipAddress).OfType<IPAddress>().ToArray())),_options.DeviceName);
@@ -167,7 +193,7 @@ public sealed class LiveCapture : IEventSource
             foreach(var entry in plan)
             {
                 if(_devices.TryGetValue(entry.Key,out var stopped) && !stopped.Device.Started)
-                {CloseBinding(entry.Key);Interlocked.Increment(ref _captureErrors);SetStatus(CaptureState.Error,"Capture error: adapter capture stopped; reopening");}
+                {CloseBinding(entry.Key);Interlocked.Increment(ref _captureErrors);SetStatus(CaptureState.Error,"Capture error: adapter capture stopped; reopening",CaptureIssue.AdapterStopped);}
                 if(_devices.TryGetValue(entry.Key,out var existing))
                 {existing.Needed=now;if(existing.Filter!=entry.Value){existing.Device.Filter=entry.Value;existing.Filter=entry.Value;}continue;}
                 var device=available.Single(d=>d.Name==entry.Key);
@@ -192,10 +218,10 @@ public sealed class LiveCapture : IEventSource
             if(plan.Count>0 && failures.Count==0)
                 foreach(var old in _devices.Where(x=>!plan.ContainsKey(x.Key) && now-x.Value.Needed>30_000).Select(x=>x.Key).ToArray())CloseBinding(old);
         }
-        if(failures.Count>0){SetStatus(CaptureState.Error,"Capture error: "+string.Join("; ",failures));return;}
-        if(_options.DeviceName is not null && plan.Count==0){SetStatus(CaptureState.Error,"Selected network adapter not found");return;}
+        if(failures.Count>0){SetStatus(CaptureState.Error,"Capture error: "+string.Join("; ",failures),CaptureIssue.AdapterOpenFailed);return;}
+        if(_options.DeviceName is not null && plan.Count==0){SetStatus(CaptureState.Error,"Selected network adapter not found",CaptureIssue.SelectedAdapterMissing);return;}
         if(plan.Count==0 && connections.Any(c=>c.RemotePort==PacketPipeline.GamePort))
-        {SetStatus(CaptureState.Error,"No Npcap adapter carries the game connection (VPN? pick one in Settings)");return;}
+        {SetStatus(CaptureState.Error,"No Npcap adapter carries the game connection (VPN? pick one in Settings)",CaptureIssue.NoMatchingAdapter);return;}
         ReportFlowStatus();
     }
 
@@ -247,9 +273,9 @@ public sealed class LiveCapture : IEventSource
         EventDecoded?.Invoke(e);
     }
 
-    private void SetStatus(CaptureState state, string message)
+    private void SetStatus(CaptureState state, string message,CaptureIssue issue=CaptureIssue.None)
     {
-        var s = new CaptureStatus(state, message, Interlocked.Read(ref _packets), _events);
+        var s = new CaptureStatus(state, message, Interlocked.Read(ref _packets), _events,issue);
         _status = s;
         StatusChanged?.Invoke(s);
     }

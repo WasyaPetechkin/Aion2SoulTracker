@@ -14,6 +14,17 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
     private long _retiredThrough,_maxGeneration,_lastAccepted;
     private int? _owner;
     private bool _replay;
+    private long _snapshotMs,_gainMs,_gainMessages,_soulAmount,_lossMs;
+    private StreamIssue _lastLoss;
+    private void ResetDiagnostics(){_snapshotMs=_gainMs=_gainMessages=_soulAmount=_lossMs=0;_lastLoss=StreamIssue.None;}
+    public CollectionDiagnostics Diagnostics()
+    {
+        lock(_gate)return new(state.HasSnapshot,state.IsTrusted,_active?.Name.Length>0,
+            _candidates.Values.Count(x=>x.Snapshot is not null),_snapshotMs,_gainMs,_gainMessages,_soulAmount,_lossMs,_lastLoss,
+            _active is null ? DiagnosticRoute.Unknown : System.Net.IPAddress.IsLoopback(_active.Context.Flow.Src) ? DiagnosticRoute.Loopback : DiagnosticRoute.Network);
+    }
+    private void AcceptedGains(long time,IReadOnlyList<SoulGain> gains,int? world)
+    {_gainMs=time;_gainMessages++;_soulAmount+=gains.Sum(x=>(long)x.Amount);gained(gains,world);}
     public long Epoch {get;private set;}
     public NavigationState Navigation {get {lock(_gate)return _active?.Navigation ?? _idleNavigation;}}
     public StreamContext? ActiveStream {get {lock(_gate)return _active?.Context;}}
@@ -58,7 +69,7 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
                 var oldest=_retiredOwners.MinBy(x=>x.Value);_retiredOwners.Remove(oldest.Key);
                 _retiredThrough=Math.Max(_retiredThrough,oldest.Value);
             }
-            _owner=null;_active=null;_candidates.Clear();_idleNavigation.Reset(_replay);changed();
+            _owner=null;_active=null;_candidates.Clear();_idleNavigation.Reset(_replay);ResetDiagnostics();changed();
             state.MarkUncertain("Владелец игровой сессии завершён; ожидается новая коллекция");
         }
     }
@@ -68,7 +79,7 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
         {
             _replay=replay;
             _retiredThrough=_maxGeneration;_owner=null;_active=null;_candidates.Clear();
-            _idleNavigation.Reset(replay);changed();state.MarkUncertain(reason);
+            _idleNavigation.Reset(replay);ResetDiagnostics();changed();state.MarkUncertain(reason);
         }
     }
     public void ObserveLoss(StreamLoss loss)
@@ -78,7 +89,11 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
             var c=Get(loss.Stream);if(c is null)return;
             c.Snapshot=null;c.Gains.Clear();c.GainBytes=0;c.FreshIdentity=false;c.RequiresSnapshot=true;c.Navigation.MarkGap();
             log("stream-loss",$"generation={loss.Stream.Generation}; pid={loss.Stream.ProcessId}; {loss.Evidence.Reason}; seq={loss.Evidence.Sequence}..{loss.Evidence.EndSequence}");
-            if(c==_active)state.MarkUncertain("Пропущен участок сети; ожидается новая синхронизация персонажа");
+            if(c==_active)
+            {
+                _lossMs=loss.Evidence.TimeMs;_lastLoss=StreamIssueCode.FromReason(loss.Evidence.Reason);
+                state.MarkUncertain("Пропущен участок сети; ожидается новая синхронизация персонажа");
+            }
         }
     }
     public void Identify(StreamContext context,long time,string name,int server)
@@ -100,11 +115,11 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
                     while(_retiredStreams.Count>64)
                     {var oldest=_retiredStreams.Min();_retiredStreams.Remove(oldest);_retiredThrough=Math.Max(_retiredThrough,oldest);}
                 }
-                _owner=context.ProcessId;_active=c;Epoch++;changed();
+                _owner=context.ProcessId;_active=c;Epoch++;ResetDiagnostics();changed();
                 state.MarkUncertain("Новое соединение: ожидается полная коллекция");
                 log("session",$"epoch={Epoch}; generation={context.Generation}; pid={context.ProcessId}");
             }
-            else if(different){Epoch++;changed();c.RequiresSnapshot=true;state.MarkUncertain("Смена персонажа: ожидается полная коллекция");}
+            else if(different){Epoch++;ResetDiagnostics();changed();c.RequiresSnapshot=true;state.MarkUncertain("Смена персонажа: ожидается полная коллекция");}
             state.Identify(time,name,server);
             Commit(c);
         }
@@ -118,12 +133,12 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
             if(opcode is not (PetProtocol.SnapshotOpcode or PetProtocol.GainOpcode))return true;
             if(time<_lastAccepted)
             {
-                if(c==_active && opcode==PetProtocol.GainOpcode)Invalidate(c,"Soul gain timestamp moved backwards");
+                if(c==_active && opcode==PetProtocol.GainOpcode)Invalidate(c,"Soul gain timestamp moved backwards",time);
                 return false;
             }
             if(opcode==PetProtocol.SnapshotOpcode)
             {
-                if(!PetProtocol.TrySnapshot(time,body,out _)){Invalidate(c,"Invalid collection snapshot");return false;}
+                if(!PetProtocol.TrySnapshot(time,body,out _)){Invalidate(c,"Invalid collection snapshot",time);return false;}
                 if(c==_active && !c.RequiresSnapshot)c.FreshIdentity=false;
                 c.Snapshot=body.ToArray();c.SnapshotTime=time;c.Gains.Clear();c.GainBytes=0;
                 if(_active is not null)state.MarkUncertain("Получена коллекция; ожидается подтверждение персонажа");
@@ -131,10 +146,10 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
                     Identify(c.Context,c.IdentityTime,c.Name,c.Server);
                 Commit(c);return true;
             }
-            if(!PetProtocol.TryGains(body,out var gains)){Invalidate(c,"Invalid soul gain");return false;}
+            if(!PetProtocol.TryGains(body,out var gains)){Invalidate(c,"Invalid soul gain",time);return false;}
             if(c.Snapshot is not null)
             {
-                if(c.Gains.Count>=4096 || c.GainBytes+body.Length>1024*1024){Invalidate(c,"Pending collection gains overflow");return false;}
+                if(c.Gains.Count>=4096 || c.GainBytes+body.Length>1024*1024){Invalidate(c,"Pending collection gains overflow",time);return false;}
                 c.Gains.Add((time,body.ToArray()));c.GainBytes+=body.Length;return true;
             }
             if(c!=_active)
@@ -144,27 +159,28 @@ public sealed class CollectionSession(CollectionState state,Action<IReadOnlyList
             }
             if(!state.Process(time,opcode,body))
             {
-                if(state.IsTrusted)Invalidate(c,"Soul gain could not be applied atomically");
+                if(state.IsTrusted)Invalidate(c,"Soul gain could not be applied atomically",time);
                 return false;
             }
-            _lastAccepted=Math.Max(_lastAccepted,time);gained(gains,c.Navigation.View().WorldId);return true;
+            _lastAccepted=Math.Max(_lastAccepted,time);AcceptedGains(time,gains,c.Navigation.View().WorldId);return true;
         }
     }
-    private void Invalidate(Candidate c,string reason)=>ObserveLoss(new(c.Context,new(c.Context.Flow,_lastAccepted,reason,ProcessId:c.Context.ProcessId)));
+    private void Invalidate(Candidate c,string reason,long time)=>ObserveLoss(new(c.Context,new(c.Context.Flow,time,reason,ProcessId:c.Context.ProcessId)));
     private void Commit(Candidate c)
     {
         if(c!=_active || !c.FreshIdentity || c.Snapshot is null)return;
         if(c.SnapshotTime<_lastAccepted){c.Snapshot=null;c.Gains.Clear();c.GainBytes=0;return;}
         if(!state.Process(c.SnapshotTime,PetProtocol.SnapshotOpcode,c.Snapshot))return;
         c.Snapshot=null;c.FreshIdentity=false;c.RequiresSnapshot=false;_lastAccepted=c.SnapshotTime;
+        _snapshotMs=c.SnapshotTime;
         state.SetSource("Живые данные игры");log("snapshot",$"Collection synchronized; epoch={Epoch}; generation={c.Context.Generation}");
         var buffered=c.Gains.ToArray();c.Gains.Clear();c.GainBytes=0;
         foreach(var gain in buffered)
         {
             if(!state.Process(gain.Time,PetProtocol.GainOpcode,gain.Body))
-            {Invalidate(c,"Buffered soul gain could not be applied atomically");break;}
+            {Invalidate(c,"Buffered soul gain could not be applied atomically",gain.Time);break;}
             _lastAccepted=Math.Max(_lastAccepted,gain.Time);
-            if(PetProtocol.TryGains(gain.Body,out var parsed))gained(parsed,c.Navigation.View().WorldId);
+            if(PetProtocol.TryGains(gain.Body,out var parsed))AcceptedGains(gain.Time,parsed,c.Navigation.View().WorldId);
         }
     }
 }

@@ -35,6 +35,7 @@ public sealed class CollectionState(IReadOnlyList<PetDefinition> catalog)
     private bool _hasSnapshot;
     private bool _needsResync;
     public bool IsTrusted {get {lock(_gate)return _hasSnapshot && !_needsResync;}}
+    public bool HasSnapshot {get {lock(_gate)return _hasSnapshot;}}
     private string _character = "";
     private int? _server;
     private string _source = "Запись";

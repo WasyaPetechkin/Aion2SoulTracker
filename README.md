@@ -6,11 +6,11 @@
 
 ## Русский
 
-Инструкция для сборки **0.3.8**. Опубликованные версии доступны по ссылке ниже.
+Инструкция для сборки **0.3.9**. Файлы для скачивания доступны в разделе Releases.
 
-В 0.3.8 исправлена обработка повреждённых сжатых пакетов: вся структура проверяется до передачи содержащихся в ней сообщений счётчику. Добавлены общие ограничения распаковки и проверка переполнения длины. Подробности: [целостность сжатых пакетов](docs/bundle-integrity.md).
+В 0.3.9 появилась кнопка **«Диагностика»**: состояние подключения по этапам, время последней коллекции и начисления души, отчёт с предварительным просмотром. Он помогает разобраться, почему счётчик не обновляется, без публикации имени персонажа и сетевых адресов.
 
-В 0.3.7 усилена защита счётчика при смене соединения и персонажа, обработка пропущенных пакетов и повторной доставки. Новая сессия подтверждается персонажем и полной коллекцией; при невосстановимой потере данных по-прежнему может потребоваться повторный вход. Технические подробности и границы проверки: [надёжность коллекции](docs/session-integrity.md).
+[История изменений](CHANGELOG.md) · [Как устроен диагностический отчёт](docs/diagnostics.md)
 
 **Aion 2 Soul Tracker** помогает собирать души и выбирать следующую цель для фарма. Каталог показывает прогресс коллекции, компактный HUD — сколько осталось до MAX, а отдельная интерактивная карта — известные места появления монстров.
 
@@ -51,6 +51,7 @@
 | Автодобавление | При включённой галочке новое получение души добавляет незавершённую цель в HUD, включая данжи |
 | Настройки | RU/EN, свои горячие клавиши, прозрачность фона, независимый масштаб строк HUD 65–150% |
 | Трей и справка | Крестик главного окна сворачивает его в трей; кружки «?» объясняют настройки |
+| Диагностика | Этапы подключения и последние принятые данные; просмотр отчёта перед сохранением или копированием |
 
 ### Выбор целей
 
@@ -99,6 +100,16 @@
 - Настройки и прогресс: `%LOCALAPPDATA%\Aion2SoulTracker` — хранятся отдельно и не удаляются установщиком при обновлении или удалении программы.
 - Удаление: «Установленные приложения» Windows → Aion 2 Soul Tracker.
 
+### Если счётчик не обновляется
+
+1. В главном окне нажмите **«Диагностика»** рядом с «Сохранённые данные», пока проблема ещё проявляется.
+2. Посмотрите итог и подсказку сверху. Ниже видны этапы: процесс игры, соединение, захват, распознавание сообщений, коллекция, непрерывность счёта и начисления душ.
+3. Нажмите **«Подготовить отчёт»**, просмотрите содержимое, затем **«Сохранить JSON»** или **«Копировать»**. Приложите отчёт к описанию проблемы. Для нового снимка нажмите **«К состоянию»** и подготовьте отчёт снова.
+
+Окно обновляется раз в секунду; предпросмотр фиксирует один снимок. Отсутствие новых душ или обычная пауза трафика сами по себе не означают потерю коллекции. Сохранённые данные отделены от подтверждённой текущей сессии.
+
+Отчёт включает версию, время создания, состояния, счётчики и возраст событий. Он не содержит имя персонажа, IP-адреса, имена адаптеров, пути к файлам, список питомцев или содержимое пакетов. Ничего не отправляется автоматически. Это отдельный отчёт; вся папка сохранений для обращения не нужна.
+
 ### Частые вопросы
 
 **Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. Временная пауза сама по себе не должна сбрасывать синхронизацию. Начиная с 0.3.1 улучшены переключение сетевых адаптеров, обработка смены сервера и восстановление захвата. Это не гарантирует восстановление счётчика после настоящей потери данных.
@@ -113,17 +124,17 @@
 
 ### Обратная связь
 
-[Сообщить об ошибке или предложить улучшение](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Напишите версию программы, локацию, что ожидали, что произошло и как повторить. Скриншот поможет; перед отправкой скройте имя персонажа. Не публикуйте сетевые записи и всю папку сохранений. При проблемах запуска полезен `startup-error.txt` из папки данных.
+[Сообщить об ошибке или предложить улучшение](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Напишите версию программы, локацию, что ожидали, что произошло и как повторить. Для проблемы со счётчиком приложите отчёт из **«Диагностики»**. Скриншот поможет; перед отправкой скройте имя персонажа. Не публикуйте сетевые записи и всю папку сохранений. При проблемах запуска полезен `startup-error.txt` из папки данных; перед отправкой проверьте, нет ли в нём личных сведений.
 
 ---
 
 ## English
 
-Instructions for build **0.3.8**. Published versions are available at the link below.
+Instructions for build **0.3.9**. Download files are available in Releases.
 
-Version 0.3.8 fixes malformed compressed packet handling: the entire structure is validated before any contained message reaches the counter. Added aggregate decompression limits and length-overflow validation. Details: [compressed bundle integrity](docs/bundle-integrity.md).
+Version 0.3.9 adds **Diagnostics**: connection stages, the age of the latest collection and soul gain, and a report you can preview before sharing. It helps investigate a stalled counter without publishing your character name or network addresses.
 
-Version 0.3.7 strengthens counter isolation across connection and character changes, missing-packet handling and retransmission recovery. A new session requires both character identity and a complete collection; unrecoverable data loss may still require logging in again. See [collection integrity](docs/session-integrity.md) for technical details and validation limits.
+[Change history](CHANGELOG.md) · [Diagnostic report details](docs/diagnostics.md)
 
 **Aion 2 Soul Tracker** helps you collect souls and choose your next farming target. The catalogue tracks your collection, a compact HUD shows souls remaining to MAX, and a separate interactive map displays known monster spawn locations.
 
@@ -164,6 +175,7 @@ Other accelerators using a similar relay may work but have not been tested separ
 | Auto-pinning | When enabled, a newly received soul adds its incomplete target to the HUD, including dungeons |
 | Settings | RU/EN, editable hotkeys, background opacity and independent HUD row scale of 65–150% |
 | Tray and help | Closing the main window hides it to the tray; “?” badges explain settings |
+| Diagnostics | Connection stages and recently accepted data; preview a report before saving or copying it |
 
 ### Target selection
 
@@ -212,6 +224,16 @@ Fully close the old version using **Exit**, run the new installer and select the
 - Settings and progress: `%LOCALAPPDATA%\Aion2SoulTracker` — stored separately and not removed by the installer during upgrades or uninstalling.
 - Uninstall through Windows Settings → Installed apps → Aion 2 Soul Tracker.
 
+### If the counter stops updating
+
+1. Click **Diagnostics** next to “Saved data” in the main window while the problem is still occurring.
+2. Read the summary and suggested action at the top. The stages below cover the game process, connection, capture, protocol recognition, collection, counter continuity and soul gains.
+3. Click **Prepare report**, review its contents, then **Save JSON** or **Copy**. Attach the report to your description of the problem. To take a new snapshot, click **Back to status** and prepare another report.
+
+The status window refreshes once per second; the preview freezes a single snapshot. No new souls or an ordinary traffic pause alone do not mean the collection has been lost. Saved data is distinguished from a confirmed current session.
+
+The report includes the version, creation time, states, counters and event ages. It excludes character names, IP addresses, adapter names, file paths, the pet list and packet contents. Nothing is sent automatically. This is a separate report; you do not need to share the entire saved-data folder.
+
 ### Frequently asked questions
 
 **Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. A temporary pause alone should not reset synchronization. Improvements introduced in 0.3.1 cover network adapter transitions, server transfers and capture recovery. This does not guarantee counter recovery after actual data loss.
@@ -226,7 +248,7 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ### Feedback
 
-[Report a bug or suggest an improvement](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Include the app version, location, expected and actual behaviour, and reproduction steps. Screenshots help; hide your character name first. Do not publish network recordings or your entire saved-data folder. For startup problems, `startup-error.txt` in the data folder may help.
+[Report a bug or suggest an improvement](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Include the app version, location, expected and actual behaviour, and reproduction steps. For counter issues, attach a report from **Diagnostics**. Screenshots help; hide your character name first. Do not publish network recordings or your entire saved-data folder. For startup problems, `startup-error.txt` in the data folder may help; check it for personal information before sharing.
 
 ---
 

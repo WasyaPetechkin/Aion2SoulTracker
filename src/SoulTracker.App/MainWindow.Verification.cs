@@ -92,6 +92,7 @@ public partial class MainWindow
         Render(_map,Path.Combine(directory,"map-ru.png"));
         VerifyDesktopControls(directory,checks,sample);
         VerifyFarmingControls(directory,checks,sample);
+        VerifyDiagnostics(directory,checks);
         LanguagePicker.SelectedIndex=1;
         Check("language_preserves_targets",_preferences.HudTargets.SequenceEqual(new[]{1120,1106,1066,1126}));
         Render(this,Path.Combine(directory,"collection-en.png"));

@@ -67,6 +67,7 @@ public partial class MainWindow
         Heading.Text=t.Title;
         LanguageLabel.Text=t.Choose("Язык","Language");
         ExportButton.Content=t.Choose("Сохранённые данные","Saved data");
+        DiagnosticsButton.Content=t.Choose("Диагностика","Diagnostics");
         Cogni.Content=PetText.Category("Cogni",_language);
         Fera.Content=PetText.Category("Fera",_language);
         Natura.Content=PetText.Category("Natura",_language);
