@@ -1,20 +1,20 @@
-<p align="center"><img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/v0.3.7/assets/app.png" width="88" alt="Aion 2 Soul Tracker"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/WasyaPetechkin/Aion2SoulTracker/v0.3.9/assets/app.png" width="88" alt="Aion 2 Soul Tracker"></p>
 <h1 align="center">Aion 2 Soul Tracker</h1>
 <p align="center">Коллекция душ · Компактный HUD · Интерактивная карта<br>Soul collection · Compact HUD · Interactive map</p>
 <p align="center"><strong>Windows 10 / 11 x64 · Aion 2 Global EU · Русский / English</strong></p>
-<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-Setup-v0.3.7.exe"><strong>Скачать / Download 0.3.7</strong></a> · <a href="#скриншоты--screenshots">Скриншоты / Screenshots</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
+<p align="center"><a href="#русский">Русский</a> · <a href="#english">English</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-Setup-v0.3.9.exe"><strong>Скачать / Download 0.3.9</strong></a> · <a href="#скриншоты--screenshots">Скриншоты / Screenshots</a> · <a href="https://github.com/WasyaPetechkin/Aion2SoulTracker/issues">Обратная связь / Feedback</a></p>
 
 ## Русский
 
-Актуальная версия — **[0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.7)**.
+Актуальная версия — **[0.3.9](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.9)**.
 
 **Aion 2 Soul Tracker** помогает собирать души и выбирать следующую цель для фарма. Каталог показывает прогресс коллекции, компактный HUD — сколько осталось до MAX, а отдельная интерактивная карта — известные места появления монстров.
 
 ### Скачать и установить
 
-**[Скачать установщик 0.3.7 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-Setup-v0.3.7.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Скачать установщик 0.3.9 для Windows](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-Setup-v0.3.9.exe)** · [Все версии и файлы](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Запустите `Aion2SoulTracker-Setup-v0.3.7.exe`, установите программу и откройте её с ярлыка.
+1. Запустите `Aion2SoulTracker-Setup-v0.3.9.exe`, установите программу и откройте её с ярлыка.
 2. Если приложение попросит **Npcap**, установите его с [официального сайта](https://npcap.com/#download) с настройками по умолчанию, затем нажмите «Проверить снова». Если Npcap уже установлен, повторная установка обычно не нужна.
 3. Войдите в персонажа **после запуска трекера**. Если уже играете, вернитесь к выбору персонажа и войдите снова: так приложение получает начальную коллекцию.
 4. Включите нужные категории и отметьте цели в колонке **HUD**. Для отображения HUD используйте оконный режим игры или окно без рамки.
@@ -23,23 +23,21 @@
 
 | Файл в Releases → Assets | Для чего |
 | --- | --- |
-| [Aion2SoulTracker-Setup-v0.3.7.exe](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-Setup-v0.3.7.exe) | Обычная установка — рекомендуемый вариант |
-| [Aion2SoulTracker-v0.3.7-portable-win-x64.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-v0.3.7-portable-win-x64.zip) | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
-| [Aion2SoulTracker-v0.3.7-source.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-v0.3.7-source.zip) | Исходный код для разработчиков |
-| [SHA256SUMS-v0.3.7.txt](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/SHA256SUMS-v0.3.7.txt) | Контрольные суммы файлов |
+| [Aion2SoulTracker-Setup-v0.3.9.exe](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-Setup-v0.3.9.exe) | Обычная установка — рекомендуемый вариант |
+| [Aion2SoulTracker-v0.3.9-portable-win-x64.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-v0.3.9-portable-win-x64.zip) | Распаковать целиком в отдельную папку и запустить EXE; Npcap всё равно нужен |
+| [Aion2SoulTracker-v0.3.9-source.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-v0.3.9-source.zip) | Исходный код для разработчиков |
+| [SHA256SUMS-v0.3.9.txt](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/SHA256SUMS-v0.3.9.txt) | Контрольные суммы файлов |
 
-### Что нового в 0.3.7
+### Что нового в 0.3.9
 
-Обновление посвящено точности счётчика и сетевой синхронизации.
+- **Диагностика одной кнопкой.** Главное окно показывает, на каком этапе находятся процесс игры, соединение, чтение сообщений, коллекция и начисления душ.
+- **Понятные состояния.** Сохранённый прогресс, ожидание новых данных и необходимость повторной синхронизации отображаются отдельно. Отсутствие новых душ само по себе не считается ошибкой.
+- **Отчёт для обращения за помощью.** Его можно просмотреть, сохранить или скопировать. Имя персонажа, сетевые адреса, имена адаптеров и содержимое пакетов не включаются.
+- **Дополнительная защита счётчика.** Включены исправления 0.3.8: повреждённый сжатый пакет проверяется целиком до обработки вложенных сообщений; добавлены ограничения распаковки.
 
-- **Защита при смене персонажа и соединения.** События старой сессии больше не могут менять текущую коллекцию.
-- **Повторная доставка без двойного начисления.** Усилена обработка повторов и восстановления пропущенных пакетов.
-- **Сетевая пауза не равна потере данных.** Обычное затишье и посторонний трафик сами по себе не сбрасывают синхронизацию.
-- **Явное ожидание синхронизации при реальной потере.** Счётчик не продолжает выдавать неподтверждённые значения за актуальные.
+Диагностика помогает найти этап сбоя, но не восстанавливает пропущенные души. При подтверждённой потере данных может потребоваться повторный вход в персонажа.
 
-При невосстановимой потере данных или новом соединении без полной коллекции может понадобиться повторный вход в персонажа. Длительная проверка новой версии с VPN и LagoFast продолжается.
-
-[Описание и файлы релиза 0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.7)
+[Описание и файлы релиза 0.3.9](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.9)
 
 **Ранее, в 0.3.6:** удалён режим фокуса за ненадобностью — автор не нашёл в нём практической пользы и целесообразности. Добавлены источники душ в подземельях, метки мировых боссов и автодобавление целей в HUD в данжах.
 
@@ -62,6 +60,7 @@
 | Кибелиски | 162 точки на картах Альтгарда, Морхейма, Вертерона и Элтнена; в Бездне не отображаются |
 | Автодобавление | При включённой галочке новое получение души добавляет незавершённую цель в HUD, включая данжи |
 | Настройки | RU/EN, свои горячие клавиши, прозрачность фона, независимый масштаб строк HUD 65–150% |
+| Диагностика | Состояния подключения и безопасный отчёт с предварительным просмотром |
 | Трей и справка | Крестик главного окна сворачивает его в трей; кружки «?» объясняют настройки |
 
 ### Выбор целей
@@ -111,6 +110,14 @@
 - Настройки и прогресс: `%LOCALAPPDATA%\Aion2SoulTracker` — хранятся отдельно и не удаляются установщиком при обновлении или удалении программы.
 - Удаление: «Установленные приложения» Windows → Aion 2 Soul Tracker.
 
+### Если счётчик перестал обновляться
+
+1. Пока проблема проявляется, нажмите **«Диагностика»** рядом с «Сохранённые данные» в главном окне.
+2. Прочитайте итог и подсказку сверху: ниже видны отдельные этапы подключения, последняя коллекция и принятые начисления.
+3. Нажмите **«Подготовить отчёт»**, просмотрите его и выберите **«Сохранить JSON»** или **«Копировать»**. Приложите отчёт к описанию проблемы.
+
+Состояние обновляется раз в секунду. Предварительный просмотр фиксирует один снимок; **«К состоянию»** позволяет вернуться и подготовить новый. Отчёт содержит счётчики, состояния, возраст событий, версию и время создания. Личные сетевые сведения и имя персонажа не включаются; автоматической отправки нет.
+
 ### Частые вопросы
 
 **Почему написано «нужен вход»?** При старте нужна начальная коллекция. После подтверждённой потери данных тоже требуется повторный вход в персонажа. Временная пауза сама по себе не должна сбрасывать синхронизацию. В 0.3.7 усилены привязка коллекции к персонажу и соединению, обработка потерь и повторной доставки. Если новый поток не содержит полной коллекции, счётчик ожидает подтверждённой синхронизации.
@@ -123,21 +130,21 @@
 
 ### Обратная связь
 
-[Сообщить об ошибке или предложить улучшение](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Напишите версию программы, локацию, что ожидали, что произошло и как повторить. Скриншот поможет; перед отправкой скройте имя персонажа. Не публикуйте сетевые записи и всю папку сохранений. При проблемах запуска полезен `startup-error.txt` из папки данных.
+[Сообщить об ошибке или предложить улучшение](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Напишите версию программы, локацию, что ожидали, что произошло и как повторить. При проблемах со счётчиком приложите отчёт из «Диагностики». Скриншот поможет; перед отправкой скройте имя персонажа. Не публикуйте сетевые записи и всю папку сохранений. При проблемах запуска полезен `startup-error.txt` из папки данных.
 
 ---
 
 ## English
 
-Current release: **[0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.7)**.
+Current release: **[0.3.9](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.9)**.
 
 **Aion 2 Soul Tracker** helps you collect souls and choose your next farming target. The catalogue tracks your collection, a compact HUD shows souls remaining to MAX, and a separate interactive map displays known monster spawn locations.
 
 ### Download and install
 
-**[Download the Windows installer 0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-Setup-v0.3.7.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
+**[Download the Windows installer 0.3.9](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-Setup-v0.3.9.exe)** · [All versions and files](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases)
 
-1. Run `Aion2SoulTracker-Setup-v0.3.7.exe`, install the application and open its shortcut.
+1. Run `Aion2SoulTracker-Setup-v0.3.9.exe`, install the application and open its shortcut.
 2. If prompted for **Npcap**, install it from the [official website](https://npcap.com/#download) with the default options, then click “Check again”. An existing Npcap installation usually does not need reinstalling.
 3. Log in to your character **after starting the tracker**. If already playing, return to character selection and log in again so the tracker receives your initial collection.
 4. Enable your categories and pin targets in the **HUD** column. Use windowed or borderless game mode for the HUD.
@@ -146,23 +153,21 @@ Current release: **[0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/re
 
 | File under Releases → Assets | Purpose |
 | --- | --- |
-| [Aion2SoulTracker-Setup-v0.3.7.exe](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-Setup-v0.3.7.exe) | Standard installation — recommended |
-| [Aion2SoulTracker-v0.3.7-portable-win-x64.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-v0.3.7-portable-win-x64.zip) | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
-| [Aion2SoulTracker-v0.3.7-source.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-v0.3.7-source.zip) | Source code for developers |
-| [SHA256SUMS-v0.3.7.txt](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/SHA256SUMS-v0.3.7.txt) | File checksums |
+| [Aion2SoulTracker-Setup-v0.3.9.exe](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-Setup-v0.3.9.exe) | Standard installation — recommended |
+| [Aion2SoulTracker-v0.3.9-portable-win-x64.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-v0.3.9-portable-win-x64.zip) | Extract the entire archive to a separate folder and run the EXE; Npcap is still required |
+| [Aion2SoulTracker-v0.3.9-source.zip](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-v0.3.9-source.zip) | Source code for developers |
+| [SHA256SUMS-v0.3.9.txt](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/SHA256SUMS-v0.3.9.txt) | File checksums |
 
-### What's new in 0.3.7
+### What's new in 0.3.9
 
-This update focuses on counter accuracy and network synchronization.
+- **One-button diagnostics.** The main window shows each stage: game process, connection, message capture, collection and soul gains.
+- **Clear states.** Saved progress, waiting for traffic and required synchronization are shown separately. No new gains alone is not treated as an error.
+- **A report for troubleshooting.** Preview, save or copy it. Character names, network addresses, adapter names and packet contents are excluded.
+- **Additional counter protection.** Includes the 0.3.8 fixes: malformed compressed packets are fully validated before their contained messages are processed, with aggregate decompression limits.
 
-- **Protection across character and connection changes.** Events from a retired session cannot modify the current collection.
-- **Retransmission without double counting.** Strengthened handling of repeated packets and recovery of missing ranges.
-- **A network pause is not data loss.** Ordinary quiet periods and unrelated traffic do not reset synchronization on their own.
-- **Explicit synchronization status after actual loss.** The counter does not keep presenting unconfirmed values as current.
+Diagnostics helps identify the affected stage; it cannot recover missed souls. Confirmed data loss may require logging in to your character again.
 
-Unrecoverable data loss or a new connection without a complete collection may still require another character login. Extended testing of this version with VPN and LagoFast is ongoing.
-
-[Release notes and files for 0.3.7](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.7)
+[Release 0.3.9 details and downloads](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/tag/v0.3.9)
 
 **Previously, in 0.3.6:** focus mode was removed as unnecessary because the author found no practical benefit or sufficient reason to keep it. Added dungeon soul sources, world boss labels and automatic HUD pinning in dungeons.
 
@@ -185,6 +190,7 @@ Other accelerators using a similar relay may work but have not been tested separ
 | Kibelisks | 162 locations across Altgard, Morheim, Verteron and Eltnen; excluded from the Abyss |
 | Auto-pinning | When enabled, a newly received soul adds its incomplete target to the HUD, including dungeons |
 | Settings | RU/EN, editable hotkeys, background opacity and independent HUD row scale of 65–150% |
+| Diagnostics | Connection states and a report you can preview before sharing |
 | Tray and help | Closing the main window hides it to the tray; “?” badges explain settings |
 
 ### Target selection
@@ -234,6 +240,14 @@ Fully close the old version using **Exit**, run the new installer and select the
 - Settings and progress: `%LOCALAPPDATA%\Aion2SoulTracker` — stored separately and not removed by the installer during upgrades or uninstalling.
 - Uninstall through Windows Settings → Installed apps → Aion 2 Soul Tracker.
 
+### If the counter stops updating
+
+1. While the problem is occurring, click **Diagnostics** next to “Saved data” in the main window.
+2. Read the summary and suggested action at the top. The stages below show the connection, latest collection and accepted gains.
+3. Click **Prepare report**, review it, then **Save JSON** or **Copy**. Attach the report to your description of the problem.
+
+Status refreshes once per second. The preview freezes one snapshot; **Back to status** lets you prepare another. The report contains counters, states, event ages, version and creation time. Personal network details and character names are excluded; nothing is sent automatically.
+
 ### Frequently asked questions
 
 **Why does it say “login required”?** Starting capture requires an initial collection. Confirmed data loss also requires another character login. A temporary pause alone should not reset synchronization. Version 0.3.7 strengthens collection ownership across character and connection changes, loss handling and retransmission recovery. If a new stream does not contain a complete collection, the counter waits for confirmed synchronization.
@@ -246,7 +260,7 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ### Feedback
 
-[Report a bug or suggest an improvement](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Include the app version, location, expected and actual behaviour, and reproduction steps. Screenshots help; hide your character name first. Do not publish network recordings or your entire saved-data folder. For startup problems, `startup-error.txt` in the data folder may help.
+[Report a bug or suggest an improvement](https://github.com/WasyaPetechkin/Aion2SoulTracker/issues). Include the app version, location, expected and actual behaviour, and reproduction steps. For counter issues, attach a report from Diagnostics. Screenshots help; hide your character name first. Do not publish network recordings or your entire saved-data folder. For startup problems, `startup-error.txt` in the data folder may help.
 
 ---
 
@@ -259,14 +273,14 @@ Fully close the old version using **Exit**, run the new installer and select the
 
 ## Исходный код и сборка / Source and build
 
-[Исходный код 0.3.7 / Version 0.3.7 source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/v0.3.7) · [Скачать исходники / Download source](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.7/Aion2SoulTracker-v0.3.7-source.zip)
+[Исходный код 0.3.9 / Version 0.3.9 source](https://github.com/WasyaPetechkin/Aion2SoulTracker/tree/v0.3.9) · [Скачать исходники / Download source](https://github.com/WasyaPetechkin/Aion2SoulTracker/releases/download/v0.3.9/Aion2SoulTracker-v0.3.9-source.zip)
 
-Ветка `main` содержит главную страницу проекта. Для сборки приложения выберите тег `v0.3.7` или распакуйте архив исходников; `source.zip` также включён в дистрибутив. / The `main` branch contains the project landing page. To build the app, use the `v0.3.7` tag or extract the source archive; `source.zip` is also bundled with the distribution.
+Ветка `main` содержит главную страницу проекта. Для сборки приложения выберите тег `v0.3.9` или распакуйте архив исходников; `source.zip` также включён в дистрибутив. / The `main` branch contains the project landing page. To build the app, use the `v0.3.9` tag or extract the source archive; `source.zip` is also bundled with the distribution.
 
 Для сборки нужны .NET 10 SDK и Inno Setup 7. / Building requires .NET 10 SDK and Inno Setup 7.
 
 ```powershell
-git clone --branch v0.3.7 https://github.com/WasyaPetechkin/Aion2SoulTracker.git
+git clone --branch v0.3.9 https://github.com/WasyaPetechkin/Aion2SoulTracker.git
 cd Aion2SoulTracker
 dotnet test tests/SoulTracker.Tests -c Release
 dotnet build src/SoulTracker.App -c Release
@@ -282,7 +296,6 @@ dotnet build src/SoulTracker.App -c Release
 - Захват и разбор пакетов / Capture and parsing: [aion2-dps-meter](https://github.com/cyberbadger6969/aion2-dps-meter).
 - Карты, данные и портреты / Maps, data and portraits: [aion2-nyerk](https://github.com/xCROv/aion2-nyerk), [Questlog](https://questlog.gg/aion-2/en/map).
 - Игровые изображения, названия и данные принадлежат соответствующим правообладателям. / Game artwork, names and data belong to their respective owners.
-- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.7/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.7/licenses/THIRD-PARTY.md).
+- [Лицензия / License](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.9/LICENSE) · [Сторонние компоненты / Third-party notices](https://github.com/WasyaPetechkin/Aion2SoulTracker/blob/v0.3.9/licenses/THIRD-PARTY.md).
 
 Тестовая версия для Global EU; обновления игры могут потребовать обновления трекера. / A test version for Global EU; game updates may require tracker updates.
-
